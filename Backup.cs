@@ -23,10 +23,8 @@ namespace BedrockServer2000
 
 		public static void PerformBackup(object args)
 		{
-			if (!((ServerConfigs)args).serverRunning)
-				return;
-
 			Program.serverConfigs.backupRunning = true;
+			Program.Input.Suspend();
 
 			// check if the configs are correct, cancel the backup if found any error
 			if (!Directory.Exists(((ServerConfigs)args).worldPath))
@@ -45,12 +43,18 @@ namespace BedrockServer2000
 				return;
 			}
 
-			Program.bedrockServerInputStream.WriteLine("say Performing backup");
-			Console.WriteLine("Telling players that the server is running a backup");
-			File.AppendAllText(@"ServerLog.csv", "\r\n" + DateTime.Now.ToString() + " " + "Telling players that the server is running a backup\r\n");
+			if (Program.serverConfigs.serverRunning)
+			{
+				Program.bedrockServerInputStream.WriteLine("say Performing backup");
+				Console.WriteLine("Telling players that the server is running a backup");
+				File.AppendAllText(@"ServerLog.csv", "\r\n" + DateTime.Now.ToString() + " " + "Telling players that the server is running a backup\r\n");
+			}
 
-			Program.bedrockServerInputStream.WriteLine("save hold");
-			Thread.Sleep(5000);
+			if (Program.serverConfigs.serverRunning)
+			{
+				Program.bedrockServerInputStream.WriteLine("save hold");
+				Thread.Sleep(5000);
+			}
 
 			Console.WriteLine("Starting Backup");
 			File.AppendAllText(@"ServerLog.csv", DateTime.Now.ToString() + " " + "Starting Backup\r\n");
@@ -71,14 +75,15 @@ namespace BedrockServer2000
 			CopyFilesRecursively(((ServerConfigs)args).worldPath, ((ServerConfigs)args).backupPath + "\\" + newBackupName);
 			Thread.Sleep(10000);
 
-			Program.bedrockServerInputStream.WriteLine("save resume");
+			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
 
 			Console.WriteLine($"Backup saved: {((ServerConfigs)args).backupPath + "\\" + newBackupName}");
 			File.AppendAllText(@"ServerLog.csv", DateTime.Now.ToString() + " " + $"Backup saved: {((ServerConfigs)args).backupPath + "\\" + newBackupName}");
 
-			Program.bedrockServerInputStream.WriteLine("say Backup complete");
+			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;
+			Program.Input.Resume();
 		}
 	}
 }
