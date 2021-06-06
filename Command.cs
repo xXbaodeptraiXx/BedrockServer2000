@@ -34,6 +34,11 @@ namespace BedrockServer2000
 			Program.bedrockServerInputStream = Program.bedrockServerProcess.StandardInput;
 			Program.bedrockServerProcess.BeginOutputReadLine();
 			Program.bedrockServerProcess.BeginErrorReadLine();
+
+			int autoBackupEveryXTimerInterval = 0;
+			if (serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(serverConfigs.autoBackupEveryXDuration);
+			else if (serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(serverConfigs.autoBackupEveryXDuration);
+			autoBackupEveryXTimer = new Timer(Backup.PerformBackup, serverConfigs, 0, autoBackupEveryXTimerInterval);
 		}
 	}
 }
