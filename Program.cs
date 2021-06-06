@@ -14,6 +14,8 @@ namespace BedrockServer2000
 		public static Process bedrockServerProcess;
 		public static StreamWriter bedrockServerInputStream;
 
+		public static Thread Input;
+
 		public static Timer autoBackupEveryXTimer;
 
 		static void Main(string[] args)
@@ -119,7 +121,20 @@ namespace BedrockServer2000
 			else serverConfigs.autoBackupEveryXTimeUnit = ConfigurationManager.AppSettings["autoBackupEveryXTimeUnit"].ToString();
 
 			serverConfigs.backupPath = ConfigurationManager.AppSettings["backupPath"].ToString();
+			serverConfigs.serverExecutableExists = File.Exists("bedrock_server");
+
+			Input = new Thread(InputThread);
+			Input.Name = "ConsoleInput";
+			Input.Start();
 			#endregion
+		}
+
+		public static void InputThread()
+		{
+			while (true)
+			{
+				Command.ProcessCommand(Console.ReadLine());
+			}
 		}
 	}
 }

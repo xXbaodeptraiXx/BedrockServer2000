@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 namespace BedrockServer2000
 {
@@ -14,6 +15,13 @@ namespace BedrockServer2000
 
 		private static void StartServer()
 		{
+			if (!Program.serverConfigs.serverExecutableExists)
+			{
+				Console.WriteLine("Server executable not found, can't start server.");
+				return;
+			}
+			Program.serverConfigs.serverRunning = true;
+
 			Program.bedrockServerProcess = new System.Diagnostics.Process();
 			Program.bedrockServerProcess.StartInfo.FileName = "bedrock_server";
 			Console.WriteLine("Using this terminal: " + Program.bedrockServerProcess.StartInfo.FileName);
@@ -35,10 +43,13 @@ namespace BedrockServer2000
 			Program.bedrockServerProcess.BeginOutputReadLine();
 			Program.bedrockServerProcess.BeginErrorReadLine();
 
-			int autoBackupEveryXTimerInterval = 0;
-			if (serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(serverConfigs.autoBackupEveryXDuration);
-			else if (serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(serverConfigs.autoBackupEveryXDuration);
-			autoBackupEveryXTimer = new Timer(Backup.PerformBackup, serverConfigs, 0, autoBackupEveryXTimerInterval);
+			if (Program.serverConfigs.autoBackupEveryX == true)
+			{
+				int autoBackupEveryXTimerInterval = 0;
+				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+				else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, 0, autoBackupEveryXTimerInterval);
+			}
 		}
 	}
 }

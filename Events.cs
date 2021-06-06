@@ -7,7 +7,7 @@ namespace BedrockServer2000
 	{
 		public static void bedrockServerProcess_Exited(object sender, EventArgs e)
 		{
-
+			Console.WriteLine("Server stopped.");
 		}
 
 		public static void bedrockServerProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
