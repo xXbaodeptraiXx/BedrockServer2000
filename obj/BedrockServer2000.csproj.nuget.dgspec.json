@@ -1,21 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\zzzzz\\dev\\vscode projects\\C#\\BedrockServer2000\\BedrockServer2000.csproj": {}
+    "F:\\vscode\\github repos\\BedrockServer2000\\BedrockServer2000\\BedrockServer2000.csproj": {}
   },
   "projects": {
-    "c:\\zzzzz\\dev\\vscode projects\\C#\\BedrockServer2000\\BedrockServer2000.csproj": {
+    "F:\\vscode\\github repos\\BedrockServer2000\\BedrockServer2000\\BedrockServer2000.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\zzzzz\\dev\\vscode projects\\C#\\BedrockServer2000\\BedrockServer2000.csproj",
+        "projectUniqueName": "F:\\vscode\\github repos\\BedrockServer2000\\BedrockServer2000\\BedrockServer2000.csproj",
         "projectName": "BedrockServer2000",
-        "projectPath": "c:\\zzzzz\\dev\\vscode projects\\C#\\BedrockServer2000\\BedrockServer2000.csproj",
-        "packagesPath": "C:\\Users\\Bao\\.nuget\\packages\\",
-        "outputPath": "c:\\zzzzz\\dev\\vscode projects\\C#\\BedrockServer2000\\obj\\",
+        "projectPath": "F:\\vscode\\github repos\\BedrockServer2000\\BedrockServer2000\\BedrockServer2000.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "F:\\vscode\\github repos\\BedrockServer2000\\BedrockServer2000\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Bao\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -59,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

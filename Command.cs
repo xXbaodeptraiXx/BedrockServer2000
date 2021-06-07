@@ -21,7 +21,7 @@ namespace BedrockServer2000
 				Thread StopServerThread = new Thread(StopServer);
 				StopServerThread.Start();
 			}
-			else if (formatteedCommand == "configs") ShowConfigs("");
+			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.LoadConfigs();
 			else if (formattedCommand.Split().Length > 1)
 			{

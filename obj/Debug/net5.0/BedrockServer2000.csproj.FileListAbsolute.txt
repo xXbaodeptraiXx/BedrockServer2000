@@ -1,0 +1,5 @@
+F:\vscode\github repos\BedrockServer2000\BedrockServer2000\obj\Debug\net5.0\BedrockServer2000.csprojAssemblyReference.cache
+F:\vscode\github repos\BedrockServer2000\BedrockServer2000\obj\Debug\net5.0\BedrockServer2000.GeneratedMSBuildEditorConfig.editorconfig
+F:\vscode\github repos\BedrockServer2000\BedrockServer2000\obj\Debug\net5.0\BedrockServer2000.AssemblyInfoInputs.cache
+F:\vscode\github repos\BedrockServer2000\BedrockServer2000\obj\Debug\net5.0\BedrockServer2000.AssemblyInfo.cs
+F:\vscode\github repos\BedrockServer2000\BedrockServer2000\obj\Debug\net5.0\BedrockServer2000.csproj.CoreCompileInputs.cache
