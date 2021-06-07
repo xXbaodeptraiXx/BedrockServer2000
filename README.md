@@ -7,4 +7,4 @@ A cross-platform command line Minecraft Bedrock server wrapper
 This software is still in development process and hasn't been tested so don't expect it to work.
 
 ## Screenshots
-No screenshots avalible yet.
+No screenshots available yet.
