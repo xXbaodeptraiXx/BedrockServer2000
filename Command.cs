@@ -138,13 +138,13 @@ Examples:
 
 		private static void StopServer()
 		{
-			Program.autoBackupEveryXTimer.Change(0, infinite);
+			Program.autoBackupEveryXTimer = null; ;
 
 			string serverCloseMessage = "Server closing in 10 seconds";
-			Program.bedrockServerProcessInputStream.WriteLine($"say {serverCloseMessage}");
+			Program.bedrockServerInputStream.WriteLine($"say {serverCloseMessage}");
 			Console.WriteLine("Server close message sent");
 			Thread.Sleep(10000);
-			Program.bedrockServerProcessInputStream.WriteLine("stop");
+			Program.bedrockServerInputStream.WriteLine("stop");
 		}
 
 		private static void ShowConfigs(string key)

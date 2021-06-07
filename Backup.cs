@@ -24,7 +24,7 @@ namespace BedrockServer2000
 		public static void PerformBackup(object args)
 		{
 			Program.serverConfigs.backupRunning = true;
-			Program.ConsoleInputThread.Suspend();
+			Program.consoleInputThread.Suspend();
 
 			// check if the configs are correct, cancel the backup if found any error
 			if (!Directory.Exists(((ServerConfigs)args).worldPath))
