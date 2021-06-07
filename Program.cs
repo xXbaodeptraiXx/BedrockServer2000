@@ -122,6 +122,8 @@ namespace BedrockServer2000
 
 			serverConfigs.backupPath = ConfigurationManager.AppSettings["backupPath"].ToString();
 			serverConfigs.serverExecutableExists = File.Exists("bedrock_server");
+			serverConfigs.serverRunning = false;
+			serverConfigs.backupRunning = false;
 
 			Input = new Thread(InputThread);
 			Input.Name = "ConsoleInput";
