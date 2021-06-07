@@ -16,12 +16,24 @@ namespace BedrockServer2000
 			else if (formattedCommand.Split().Length > 1 && formattedCommand.Split()[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
 			else if (formattedCommand == "backup") Backup.PerformBackup(Program.serverConfigs);
 			else if (formattedCommand == "start") StartServer();
-			else if (formattedCommand == "stop") StopServer();
+			else if (formattedCommand == "stop")
+			{
+				Thread StopServerThread = new Thread(StopServer);
+				StopServerThread.Start();
+			}
+			else if (formatteedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.LoadConfigs();
 			else if (formattedCommand.Split().Length > 1)
 			{
+				if (formattedCommand.Split().Length == 2)
+				{
+					if (formattedCommand.Split()[0] == "configs") ShowConfigs(formattedCommand.Remove(0, 8));
+				}
+
 				if (formattedCommand.Split().Length == 3)
+				{
 					if (formattedCommand.Split()[0] == "set") Set(formattedCommand.Split()[1], formattedCommand.Split()[2]);
+				}
 			}
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else Program.bedrockServerInputStream.WriteLine(formattedCommand);
@@ -32,39 +44,55 @@ namespace BedrockServer2000
 			if (args == "")
 			{
 				Console.WriteLine(@"Commands:
-			- commands : show this message
-			- backup : backup the world file (available even when the server is not running)
-			- start : start the server
-			- stop : stop the server
-			- reload : reload the configs from the configuration file
-			- ^set [config_key] [config_value] : change server wrapper configs
-			- exit : stop the server wrapper
-			* Commands with ^ before their names can be used with 'commands [comand]' to show more information.
-			  + Example: 'commands set'
-			Other commands are processed by the bedrock server software");
+- commands : show this message
+- start : start the server
+- stop : stop the server
+- backup : backup the world file (available even when the server is not running)
+- ^configs : show server wrapper configs
+- reload : reload the configs from the configuration file
+- ^set [config_key] [config_value] : change server wrapper configs
+- exit : stop the server wrapper* Commands with ^ before their names can be used with 'commands [comand]' to show more information.
+  + Example: 'commands set'
+Other commands are processed by the bedrock server software");
 			}
 			else if (args == "set")
 			{
 				Console.WriteLine(@"Commands > set:
-				Purpose: change server wrapper configs
-				Syntax: set [config_key] [config_value]
-				- Available config keys and their available config values:
-				  + autoStartServer [true / false]
-				  + autoBackupOnDate [true / false]
-				  + autoBackupOnDate_Time [time (H:M:S): example: 17:30:00]
-				  + autoBackupEveryX [true / false]
-				  + autoBackupEveryXDuration [positive integer]
-				  + autoBackupEveryXTimeUnit [string: minute / hour]
-				  + worldPath [path to the world folder]
-				  + backupPath [path to the backup folder]
-				  + backupLimit [positive integer]
+Purpose: change server wrapper configs
+Syntax: set [config_key] [config_value]
+- Available config keys and their available config values:
+  + autoStartServer [true / false]
+  + autoBackupOnDate [true / false]
+  + autoBackupOnDate_Time [time (H:M:S): example: 17:30:00]
+  + autoBackupEveryX [true / false]
+  + autoBackupEveryXDuration [positive integer]
+  + autoBackupEveryXTimeUnit [string: minute / hour]
+  + worldPath [path to the world folder]
+  + backupPath [path to the backup folder]
+  + backupLimit [positive integer]
 
-				Examples:
-				  + set worldPath C:\\bedrock_server\\world backups
-				  + set autoStartServer true
-				  + set backupLimit 32
-				  + set autoBackupEveryXTimeUnit hour
+Examples:
+  + set worldPath C:\\bedrock_server\\world backups
+  + set autoStartServer true
+  + set backupLimit 32
+  + set autoBackupEveryXTimeUnit hour
 				");
+			}
+			else if (args == "configs")
+			{
+				Console.WriteLine(@"Commands > configs:
+Purpose: show server wrapper configs
+Syntax: 
+  + 'configs' : show status of all configs
+  + 'configs [config_key]' : show status of a specific config key
+
+use 'configs' to know all the config keys
+
+Examples:
+  + configs
+  + configs autoStartServer
+  + configs autoBackupEveryXDuration
+			");
 			}
 			else ShowSyntaxError();
 		}
@@ -110,7 +138,39 @@ namespace BedrockServer2000
 
 		private static void StopServer()
 		{
+			Program.autoBackupEveryXTimer.Change(0, infinite);
 
+			string serverCloseMessage = "Server closing in 10 seconds";
+			Program.bedrockServerProcessInputStream.WriteLine($"say {serverCloseMessage}");
+			Console.WriteLine("Server close message sent");
+			Thread.Sleep(10000);
+			Program.bedrockServerProcessInputStream.WriteLine("stop");
+		}
+
+		private static void ShowConfigs(string key)
+		{
+			if (key == "")
+			{
+				Console.WriteLine($"autoStartServer = {Program.serverConfigs.autoStartServer}");
+				Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.autoBackupOnDate}");
+				Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.autoBackupOnDate_Time}");
+				Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.autoBackupEveryX}");
+				Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.autoBackupEveryXDuration}");
+				Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.autoBackupEveryXTimeUnit}");
+				Console.WriteLine($"worldPath = {Program.serverConfigs.worldPath}");
+				Console.WriteLine($"backupPath = {Program.serverConfigs.backupPath}");
+				Console.WriteLine($"backupLimit = {Program.serverConfigs.backupLimit}");
+			}
+			else if (key == "autoStartServer") Console.WriteLine($"autoStartServer = {Program.serverConfigs.autoStartServer}");
+			else if (key == "utoBackupOnDate") Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.autoBackupOnDate}");
+			else if (key == "autoBackupOnDate_Time") Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.autoBackupOnDate_Time}");
+			else if (key == "autoBackupEveryX") Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.autoBackupEveryX}");
+			else if (key == "autoBackupEveryXDuration") Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.autoBackupEveryXDuration}");
+			else if (key == "autoBackupEveryXTimeUnit") Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.autoBackupEveryXTimeUnit}");
+			else if (key == "worldPath") Console.WriteLine($"worldPath = {Program.serverConfigs.worldPath}");
+			else if (key == "backupPath") Console.WriteLine($"backupPath = {Program.serverConfigs.backupPath}");
+			else if (key == "backupLimit") Console.WriteLine($"backupLimit = {Program.serverConfigs.backupLimit}");
+			else Console.WriteLine($"Error: Unknown config key '{key}'");
 		}
 
 		private static void Set(string key, string value)

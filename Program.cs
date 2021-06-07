@@ -14,7 +14,7 @@ namespace BedrockServer2000
 		public static Process bedrockServerProcess;
 		public static StreamWriter bedrockServerInputStream;
 
-		public static Thread Input;
+		public static Thread consoleInputThread;
 
 		public static Timer autoBackupEveryXTimer;
 
@@ -25,12 +25,11 @@ namespace BedrockServer2000
 
 			LoadConfigs();
 
-			Input = new Thread(InputThread);
-			Input.Name = "ConsoleInput";
-			Input.Start();
+			consoleInputThread = new Thread(ConsoleInput);
+			consoleInputThread.Start();
 		}
 
-		public static void InputThread()
+		public static void ConsoleInput()
 		{
 			while (true)
 			{
