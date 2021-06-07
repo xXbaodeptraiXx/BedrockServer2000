@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Configuration;
 
 namespace BedrockServer2000
@@ -18,9 +18,28 @@ namespace BedrockServer2000
 
 		public static Timer autoBackupEveryXTimer;
 
-		static void Main(string[] args)
+		static void Main()
 		{
-			#region Import Configs
+			serverConfigs.serverRunning = false;
+			serverConfigs.backupRunning = false;
+
+			LoadConfigs();
+
+			Input = new Thread(InputThread);
+			Input.Name = "ConsoleInput";
+			Input.Start();
+		}
+
+		public static void InputThread()
+		{
+			while (true)
+			{
+				Command.ProcessCommand(Console.ReadLine());
+			}
+		}
+
+		public static void LoadConfigs()
+		{
 			if (ConfigurationManager.AppSettings["autoStartServer"].ToString() != "true" && ConfigurationManager.AppSettings["autoStartServer"].ToString() != "false")
 			{
 				Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -74,7 +93,7 @@ namespace BedrockServer2000
 				else serverConfigs.autoBackupOnDate = false;
 			}
 
-			if (ConfigurationManager.AppSettings["autoBackupOnDate_Time"].ToString() == "")
+			if (ConfigurationManager.AppSettings["autoBackupOnDate_Time"].ToString() == "" || !DateTime.TryParseExact(ConfigurationManager.AppSettings["autoBackupOnDate_Time"].ToString(), "H:m:s", null, DateTimeStyles.None, out DateTime result))
 			{
 				Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 				configuration.Save(ConfigurationSaveMode.Modified);
@@ -122,21 +141,6 @@ namespace BedrockServer2000
 
 			serverConfigs.backupPath = ConfigurationManager.AppSettings["backupPath"].ToString();
 			serverConfigs.serverExecutableExists = File.Exists("bedrock_server");
-			serverConfigs.serverRunning = false;
-			serverConfigs.backupRunning = false;
-
-			Input = new Thread(InputThread);
-			Input.Name = "ConsoleInput";
-			Input.Start();
-			#endregion
-		}
-
-		public static void InputThread()
-		{
-			while (true)
-			{
-				Command.ProcessCommand(Console.ReadLine());
-			}
 		}
 	}
 }
