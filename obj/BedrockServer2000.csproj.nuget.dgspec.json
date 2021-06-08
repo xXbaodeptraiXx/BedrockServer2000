@@ -1,32 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\BedrockServer2000.csproj": {}
+    "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj": {}
   },
   "projects": {
-    "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\BedrockServer2000.csproj": {
+    "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\BedrockServer2000.csproj",
+        "projectUniqueName": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
         "projectName": "BedrockServer2000",
-        "projectPath": "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\BedrockServer2000.csproj",
-        "packagesPath": "C:\\Users\\Bao\\.nuget\\packages\\",
-        "outputPath": "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\obj\\",
+        "projectPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
+        "packagesPath": "C:\\Users\\lamgi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Bao\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\lamgi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "netcoreapp3.1": {
             "projectReferences": {}
           }
         },
@@ -37,8 +34,7 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "netcoreapp3.1": {
           "dependencies": {
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
@@ -55,12 +51,46 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[3.1.15, 3.1.15]"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[3.1.15, 3.1.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[3.1.15, 3.1.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[3.1.15, 3.1.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[3.1.15, 3.1.15]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[3.1.15, 3.1.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.409\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "linux-x64": {
+          "#import": []
+        },
+        "win10-x64": {
+          "#import": []
         }
       }
     }

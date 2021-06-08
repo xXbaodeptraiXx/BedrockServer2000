@@ -1,18 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "L8ct7kQo4snqCM+0I5Dm0BlKvv62u1QrVNnViz3J+duzvjYahxZtZfFgEEZF3peOikq0TpcA5d9GELHhJS//qA==",
+  "dgSpecHash": "Vn0BL2MQNYchBJpvZ/WMRtoL/20+SxpY1GgNDDUir82o8WNvwmmDoRJDkM1Zb1moC/SGIhYbKIAYQvjf77dhUA==",
   "success": true,
-  "projectFilePath": "C:\\zzzzz\\dev\\Github repos\\BedrockServer2000\\BedrockServer2000.csproj",
+  "projectFilePath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Bao\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.security.permissions\\5.0.0\\system.security.permissions.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
-    "C:\\Users\\Bao\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512"
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.security.permissions\\5.0.0\\system.security.permissions.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.1.15\\microsoft.netcore.app.runtime.win-x64.3.1.15.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\3.1.15\\microsoft.netcore.app.runtime.linux-x64.3.1.15.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.1.15\\microsoft.windowsdesktop.app.runtime.win-x64.3.1.15.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.15\\microsoft.aspnetcore.app.runtime.win-x64.3.1.15.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\3.1.15\\microsoft.aspnetcore.app.runtime.linux-x64.3.1.15.nupkg.sha512",
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\3.1.15\\microsoft.netcore.app.host.linux-x64.3.1.15.nupkg.sha512"
   ],
   "logs": []
 }

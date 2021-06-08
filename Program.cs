@@ -9,7 +9,7 @@ namespace BedrockServer2000
 {
 	class Program
 	{
-		public static ServerConfigs serverConfigs = new();
+		public static ServerConfigs serverConfigs = new ServerConfigs();
 
 		public static Process bedrockServerProcess;
 		public static StreamWriter bedrockServerInputStream;
