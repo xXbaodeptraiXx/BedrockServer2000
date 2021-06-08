@@ -10,33 +10,56 @@ namespace BedrockServer2000
 	{
 		public static void ProcessCommand(string command)
 		{
+			if (Program.serverConfigs.backupRunning) return;
+
 			string formattedCommand = command.Trim().ToLower();
 
 			if (formattedCommand == "commands") ShowHelp("");
-			else if (formattedCommand.Split().Length > 1 && formattedCommand.Split()[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
+			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1 && formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
 			else if (formattedCommand == "backup") Backup.PerformBackup(Program.serverConfigs);
 			else if (formattedCommand == "start") StartServer();
 			else if (formattedCommand == "stop")
 			{
-				Thread StopServerThread = new Thread(StopServer);
-				StopServerThread.Start();
+				if (Program.serverConfigs.serverRunning)
+				{
+					Thread StopServerThread = new Thread(StopServer);
+					StopServerThread.Start();
+				}
+				else Console.WriteLine("Server is not currently running.");
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.LoadConfigs();
-			else if (formattedCommand.Split().Length > 1)
+			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
 			{
-				if (formattedCommand.Split().Length == 2)
+				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "say")
 				{
-					if (formattedCommand.Split()[0] == "configs") ShowConfigs(formattedCommand.Remove(0, 8));
+					if (Program.serverConfigs.serverRunning)
+					{
+						Program.bedrockServerInputStream.WriteLine("say" + command.Trim().Remove(0, 4));
+						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
+					}
+					else Console.WriteLine("Server is not currently running.");
 				}
-
-				if (formattedCommand.Split().Length == 3)
+				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 2)
 				{
-					if (formattedCommand.Split()[0] == "set") Set(formattedCommand.Split()[1], formattedCommand.Split()[2]);
+					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "configs") ShowConfigs(formattedCommand.Remove(0, 8));
+					else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], "");
+					else ShowSyntaxError();
 				}
+				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 3)
+				{
+					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
+					else ShowSyntaxError();
+				}
+				else ShowSyntaxError();
 			}
+			else if (formattedCommand == "clear") Console.Clear();
 			else if (formattedCommand == "exit") RunExitProcedure();
-			else Program.bedrockServerInputStream.WriteLine(formattedCommand);
+			else
+			{
+				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(formattedCommand);
+				else Console.WriteLine("Unknown command.");
+			}
 		}
 
 		private static void ShowHelp(string args)
@@ -51,9 +74,10 @@ namespace BedrockServer2000
 - ^configs : show server wrapper configs
 - reload : reload the configs from the configuration file
 - ^set [config_key] [config_value] : change server wrapper configs
+- clear : clear the console
 - exit : stop the server wrapper* Commands with ^ before their names can be used with 'commands [comand]' to show more information.
   + Example: 'commands set'
-Other commands are processed by the bedrock server software");
+Other commands are processed by the bedrock server software if it's running.");
 			}
 			else if (args == "set")
 			{
@@ -138,13 +162,21 @@ Examples:
 
 		private static void StopServer()
 		{
-			Program.autoBackupEveryXTimer = null; ;
+			Program.autoBackupEveryXTimer = null;
+			Program.serverConfigs.serverRunning = false;
 
 			string serverCloseMessage = "Server closing in 10 seconds";
 			Program.bedrockServerInputStream.WriteLine($"say {serverCloseMessage}");
 			Console.WriteLine("Server close message sent");
 			Thread.Sleep(10000);
 			Program.bedrockServerInputStream.WriteLine("stop");
+		}
+
+		private static void StopServerAndExit()
+		{
+			StopServer();
+			Console.WriteLine("Server wrapper stopped.");
+			Environment.Exit(0);
 		}
 
 		private static void ShowConfigs(string key)
@@ -161,66 +193,66 @@ Examples:
 				Console.WriteLine($"backupPath = {Program.serverConfigs.backupPath}");
 				Console.WriteLine($"backupLimit = {Program.serverConfigs.backupLimit}");
 			}
-			else if (key == "autoStartServer") Console.WriteLine($"autoStartServer = {Program.serverConfigs.autoStartServer}");
-			else if (key == "utoBackupOnDate") Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.autoBackupOnDate}");
-			else if (key == "autoBackupOnDate_Time") Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.autoBackupOnDate_Time}");
-			else if (key == "autoBackupEveryX") Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.autoBackupEveryX}");
-			else if (key == "autoBackupEveryXDuration") Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.autoBackupEveryXDuration}");
-			else if (key == "autoBackupEveryXTimeUnit") Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.autoBackupEveryXTimeUnit}");
-			else if (key == "worldPath") Console.WriteLine($"worldPath = {Program.serverConfigs.worldPath}");
-			else if (key == "backupPath") Console.WriteLine($"backupPath = {Program.serverConfigs.backupPath}");
-			else if (key == "backupLimit") Console.WriteLine($"backupLimit = {Program.serverConfigs.backupLimit}");
-			else Console.WriteLine($"Error: Unknown config key '{key}'");
+			else if (key == "autostartserver") Console.WriteLine($"autoStartServer = {Program.serverConfigs.autoStartServer}");
+			else if (key == "autobackupondate") Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.autoBackupOnDate}");
+			else if (key == "autobackupondate_time") Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.autoBackupOnDate_Time}");
+			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.autoBackupEveryX}");
+			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.autoBackupEveryXDuration}");
+			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.autoBackupEveryXTimeUnit}");
+			else if (key == "worldpath") Console.WriteLine($"worldPath = {Program.serverConfigs.worldPath}");
+			else if (key == "backuppath") Console.WriteLine($"backupPath = {Program.serverConfigs.backupPath}");
+			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {Program.serverConfigs.backupLimit}");
+			else Console.WriteLine($"Error: Unknown config key");
 		}
 
 		private static void Set(string key, string value)
 		{
-			if (key == "autoStartServer")
+			if (key == "autostartserver")
 			{
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoStartServer = Convert.ToBoolean(value);
 				}
-				else Console.WriteLine($"Error: Available config values for {key} are 'true' and 'false'.");
+				else Console.WriteLine($"Error: Available config values for autoStartServer are 'true' and 'false'.");
 			}
-			else if (key == "autoBackupOnDate")
+			else if (key == "autobackupondate")
 			{
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoStartServer = Convert.ToBoolean(value);
 				}
-				else Console.WriteLine($"Error: Available config values for {key} are 'true' and 'false'.");
+				else Console.WriteLine($"Error: Available config values for autoBackupOnDate are 'true' and 'false'.");
 			}
-			else if (key == "autoBackupOnDate_Time")
+			else if (key == "autobackupondate_time")
 			{
 				if (DateTime.TryParseExact(value, "H:m:s", null, DateTimeStyles.None, out DateTime result))
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupOnDate_Time = value;
 				}
-				else Console.WriteLine($"Error: Value for {key} must be a time value in h:m:s format.");
+				else Console.WriteLine($"Error: Value for autoBackupOnDate_Time must be a time value in h:m:s format.");
 			}
-			else if (key == "autoBackupEveryX")
+			else if (key == "autobackupeveryx")
 			{
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoStartServer = Convert.ToBoolean(value);
 				}
-				else Console.WriteLine($"Error: Available config values for {key} are 'true' and 'false'.");
+				else Console.WriteLine($"Error: Available config values for autoBackupEveryX are 'true' and 'false'.");
 			}
-			else if (key == "autoBackupEveryXDuration")
+			else if (key == "autobackupeveryxduration")
 			{
 				if (int.TryParse(value, out int result))
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXDuration = result;
 				}
-				else Console.WriteLine($"Error: Value for {key} must be a positive integer.");
+				else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
 			}
-			else if (key == "autoBackupEveryXTimeUnit")
+			else if (key == "autobackupeveryxtimeunit")
 			{
 				if (value == "minute")
 				{
@@ -234,9 +266,9 @@ Examples:
 					Program.serverConfigs.autoBackupEveryXTimeUnit = value;
 					Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, 0, Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
 				}
-				else Console.WriteLine($"Error: Available config values for {key} are 'minute' and 'hour'.");
+				else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
 			}
-			else if (key == "worldPath")
+			else if (key == "worldpath")
 			{
 				if (Directory.Exists(value))
 				{
@@ -245,7 +277,7 @@ Examples:
 				}
 				else Console.WriteLine("Error: Path does not exist.");
 			}
-			else if (key == "backupPath")
+			else if (key == "backuppath")
 			{
 				if (Directory.Exists(value))
 				{
@@ -254,14 +286,14 @@ Examples:
 				}
 				else Console.WriteLine("Error: Path does not exist.");
 			}
-			else if (key == "backupLimit")
+			else if (key == "backuplimit")
 			{
 				if (int.TryParse(value, out int result))
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXDuration = result;
 				}
-				else Console.WriteLine($"Error: Value for {key} must be a positive integer.");
+				else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
 			}
 			else ShowSyntaxError();
 		}
@@ -272,6 +304,7 @@ Examples:
 			configuration.Save(ConfigurationSaveMode.Modified);
 			configuration.AppSettings.Settings[key].Value = value;
 			configuration.Save(ConfigurationSaveMode.Modified);
+			Console.WriteLine($"{key} was set to {value}");
 		}
 
 		private static void ShowSyntaxError()
@@ -281,8 +314,16 @@ Examples:
 
 		private static void RunExitProcedure()
 		{
-			if (Program.serverConfigs.serverRunning) StopServer();
-			Environment.Exit(0);
+			if (Program.serverConfigs.serverRunning)
+			{
+				Thread StopServerThread = new Thread(StopServerAndExit);
+				StopServerThread.Start();
+			}
+			else
+			{
+				Console.WriteLine("Server wrapper stopped.");
+				Environment.Exit(0);
+			}
 		}
 	}
 }

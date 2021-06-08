@@ -25,6 +25,8 @@ namespace BedrockServer2000
 
 			LoadConfigs();
 
+			Console.WriteLine("Server wrapper started.");
+
 			consoleInputThread = new Thread(ConsoleInput);
 			consoleInputThread.Start();
 		}
@@ -33,6 +35,7 @@ namespace BedrockServer2000
 		{
 			while (true)
 			{
+				Console.Write("> ");
 				Command.ProcessCommand(Console.ReadLine());
 			}
 		}
