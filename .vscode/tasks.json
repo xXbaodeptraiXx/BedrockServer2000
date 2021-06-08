@@ -21,7 +21,7 @@
 				"publish",
 				"${workspaceFolder}/BedrockServer2000.csproj",
 				"/property:GenerateFullPaths=true",
-				"/consoleloggerparameters:NoSummary"
+				"/consoleloggerparameters:NoSummary",
 			],
 			"problemMatcher": "$msCompile"
 		},
