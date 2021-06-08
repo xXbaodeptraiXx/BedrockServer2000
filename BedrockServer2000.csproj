@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <AppConfig>App.Config</AppConfig>
+    <RuntimeIdentifiers>win10-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
 <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
