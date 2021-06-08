@@ -1,17 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType></OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <AppConfig>App.Config</AppConfig>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+<PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
 <ItemGroup>
   <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
 </ItemGroup>
-
-<ItemGroup Condition="'$(Configuration)' == 'Debug'">
-  <Content Update="foo.txt" CopyToOutputDirectory="PreserveNewest" />
-</ItemGroup>
-
 
 </Project>
