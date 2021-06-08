@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Vn0BL2MQNYchBJpvZ/WMRtoL/20+SxpY1GgNDDUir82o8WNvwmmDoRJDkM1Zb1moC/SGIhYbKIAYQvjf77dhUA==",
+  "dgSpecHash": "2cNZNC2KZ3Y7ATQ6mTaKLQxn3Y+WsMQXnphd6ySY2PszrhiU2hcCdkc1VWlHefOaVpwArq8h8jm3+7SsD8o9Vg==",
   "success": true,
   "projectFilePath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
   "expectedPackageFiles": [
@@ -14,11 +14,8 @@
     "C:\\Users\\lamgi\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\lamgi\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
     "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.1.15\\microsoft.netcore.app.runtime.win-x64.3.1.15.nupkg.sha512",
-    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\3.1.15\\microsoft.netcore.app.runtime.linux-x64.3.1.15.nupkg.sha512",
     "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.1.15\\microsoft.windowsdesktop.app.runtime.win-x64.3.1.15.nupkg.sha512",
-    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.15\\microsoft.aspnetcore.app.runtime.win-x64.3.1.15.nupkg.sha512",
-    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\3.1.15\\microsoft.aspnetcore.app.runtime.linux-x64.3.1.15.nupkg.sha512",
-    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\3.1.15\\microsoft.netcore.app.host.linux-x64.3.1.15.nupkg.sha512"
+    "C:\\Users\\lamgi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.1.15\\microsoft.aspnetcore.app.runtime.win-x64.3.1.15.nupkg.sha512"
   ],
   "logs": []
 }

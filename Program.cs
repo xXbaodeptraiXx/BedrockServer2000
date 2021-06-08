@@ -29,19 +29,22 @@ namespace BedrockServer2000
 
 			consoleInputThread = new Thread(ConsoleInput);
 			consoleInputThread.Start();
+
+			if (serverConfigs.autoStartServer) Command.ProcessCommand("start");
 		}
 
 		public static void ConsoleInput()
 		{
 			while (true)
 			{
-				Console.Write("> ");
 				Command.ProcessCommand(Console.ReadLine());
 			}
 		}
 
 		public static void LoadConfigs()
 		{
+			serverConfigs.serverExecutableExists = File.Exists("bedrock_server.exe");
+
 			if (ConfigurationManager.AppSettings["autoStartServer"].ToString() != "true" && ConfigurationManager.AppSettings["autoStartServer"].ToString() != "false")
 			{
 				Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -142,7 +145,6 @@ namespace BedrockServer2000
 			else serverConfigs.autoBackupEveryXTimeUnit = ConfigurationManager.AppSettings["autoBackupEveryXTimeUnit"].ToString();
 
 			serverConfigs.backupPath = ConfigurationManager.AppSettings["backupPath"].ToString();
-			serverConfigs.serverExecutableExists = File.Exists("bedrock_server");
 		}
 	}
 }
