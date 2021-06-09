@@ -15,8 +15,6 @@ namespace BedrockServer2000
 			string formattedCommand = command.Trim().ToLower();
 
 			if (formattedCommand == "commands") ShowHelp("");
-			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1 && formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
-			else if (formattedCommand == "backup") Backup.PerformBackup(Program.serverConfigs);
 			else if (formattedCommand == "start") StartServer();
 			else if (formattedCommand == "stop")
 			{
@@ -27,15 +25,36 @@ namespace BedrockServer2000
 				}
 				else Console.WriteLine("Server is not currently running.");
 			}
+			else if (formattedCommand == "backup" && !Program.serverConfigs.backupRunning)
+			{
+				// check if the configs are correct, cancel the backup if found any error
+				if (!Directory.Exists(Program.serverConfigs.worldPath))
+				{
+					Console.WriteLine($"World path incorrect, can't perform backup.");
+				}
+				if (!Directory.Exists(Program.serverConfigs.backupPath))
+				{
+					Console.WriteLine($"Backup path incorrect, can't perform backup.");
+				}
+				if (Program.serverConfigs.backupLimit <= 0)
+				{
+					Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
+				}
+
+				if (!Directory.Exists(Program.serverConfigs.worldPath) || !Directory.Exists(Program.serverConfigs.backupPath) || Program.serverConfigs.backupLimit <= 0) return;
+
+				Backup.PerformBackup(null);
+			}
 			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.LoadConfigs();
 			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
 			{
-				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "say")
+				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
+				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "say")
 				{
 					if (Program.serverConfigs.serverRunning)
 					{
-						Program.bedrockServerInputStream.WriteLine("say" + command.Trim().Remove(0, 4));
+						Program.bedrockServerInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
 					}
 					else Console.WriteLine("Server is not currently running.");
@@ -142,9 +161,9 @@ Examples:
 			Program.bedrockServerProcess.StartInfo.RedirectStandardError = true;
 
 			Program.bedrockServerProcess.EnableRaisingEvents = true;
-			Program.bedrockServerProcess.Exited += new EventHandler(Events.bedrockServerProcess_Exited);
-			Program.bedrockServerProcess.ErrorDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.bedrockServerProcess_ErrorDataReceived);
-			Program.bedrockServerProcess.OutputDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.bedrockServerProcess_OutputDataReceived);
+			Program.bedrockServerProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
+			Program.bedrockServerProcess.ErrorDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.BedrockServerProcess_ErrorDataReceived);
+			Program.bedrockServerProcess.OutputDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
 
 			Program.bedrockServerProcess.Start();
 
@@ -157,7 +176,7 @@ Examples:
 				int autoBackupEveryXTimerInterval = 0;
 				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
 				else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
-				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, 0, autoBackupEveryXTimerInterval);
+				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 			}
 		}
 
@@ -176,6 +195,7 @@ Examples:
 		private static void StopServerAndExit()
 		{
 			StopServer();
+			Thread.Sleep(5000);
 			Console.WriteLine("Server wrapper stopped.");
 			Environment.Exit(0);
 		}
@@ -259,13 +279,13 @@ Examples:
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXTimeUnit = value;
-					Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, 0, Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
 				}
 				else if (value == "hour")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXTimeUnit = value;
-					Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, 0, Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
 			}
@@ -283,7 +303,7 @@ Examples:
 				if (Directory.Exists(value))
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.worldPath = value;
+					Program.serverConfigs.backupPath = value;
 				}
 				else Console.WriteLine("Error: Path does not exist.");
 			}

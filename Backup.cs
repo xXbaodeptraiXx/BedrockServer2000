@@ -25,59 +25,47 @@ namespace BedrockServer2000
 		{
 			Program.serverConfigs.backupRunning = true;
 
-			// check if the configs are correct, cancel the backup if found any error
-			if (!Directory.Exists(((ServerConfigs)args).worldPath))
-			{
-				Console.WriteLine($"World path incorrect, can't perform backup.");
-				return;
-			}
-			if (!Directory.Exists(((ServerConfigs)args).backupPath))
-			{
-				Console.WriteLine($"Backup path incorrect, can't perform backup.");
-				return;
-			}
-			if (((ServerConfigs)args).backupLimit <= 0)
-			{
-				Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
-				return;
-			}
-
 			if (Program.serverConfigs.serverRunning)
 			{
 				Program.bedrockServerInputStream.WriteLine("say Performing backup");
 				Console.WriteLine("Telling players that the server is running a backup.");
-			}
-
-			if (Program.serverConfigs.serverRunning)
-			{
 				Program.bedrockServerInputStream.WriteLine("save hold");
 				Thread.Sleep(5000);
 			}
 
-			Console.WriteLine("Starting Backup");
+			Console.WriteLine("Starting backup");
 
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
-			int currentNumberOfBackups = Directory.GetDirectories(((ServerConfigs)args).backupPath).Length;
-			while (currentNumberOfBackups >= ((ServerConfigs)args).backupLimit)
+			int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
+			while (currentNumberOfBackups >= Program.serverConfigs.backupLimit)
 			{
-				string[] backups = Directory.GetDirectories(((ServerConfigs)args).backupPath);
+				string[] backups = Directory.GetDirectories(Program.serverConfigs.backupPath);
 				Directory.Delete(backups[0], true);
 				Console.WriteLine($"Backup deleted: {backups[0]}");
-				currentNumberOfBackups = Directory.GetDirectories(((ServerConfigs)args).backupPath).Length;
+				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
 			}
 			DateTime now = DateTime.Now;
 			string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
-			CopyFilesRecursively(((ServerConfigs)args).worldPath, ((ServerConfigs)args).backupPath + "\\" + newBackupName);
+			Console.WriteLine("Copying backup...");
+			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "\\" + newBackupName);
 			Thread.Sleep(10000);
 
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
 
-			Console.WriteLine($"Backup saved: {((ServerConfigs)args).backupPath + "\\" + newBackupName}");
+			Console.WriteLine($"Backup saved: {Program.serverConfigs.backupPath + "\\" + newBackupName}");
 
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;
+
+			if (Program.serverConfigs.autoBackupEveryX == true)
+			{
+				int autoBackupEveryXTimerInterval = 0;
+				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+				else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
+			}
 		}
 	}
 }

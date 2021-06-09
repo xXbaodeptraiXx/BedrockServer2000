@@ -8,13 +8,15 @@
 			"name": ".NET Core Launch (console)",
 			"type": "coreclr",
 			"request": "launch",
-			"preLaunchTask": "build",
+			"preLaunchTask": "publish",
 			// If you have changed target frameworks, make sure to update the program path.
-			"program": "${workspaceFolder}/bin/Debug/net5.0/BedrockServer2000.dll",
-			"args": [],
+			"program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/win-x64/BedrockServer2000.dll",
+			"args": [
+				"-c Debug"
+			],
 			"cwd": "${workspaceFolder}",
 			// For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-			"console": "internalConsole",
+			"console": "integratedTerminal",
 			"stopAtEntry": false
 		},
 		{
