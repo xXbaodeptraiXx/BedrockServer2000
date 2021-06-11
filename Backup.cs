@@ -51,9 +51,7 @@ namespace BedrockServer2000
 			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "/" + newBackupName);
 
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
-
 			Console.WriteLine($"Backup saved: {Program.serverConfigs.backupPath + "/" + newBackupName}");
-
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;

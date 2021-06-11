@@ -205,7 +205,7 @@ Examples:
 			Program.bedrockServerProcess.BeginOutputReadLine();
 			Program.bedrockServerProcess.BeginErrorReadLine();
 
-			if (Program.serverConfigs.autoBackupEveryX == true)
+			if (Program.serverConfigs.autoBackupEveryX)
 			{
 				int autoBackupEveryXTimerInterval = 0;
 				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
@@ -217,7 +217,7 @@ Examples:
 		private static void StopServer()
 		{
 			Program.serverConfigs.serverRunning = false;
-			Program.autoBackupEveryXTimer = null;
+			if (Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
 			const string stopMessage = "Server closing in 10 seconds";
 
@@ -295,7 +295,16 @@ Examples:
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.autoStartServer = Convert.ToBoolean(value);
+					Program.serverConfigs.autoBackupEveryX = Convert.ToBoolean(value);
+
+					if (value == "false") Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
+					if (Program.serverConfigs.serverRunning && value == "true")
+					{
+						int autoBackupEveryXTimerInterval = 0;
+						if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+						else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
+						Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
+					}
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryX are 'true' and 'false'.");
 			}
