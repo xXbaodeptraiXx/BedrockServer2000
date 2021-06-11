@@ -6,7 +6,7 @@ _Some part of the source code were taken from my other repository (<https://gith
 
 ## Construction in progress
 
-This software is still in development process and hasn't been tested so don't expect it to work.
+This software is still in development process and some features haven't been implemented so don't expect it to work perfectly.
 
 ## Screenshots
 
