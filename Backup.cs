@@ -79,12 +79,32 @@ namespace BedrockServer2000
 
 			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
 
+			string[] backupLIst = Directory.GetDirectories(Program.serverConfigs.backupPath);
+
+			// sort backup list by date
+			while (true)
+			{
+				bool sortPerformed = false;
+				for (int i = 0, i2 = i + 1; i < backupLIst.Length - 1 && i2 < backupLIst.Length; i += 1, i2 += 1)
+				{
+					if (DateTime.Compare(Directory.GetCreationTime(backupLIst[i]), Directory.GetCreationTime(backupLIst[i2])) > 0)
+					{
+						string cache = backupLIst[i2];
+						backupLIst[i2] = backupLIst[i];
+						backupLIst[i] = cache;
+						sortPerformed = true;
+					}
+				}
+				if (!sortPerformed) break;
+			}
+
 			Console.WriteLine($"There are {backupsSaved} backups saved, which one would you like to load? (By continuing, you agree to overwrite the existing world and replace it with a chosen backup)");
 			Console.WriteLine("0: Cancel");
-			for (int i = 0; i < Directory.GetDirectories(Program.serverConfigs.backupPath).Length; i += 1)
+			for (int i = 0; i < backupLIst.Length; i += 1)
 			{
-				Console.WriteLine($"{i + 1}: {Directory.GetDirectories(Program.serverConfigs.backupPath)[i]}");
+				Console.WriteLine($"{i + 1}: {backupLIst[i]}");
 			}
+
 
 			if (!int.TryParse(Console.ReadLine(), out int choice))
 			{
