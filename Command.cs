@@ -25,23 +25,45 @@ namespace BedrockServer2000
 				}
 				else Console.WriteLine("Server is not currently running.");
 			}
+			else if (formattedCommand == "load")
+			{
+				// check if the configs are correct, cancel the backup if found any error
+				if (!Directory.Exists(Program.serverConfigs.worldPath))
+				{
+					Console.WriteLine($"World path incorrect");
+					return;
+				}
+				if (!Directory.Exists(Program.serverConfigs.backupPath))
+				{
+					Console.WriteLine($"Backup path incorrect");
+					return;
+				}
+				if (Directory.Exists(Program.serverConfigs.backupPath) && Directory.GetDirectories(Program.serverConfigs.backupPath).Length < 1)
+				{
+					Console.WriteLine($"There are no backups to load");
+					return;
+				}
+
+				Backup.LoadBackup();
+			}
 			else if (formattedCommand == "backup" && !Program.serverConfigs.backupRunning)
 			{
 				// check if the configs are correct, cancel the backup if found any error
 				if (!Directory.Exists(Program.serverConfigs.worldPath))
 				{
 					Console.WriteLine($"World path incorrect, can't perform backup.");
+					return;
 				}
 				if (!Directory.Exists(Program.serverConfigs.backupPath))
 				{
 					Console.WriteLine($"Backup path incorrect, can't perform backup.");
+					return;
 				}
 				if (Program.serverConfigs.backupLimit <= 0)
 				{
 					Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
+					return;
 				}
-
-				if (!Directory.Exists(Program.serverConfigs.worldPath) || !Directory.Exists(Program.serverConfigs.backupPath) || Program.serverConfigs.backupLimit <= 0) return;
 
 				Backup.PerformBackup(null);
 			}
@@ -63,12 +85,20 @@ namespace BedrockServer2000
 				{
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "configs") ShowConfigs(formattedCommand.Remove(0, 8));
 					else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], "");
-					else ShowSyntaxError();
+					else
+					{
+						if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+						else Console.WriteLine("Unknown command.");
+					}
 				}
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 3)
 				{
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
-					else ShowSyntaxError();
+					else
+					{
+						if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+						else Console.WriteLine("Unknown command.");
+					}
 				}
 				else
 				{
@@ -85,7 +115,7 @@ namespace BedrockServer2000
 			}
 		}
 
-		private static void ShowHelp(string args)
+		public static void ShowHelp(string args)
 		{
 			if (args == "")
 			{
@@ -94,6 +124,7 @@ namespace BedrockServer2000
 - start : start the server
 - stop : stop the server
 - backup : backup the world file (available even when the server is not running)
+- load : load a saved backup
 - ^configs : show server wrapper configs
 - reload : reload the configs from the configuration file
 - ^set [config_key] [config_value] : change server wrapper configs
@@ -166,7 +197,6 @@ Examples:
 
 			Program.bedrockServerProcess.EnableRaisingEvents = true;
 			Program.bedrockServerProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
-			Program.bedrockServerProcess.ErrorDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.BedrockServerProcess_ErrorDataReceived);
 			Program.bedrockServerProcess.OutputDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
 
 			Program.bedrockServerProcess.Start();
@@ -186,12 +216,13 @@ Examples:
 
 		private static void StopServer()
 		{
-			Program.autoBackupEveryXTimer = null;
 			Program.serverConfigs.serverRunning = false;
+			Program.autoBackupEveryXTimer = null;
 
-			string serverCloseMessage = "Server closing in 10 seconds";
-			Program.bedrockServerInputStream.WriteLine($"say {serverCloseMessage}");
-			Console.WriteLine("Server close message sent");
+			const string stopMessage = "Server closing in 10 seconds";
+
+			Program.bedrockServerInputStream.WriteLine($"say {stopMessage}");
+			Console.WriteLine("Server stop message sent.");
 			Thread.Sleep(10000);
 			Program.bedrockServerInputStream.WriteLine("stop");
 		}

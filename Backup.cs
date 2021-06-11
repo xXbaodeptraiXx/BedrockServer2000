@@ -66,5 +66,54 @@ namespace BedrockServer2000
 				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 			}
 		}
+
+		public static void LoadBackup()
+		{
+			bool serverWasRUnningBefore = Program.serverConfigs.serverRunning;
+			if (serverWasRUnningBefore)
+			{
+				Program.bedrockServerInputStream.WriteLine("say The server is about to close to load a backup.");
+				Command.ProcessCommand("stop");
+				Thread.Sleep(15000);
+			}
+
+			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
+
+			Console.WriteLine($"There are {backupsSaved} backups saved, which one would you like to load? (By continuing, you agree to overwrite the existing world and replace it with a chosen backup)");
+			Console.WriteLine("0: Cancel");
+			for (int i = 0; i < Directory.GetDirectories(Program.serverConfigs.backupPath).Length; i += 1)
+			{
+				Console.WriteLine($"{i + 1}: {Directory.GetDirectories(Program.serverConfigs.backupPath)[i]}");
+			}
+
+			if (!int.TryParse(Console.ReadLine(), out int choice))
+			{
+				Console.WriteLine("Invalid input, load canceled.");
+				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				return;
+			}
+
+			if (choice > backupsSaved)
+			{
+				Console.WriteLine("Invalid input, load canceled.");
+				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				return;
+			}
+
+			if (choice == 0)
+			{
+				Console.WriteLine("Load canceled.");
+				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				return;
+			}
+
+			Directory.Delete(Program.serverConfigs.worldPath, true);
+			Console.WriteLine("World folder deleted.");
+			Console.WriteLine($"Copying \"{Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1]}\"");
+			CopyFilesRecursively(Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1], Program.serverConfigs.worldPath);
+			Console.WriteLine($"Backup loaded \"{Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1]}\"");
+
+			if (serverWasRUnningBefore) Command.ProcessCommand("start");
+		}
 	}
 }

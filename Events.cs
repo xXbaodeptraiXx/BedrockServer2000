@@ -11,11 +11,6 @@ namespace BedrockServer2000
 			Program.serverConfigs.serverRunning = false;
 		}
 
-		public static void BedrockServerProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-		{
-			Console.WriteLine(e.Data);
-		}
-
 		public static void BedrockServerProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
 		{
 			Console.WriteLine(e.Data);
