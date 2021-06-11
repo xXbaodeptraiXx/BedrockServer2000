@@ -26,7 +26,6 @@ This software is still in development process and some features haven't been imp
 
 ## Known bugs
 
-- autoBackupEveryX still runs when the server - is off/stopped
 - App.Config file is not found or embedded - into the program when do `dotnet publish`
 - Backups in the backup list when to the `load` command is not sorted by creation date
 - 'reload' doesn't show the updated config and need to restart the program after using the `set` command to fully update the configs

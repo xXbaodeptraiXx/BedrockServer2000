@@ -55,14 +55,6 @@ namespace BedrockServer2000
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;
-
-			if (Program.serverConfigs.autoBackupEveryX == true)
-			{
-				int autoBackupEveryXTimerInterval = 0;
-				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
-				else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
-				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
-			}
 		}
 
 		public static void LoadBackup()
