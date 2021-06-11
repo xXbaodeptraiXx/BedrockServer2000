@@ -80,7 +80,7 @@ namespace BedrockServer2000
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else
 			{
-				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(Command);
+				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
 				else Console.WriteLine("Unknown command.");
 			}
 		}
