@@ -70,13 +70,17 @@ namespace BedrockServer2000
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
 					else ShowSyntaxError();
 				}
-				else ShowSyntaxError();
+				else
+				{
+					if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+					else Console.WriteLine("Unknown command.");
+				}
 			}
 			else if (formattedCommand == "clear") Console.Clear();
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else
 			{
-				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(formattedCommand);
+				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(Command);
 				else Console.WriteLine("Unknown command.");
 			}
 		}
