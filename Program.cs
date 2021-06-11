@@ -21,7 +21,7 @@ namespace BedrockServer2000
 		static void Main()
 		{
 			// debug line
-			Directory.SetCurrentDirectory("C:\\bedrock-server");
+			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
 			serverConfigs.serverRunning = false;
 			serverConfigs.backupRunning = false;
@@ -52,7 +52,7 @@ namespace BedrockServer2000
 			{
 				Console.WriteLine("Loading configs");
 
-				serverConfigs.serverExecutableExists = File.Exists("bedrock_server.exe");
+				serverConfigs.serverExecutableExists = File.Exists("bedrock_server");
 				Console.WriteLine($"serverExecutableExists: {serverConfigs.serverExecutableExists}");
 
 				if (ConfigurationManager.AppSettings["autoStartServer"] != "true" && ConfigurationManager.AppSettings["autoStartServer"] != "false")

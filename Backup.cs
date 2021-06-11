@@ -49,7 +49,6 @@ namespace BedrockServer2000
 			string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
 			Console.WriteLine("Copying backup...");
 			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "\\" + newBackupName);
-			Thread.Sleep(10000);
 
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
 

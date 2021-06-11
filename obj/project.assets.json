@@ -149,7 +149,7 @@
         }
       }
     },
-    ".NETCoreApp,Version=v3.1/win-x64": {
+    ".NETCoreApp,Version=v3.1/linux-x64": {
       "Microsoft.NETCore.Platforms/5.0.0": {
         "type": "package",
         "compile": {
@@ -168,7 +168,7 @@
           "ref/netstandard2.0/_._": {}
         },
         "runtime": {
-          "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll": {}
+          "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll": {}
         }
       },
       "System.Configuration.ConfigurationManager/5.0.0": {
@@ -193,7 +193,7 @@
           "ref/netcoreapp3.0/System.Drawing.Common.dll": {}
         },
         "runtime": {
-          "runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll": {}
+          "runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll": {}
         }
       },
       "System.Security.AccessControl/5.0.0": {
@@ -206,7 +206,7 @@
           "ref/netstandard2.0/System.Security.AccessControl.dll": {}
         },
         "runtime": {
-          "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.dll": {}
+          "lib/netstandard2.0/System.Security.AccessControl.dll": {}
         }
       },
       "System.Security.Cryptography.ProtectedData/5.0.0": {
@@ -215,7 +215,7 @@
           "ref/netstandard2.0/_._": {}
         },
         "runtime": {
-          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {}
+          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {}
         }
       },
       "System.Security.Permissions/5.0.0": {
@@ -237,7 +237,7 @@
           "ref/netcoreapp3.0/System.Security.Principal.Windows.dll": {}
         },
         "runtime": {
-          "runtimes/win/lib/netcoreapp2.1/System.Security.Principal.Windows.dll": {}
+          "runtimes/unix/lib/netcoreapp2.1/System.Security.Principal.Windows.dll": {}
         }
       },
       "System.Windows.Extensions/5.0.0": {
@@ -249,7 +249,7 @@
           "ref/netcoreapp3.0/System.Windows.Extensions.dll": {}
         },
         "runtime": {
-          "runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll": {}
+          "lib/netcoreapp3.0/System.Windows.Extensions.dll": {}
         }
       }
     }
@@ -576,19 +576,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lamgi\\.nuget\\packages\\": {}
+    "/home/bao/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
+      "projectUniqueName": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
       "projectName": "BedrockServer2000",
-      "projectPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
-      "packagesPath": "C:\\Users\\lamgi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\obj\\",
+      "projectPath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
+      "packagesPath": "/home/bao/.nuget/packages/",
+      "outputPath": "/home/bao/Documents/GitHub/BedrockServer2000/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\lamgi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/bao/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -627,16 +627,12 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-            "version": "[3.1.15, 3.1.15]"
+            "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+            "version": "[3.1.16, 3.1.16]"
           },
           {
-            "name": "Microsoft.NETCore.App.Runtime.win-x64",
-            "version": "[3.1.15, 3.1.15]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-            "version": "[3.1.15, 3.1.15]"
+            "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+            "version": "[3.1.16, 3.1.16]"
           }
         ],
         "frameworkReferences": {
@@ -644,11 +640,11 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.409\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.410/RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
-      "win-x64": {
+      "linux-x64": {
         "#import": []
       }
     }

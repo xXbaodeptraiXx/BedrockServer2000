@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj": {}
+    "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj": {
+    "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
+        "projectUniqueName": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
         "projectName": "BedrockServer2000",
-        "projectPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\BedrockServer2000.csproj",
-        "packagesPath": "C:\\Users\\lamgi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lamgi\\Documents\\GitHub\\BedrockServer2000\\obj\\",
+        "projectPath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
+        "packagesPath": "/home/bao/.nuget/packages/",
+        "outputPath": "/home/bao/Documents/GitHub/BedrockServer2000/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lamgi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/bao/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -53,16 +53,12 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[3.1.15, 3.1.15]"
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[3.1.16, 3.1.16]"
             },
             {
-              "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[3.1.15, 3.1.15]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[3.1.15, 3.1.15]"
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[3.1.16, 3.1.16]"
             }
           ],
           "frameworkReferences": {
@@ -70,11 +66,11 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.409\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.410/RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
-        "win-x64": {
+        "linux-x64": {
           "#import": []
         }
       }

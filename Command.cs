@@ -151,7 +151,7 @@ Examples:
 			Program.serverConfigs.serverRunning = true;
 
 			Program.bedrockServerProcess = new System.Diagnostics.Process();
-			Program.bedrockServerProcess.StartInfo.FileName = "bedrock_server.exe";
+			Program.bedrockServerProcess.StartInfo.FileName = "bedrock_server";
 			Console.WriteLine("Using this terminal: " + Program.bedrockServerProcess.StartInfo.FileName);
 
 			Program.bedrockServerProcess.StartInfo.UseShellExecute = false;
