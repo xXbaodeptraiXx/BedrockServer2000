@@ -14,17 +14,17 @@ This software is still in development process and some features haven't been imp
 
 - Auto start server
 - Server closing message to let players know that the server will close in 10 seconds
-- Automated backup saving (has bugs)
-- Automated backup loading (has bugs)
-- Configuration file (has bugs)
+- Automated backup saving (has minor bugs)
+- Automated backup loading (has minor bugs)
+- Configuration file (has major bugs)
 
 ### Unimplemented features
 
--
+- Automatic backup on DateTIme
+- Logging
+- Chat input and logging (depends on server software, which hasn't implement that)
 
 ## Known bugs
-
-These are some bugs I ran into while testing the server wrapper.
 
 - autoBackupEveryX still runs when the server - is off/stopped
 - App.Config file is not found or embedded - into the program when do `dotnet publish`
