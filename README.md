@@ -14,9 +14,9 @@ This software is still in development process and some features haven't been imp
 
 - Auto start server
 - Server closing message to let players know that the server will close in 10 seconds
-- Automated backup saving (has minor bugs)
-- Automated backup loading (has minor bugs)
-- Configuration file (has major bugs)
+- Automated backup saving **(has minor bugs)**
+- Automated backup loading **(has minor bugs)**
+- Configuration file **(has major bugs)**
 
 ### Unimplemented features
 
