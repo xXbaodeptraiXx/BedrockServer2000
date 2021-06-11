@@ -44,7 +44,10 @@ namespace BedrockServer2000
 					return;
 				}
 
-				Backup.LoadBackup();
+				Program.serverConfigs.serverWasRunningBefore = Program.serverConfigs.serverRunning;
+				Program.serverConfigs.loadRequest = Program.serverConfigs.serverRunning;
+				if (Program.serverConfigs.serverRunning) StopServer();
+				else Backup.LoadBackup(false);
 			}
 			else if (formattedCommand == "backup" && !Program.serverConfigs.backupRunning)
 			{
@@ -68,7 +71,7 @@ namespace BedrockServer2000
 				Backup.PerformBackup(null);
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
-			else if (formattedCommand == "reload") Program.LoadConfigs();
+			else if (formattedCommand == "reload") Program.serverConfigs.LoadConfigs();
 			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
 			{
 				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
@@ -227,14 +230,6 @@ Examples:
 			Program.bedrockServerInputStream.WriteLine("stop");
 		}
 
-		private static void StopServerAndExit()
-		{
-			StopServer();
-			Thread.Sleep(5000);
-			Console.WriteLine("Server wrapper stopped.");
-			Environment.Exit(0);
-		}
-
 		private static void ShowConfigs(string key)
 		{
 			if (key == "")
@@ -381,7 +376,8 @@ Examples:
 		{
 			if (Program.serverConfigs.serverRunning)
 			{
-				Thread StopServerThread = new Thread(StopServerAndExit);
+				Program.serverConfigs.exitRequest = true;
+				Thread StopServerThread = new Thread(StopServer);
 				StopServerThread.Start();
 			}
 			else

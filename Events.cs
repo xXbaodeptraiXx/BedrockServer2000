@@ -9,6 +9,17 @@ namespace BedrockServer2000
 		{
 			Console.WriteLine("Server stopped.");
 			Program.serverConfigs.serverRunning = false;
+
+			if (Program.serverConfigs.loadRequest)
+			{
+				Backup.LoadBackup(false);
+				Program.serverConfigs.loadRequest = false;
+			}
+			else if (Program.serverConfigs.exitRequest)
+			{
+				Console.WriteLine("Server wrapper stopped.");
+				Environment.Exit(0);
+			}
 		}
 
 		public static void BedrockServerProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)

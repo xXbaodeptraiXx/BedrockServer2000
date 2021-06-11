@@ -57,14 +57,13 @@ namespace BedrockServer2000
 			Program.serverConfigs.backupRunning = false;
 		}
 
-		public static void LoadBackup()
+		public static void LoadBackup(bool serverRunning)
 		{
-			bool serverWasRUnningBefore = Program.serverConfigs.serverRunning;
-			if (serverWasRUnningBefore)
+			if (serverRunning)
 			{
 				Program.bedrockServerInputStream.WriteLine("say The server is about to close to load a backup.");
 				Command.ProcessCommand("stop");
-				Thread.Sleep(15000);
+				return;
 			}
 
 			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
@@ -99,21 +98,21 @@ namespace BedrockServer2000
 			if (!int.TryParse(Console.ReadLine(), out int choice))
 			{
 				Console.WriteLine("Invalid input, load canceled.");
-				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
 			if (choice > backupsSaved)
 			{
 				Console.WriteLine("Invalid input, load canceled.");
-				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
 			if (choice == 0)
 			{
 				Console.WriteLine("Load canceled.");
-				if (serverWasRUnningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
@@ -123,7 +122,7 @@ namespace BedrockServer2000
 			CopyFilesRecursively(Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1], Program.serverConfigs.worldPath);
 			Console.WriteLine($"Backup loaded \"{Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1]}\"");
 
-			if (serverWasRUnningBefore) Command.ProcessCommand("start");
+			if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 		}
 	}
 }
