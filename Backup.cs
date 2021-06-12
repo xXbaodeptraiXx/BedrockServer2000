@@ -28,12 +28,12 @@ namespace BedrockServer2000
 			if (Program.serverConfigs.serverRunning)
 			{
 				Program.bedrockServerInputStream.WriteLine("say Performing backup");
-				Console.WriteLine("Telling players that the server is running a backup.");
+				Console.WriteLine($"{Timing.LogDateTime()} Telling players that the server is running a backup.");
 				Program.bedrockServerInputStream.WriteLine("save hold");
 				Thread.Sleep(5000);
 			}
 
-			Console.WriteLine("Starting backup");
+			Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
 
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
@@ -42,16 +42,16 @@ namespace BedrockServer2000
 			{
 				string[] backups = Directory.GetDirectories(Program.serverConfigs.backupPath);
 				Directory.Delete(backups[0], true);
-				Console.WriteLine($"Backup deleted: {backups[0]}");
+				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
 				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
 			}
 			DateTime now = DateTime.Now;
 			string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
-			Console.WriteLine("Copying backup...");
+			Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
 			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "/" + newBackupName);
 
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
-			Console.WriteLine($"Backup saved: {Program.serverConfigs.backupPath + "/" + newBackupName}");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.backupPath + "/" + newBackupName}");
 			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;
@@ -115,10 +115,10 @@ namespace BedrockServer2000
 			}
 
 			Directory.Delete(Program.serverConfigs.worldPath, true);
-			Console.WriteLine("World folder deleted.");
-			Console.WriteLine($"Copying \"{backupLIst[choice - 1]}\"");
+			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
+			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupLIst[choice - 1]}\"");
 			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.worldPath);
-			Console.WriteLine($"Backup loaded \"{backupLIst[choice - 1]}\"");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupLIst[choice - 1]}\"");
 
 			if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 		}

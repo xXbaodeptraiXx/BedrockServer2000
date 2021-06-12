@@ -31,7 +31,7 @@ namespace BedrockServer2000
 
 			serverConfigs.LoadConfigs();
 
-			Console.WriteLine("Server wrapper started.");
+			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started.");
 
 			if (serverConfigs.autoStartServer) Command.ProcessCommand("start");
 

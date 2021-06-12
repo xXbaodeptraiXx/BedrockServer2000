@@ -31,7 +31,7 @@ namespace BedrockServer2000
 		{
 			try
 			{
-				Console.WriteLine("Loading configs");
+				Console.WriteLine($"{Timing.LogDateTime()} Loading configs");
 
 				serverExecutableExists = File.Exists("bedrock_server");
 				Console.WriteLine($"serverExecutableExists: {serverExecutableExists}");

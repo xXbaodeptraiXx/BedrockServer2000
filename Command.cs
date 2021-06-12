@@ -192,9 +192,11 @@ Examples:
 
 			Program.serverConfigs.serverRunning = true;
 
+			Console.WriteLine($"{Timing.LogDateTime()} Starting server");
+
 			Program.bedrockServerProcess = new System.Diagnostics.Process();
 			Program.bedrockServerProcess.StartInfo.FileName = "bedrock_server";
-			Console.WriteLine("Using this terminal: " + Program.bedrockServerProcess.StartInfo.FileName);
+			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.bedrockServerProcess.StartInfo.FileName);
 
 			Program.bedrockServerProcess.StartInfo.UseShellExecute = false;
 			Program.bedrockServerProcess.StartInfo.CreateNoWindow = true;
@@ -229,7 +231,7 @@ Examples:
 			const string stopMessage = "Server closing in 10 seconds";
 
 			Program.bedrockServerInputStream.WriteLine($"say {stopMessage}");
-			Console.WriteLine("Server stop message sent.");
+			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
 			Thread.Sleep(10000);
 			Program.bedrockServerInputStream.WriteLine("stop");
 		}
@@ -368,7 +370,7 @@ Examples:
 			configuration.Save(ConfigurationSaveMode.Modified);
 			configuration.AppSettings.Settings[key].Value = value;
 			configuration.Save(ConfigurationSaveMode.Modified);
-			Console.WriteLine($"{key} was set to {value}");
+			Console.WriteLine($"{Timing.LogDateTime()} {key} was set to {value}");
 		}
 
 		private static void ShowSyntaxError()
@@ -386,7 +388,7 @@ Examples:
 			}
 			else
 			{
-				Console.WriteLine("Server wrapper stopped.");
+				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
 				Environment.Exit(0);
 			}
 		}
