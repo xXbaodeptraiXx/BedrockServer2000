@@ -9,10 +9,10 @@
   </PropertyGroup>
 
 <ItemGroup>
-    <Content Update="*.config">
+    <None Update="*.scf">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
 </ItemGroup>
 
 <ItemGroup>

@@ -7,7 +7,7 @@ namespace BedrockServer2000
 {
 	class Program
 	{
-		public static ServerConfigs serverConfigs = new ServerConfigs();
+		public static ServerConfig serverConfigs = new ServerConfig();
 
 		public static Process bedrockServerProcess;
 		public static StreamWriter bedrockServerInputStream;
@@ -19,7 +19,7 @@ namespace BedrockServer2000
 		static void Main()
 		{
 			// debug line
-			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+			//Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
 			serverConfigs.serverRunning = false;
 			serverConfigs.backupRunning = false;
