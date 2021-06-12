@@ -46,8 +46,12 @@ namespace BedrockServer2000
 
 				Program.serverConfigs.serverWasRunningBefore = Program.serverConfigs.serverRunning;
 				Program.serverConfigs.loadRequest = Program.serverConfigs.serverRunning;
-				if (Program.serverConfigs.serverRunning) StopServer();
-				else Backup.LoadBackup(false);
+				if (Program.serverConfigs.serverRunning)
+				{
+					Program.bedrockServerInputStream.WriteLine("say The server is about to close to load a backup.");
+					StopServer();
+				}
+				else Backup.LoadBackup();
 			}
 			else if (formattedCommand == "backup" && !Program.serverConfigs.backupRunning)
 			{

@@ -57,15 +57,8 @@ namespace BedrockServer2000
 			Program.serverConfigs.backupRunning = false;
 		}
 
-		public static void LoadBackup(bool serverRunning)
+		public static void LoadBackup()
 		{
-			if (serverRunning)
-			{
-				Program.bedrockServerInputStream.WriteLine("say The server is about to close to load a backup.");
-				Command.ProcessCommand("stop");
-				return;
-			}
-
 			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
 
 			string[] backupLIst = Directory.GetDirectories(Program.serverConfigs.backupPath);
@@ -88,39 +81,44 @@ namespace BedrockServer2000
 			}
 
 			Console.WriteLine($"There are {backupsSaved} backups saved, which one would you like to load? (By continuing, you agree to overwrite the existing world and replace it with a chosen backup)");
-			Console.WriteLine("0: Cancel");
 			for (int i = 0; i < backupLIst.Length; i += 1)
 			{
 				Console.WriteLine($"{i + 1}: {backupLIst[i]}");
 			}
+			Console.WriteLine("r: Most recent backup");
+			Console.WriteLine("c: Cancel");
 
+			string input = Console.ReadLine();
+			int choice;
 
-			if (!int.TryParse(Console.ReadLine(), out int choice))
-			{
-				Console.WriteLine("Invalid input, load canceled.");
-				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
-				return;
-			}
-
-			if (choice > backupsSaved)
-			{
-				Console.WriteLine("Invalid input, load canceled.");
-				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
-				return;
-			}
-
-			if (choice == 0)
+			if (input.Trim().ToLower() == "c")
 			{
 				Console.WriteLine("Load canceled.");
+				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+				return;
+			}
+			else if (input.Trim().ToLower() == "r")
+			{
+				choice = backupLIst.Length;
+			}
+			else if (!int.TryParse(input, out choice))
+			{
+				Console.WriteLine("Invalid input, load canceled.");
+				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+				return;
+			}
+			else if (choice > backupsSaved || choice < 1)
+			{
+				Console.WriteLine("Invalid input, load canceled.");
 				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
 			Directory.Delete(Program.serverConfigs.worldPath, true);
 			Console.WriteLine("World folder deleted.");
-			Console.WriteLine($"Copying \"{Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1]}\"");
-			CopyFilesRecursively(Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1], Program.serverConfigs.worldPath);
-			Console.WriteLine($"Backup loaded \"{Directory.GetDirectories(Program.serverConfigs.backupPath)[choice - 1]}\"");
+			Console.WriteLine($"Copying \"{backupLIst[choice - 1]}\"");
+			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.worldPath);
+			Console.WriteLine($"Backup loaded \"{backupLIst[choice - 1]}\"");
 
 			if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
 		}

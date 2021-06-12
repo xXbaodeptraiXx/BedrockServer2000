@@ -12,7 +12,7 @@ namespace BedrockServer2000
 
 			if (Program.serverConfigs.loadRequest)
 			{
-				Backup.LoadBackup(false);
+				Backup.LoadBackup();
 				Program.serverConfigs.loadRequest = false;
 			}
 			else if (Program.serverConfigs.exitRequest)

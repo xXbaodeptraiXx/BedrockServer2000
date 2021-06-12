@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qli3cTNpoc5XNEhiInfPa3Wag2gF1++OA7IW9Kk1I7BWUrbp9l2iDw7sFQdg1IFbWF+Nl/tqrnma04paOwNlPQ==",
+  "dgSpecHash": "MpcVOxB3OgGmKJ9cqLFc0bc2C9ML9ks2xbugT1Y3i6/WIPkNRIII79ncwi7CxYuyTGpEF8l1ZyoMbTJCo0JuBg==",
   "success": true,
   "projectFilePath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
   "expectedPackageFiles": [
@@ -12,9 +12,7 @@
     "/home/bao/.nuget/packages/system.security.cryptography.protecteddata/5.0.0/system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
     "/home/bao/.nuget/packages/system.security.permissions/5.0.0/system.security.permissions.5.0.0.nupkg.sha512",
     "/home/bao/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/3.1.16/microsoft.netcore.app.runtime.linux-x64.3.1.16.nupkg.sha512",
-    "/home/bao/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/3.1.16/microsoft.aspnetcore.app.runtime.linux-x64.3.1.16.nupkg.sha512"
+    "/home/bao/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }
