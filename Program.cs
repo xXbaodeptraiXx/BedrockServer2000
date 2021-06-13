@@ -17,7 +17,7 @@ namespace BedrockServer2000
 		static void Main()
 		{
 			// debug line
-			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
 			// Process
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
