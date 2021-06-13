@@ -27,9 +27,9 @@ namespace BedrockServer2000
 
 			if (Program.serverConfigs.serverRunning)
 			{
-				Program.bedrockServerInputStream.WriteLine("say Performing backup");
+				Program.serverInputStream.WriteLine("say Performing backup");
 				Console.WriteLine($"{Timing.LogDateTime()} Telling players that the server is running a backup.");
-				Program.bedrockServerInputStream.WriteLine("save hold");
+				Program.serverInputStream.WriteLine("save hold");
 				Thread.Sleep(5000);
 			}
 
@@ -50,9 +50,9 @@ namespace BedrockServer2000
 			Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
 			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "/" + newBackupName);
 
-			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("save resume");
+			if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine("save resume");
 			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.backupPath + "/" + newBackupName}");
-			if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine("say Backup complete");
+			if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.backupRunning = false;
 		}

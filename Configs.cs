@@ -10,7 +10,7 @@ namespace BedrockServer2000
 		{
 			if (!File.Exists("BedrockServer2000.scf")) return 0;
 
-			string[] rawLines = File.ReadAllLines("BedrockServer2000.scf");
+			string[] rawLines = File.ReadAllLines($"{Program.appName}.scf");
 			List<string> configLInes = new List<string>();
 			foreach (string line in rawLines)
 				if (!line.StartsWith("#") && line != "") configLInes.Add(line);
@@ -20,9 +20,9 @@ namespace BedrockServer2000
 
 		public static string GetValue(string key)
 		{
-			if (!File.Exists("BedrockServer2000.scf")) return "";
+			if (!File.Exists($"{Program.appName}.scf")) return "";
 
-			string[] rawLines = File.ReadAllLines("BedrockServer2000.scf");
+			string[] rawLines = File.ReadAllLines($"{Program.appName}.scf");
 			List<string> configLines = new List<string>();
 			foreach (string line in rawLines)
 				if (!line.StartsWith("#") && line != "") configLines.Add(line);
@@ -41,9 +41,9 @@ namespace BedrockServer2000
 
 		public static void SetValue(string key, string value)
 		{
-			if (!File.Exists("BedrockServer2000.scf")) throw new FileNotFoundException();
+			if (!File.Exists($"{Program.appName}.scf")) throw new FileNotFoundException();
 
-			string[] rawLines = File.ReadAllLines("BedrockServer2000.scf");
+			string[] rawLines = File.ReadAllLines($"{Program.appName}.scf");
 
 			int lineIndexToChange = 0;
 
@@ -64,7 +64,7 @@ namespace BedrockServer2000
 			else
 			{
 				rawLines[lineIndexToChange - 1] = $"{rawLines[lineIndexToChange - 1].Split('=', StringSplitOptions.RemoveEmptyEntries)[0]}={value}";
-				File.WriteAllLines("BedrockServer2000.scf", rawLines);
+				File.WriteAllLines($"{Program.appName}.scf", rawLines);
 			}
 		}
 	}

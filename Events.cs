@@ -33,9 +33,12 @@ namespace BedrockServer2000
 			}
 		}
 
-		public static void ProgramExited(object sender, EventArgs args)
+		public static void OnExit(object sender, EventArgs args)
 		{
-			if (Program.serverConfigs.serverRunning) Program.bedrockServerProcess.Kill(true);
+			if (Program.serverConfigs.serverRunning && !Program.serverProcess.HasExited)
+			{
+				Program.serverProcess.Kill();
+			}
 		}
 	}
 }

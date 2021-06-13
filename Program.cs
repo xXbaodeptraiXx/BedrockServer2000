@@ -8,20 +8,31 @@ namespace BedrockServer2000
 	class Program
 	{
 		public static ServerConfig serverConfigs = new ServerConfig();
-
-		public static Process bedrockServerProcess;
-		public static StreamWriter bedrockServerInputStream;
-
+		public static Process serverProcess;
+		public static StreamWriter serverInputStream;
 		public static Thread consoleInputThread;
-
-		public static Timer autoBackupEveryXTimer;
+		public static Timer autoBackupEveryXTimer = new Timer(Backup.PerformBackup);
+		public static string appName = "BedrockServer2000";
 
 		static void Main()
 		{
 			// debug line
-			//Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
-			Process.GetCurrentProcess().Exited += new EventHandler(Events.ProgramExited);
+			// Process
+			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
+			AppDomain.CurrentDomain.ProcessExit += new EventHandler(Events.OnExit);
+
+			serverProcess = new Process();
+			serverProcess.StartInfo.FileName = "bedrock_server";
+			serverProcess.StartInfo.UseShellExecute = false;
+			serverProcess.StartInfo.CreateNoWindow = true;
+			serverProcess.StartInfo.RedirectStandardInput = true;
+			serverProcess.StartInfo.RedirectStandardOutput = true;
+			serverProcess.StartInfo.RedirectStandardError = true;
+			serverProcess.EnableRaisingEvents = true;
+			serverProcess.OutputDataReceived += new DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
+			serverProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
 
 			serverConfigs.LoadConfigs();
 
@@ -33,7 +44,7 @@ namespace BedrockServer2000
 			consoleInputThread.Start();
 		}
 
-		public static void ConsoleInput()
+		static void ConsoleInput()
 		{
 			while (true)
 			{

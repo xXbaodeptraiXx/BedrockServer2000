@@ -47,7 +47,7 @@ namespace BedrockServer2000
 				Program.serverConfigs.loadRequest = Program.serverConfigs.serverRunning;
 				if (Program.serverConfigs.serverRunning)
 				{
-					Program.bedrockServerInputStream.WriteLine("say The server is about to close to load a backup.");
+					Program.serverInputStream.WriteLine("say The server is about to close to load a backup.");
 					StopServer();
 				}
 				else Backup.LoadBackup();
@@ -82,7 +82,7 @@ namespace BedrockServer2000
 				{
 					if (Program.serverConfigs.serverRunning)
 					{
-						Program.bedrockServerInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
+						Program.serverInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
 					}
 					else Console.WriteLine("Server is not currently running.");
@@ -93,7 +93,7 @@ namespace BedrockServer2000
 					else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], "");
 					else
 					{
-						if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+						if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine(command);
 						else Console.WriteLine("Unknown command.");
 					}
 				}
@@ -102,13 +102,13 @@ namespace BedrockServer2000
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
 					else
 					{
-						if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+						if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine(command);
 						else Console.WriteLine("Unknown command.");
 					}
 				}
 				else
 				{
-					if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+					if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine(command);
 					else Console.WriteLine("Unknown command.");
 				}
 			}
@@ -116,7 +116,7 @@ namespace BedrockServer2000
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else
 			{
-				if (Program.serverConfigs.serverRunning) Program.bedrockServerInputStream.WriteLine(command);
+				if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine(command);
 				else Console.WriteLine("Unknown command.");
 			}
 		}
@@ -193,32 +193,18 @@ Examples:
 
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server");
 
-			Program.bedrockServerProcess = new System.Diagnostics.Process();
-			Program.bedrockServerProcess.StartInfo.FileName = "bedrock_server";
-			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.bedrockServerProcess.StartInfo.FileName);
-
-			Program.bedrockServerProcess.StartInfo.UseShellExecute = false;
-			Program.bedrockServerProcess.StartInfo.CreateNoWindow = true;
-			Program.bedrockServerProcess.StartInfo.RedirectStandardInput = true;
-			Program.bedrockServerProcess.StartInfo.RedirectStandardOutput = true;
-			Program.bedrockServerProcess.StartInfo.RedirectStandardError = true;
-
-			Program.bedrockServerProcess.EnableRaisingEvents = true;
-			Program.bedrockServerProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
-			Program.bedrockServerProcess.OutputDataReceived += new System.Diagnostics.DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
-
-			Program.bedrockServerProcess.Start();
-
-			Program.bedrockServerInputStream = Program.bedrockServerProcess.StandardInput;
-			Program.bedrockServerProcess.BeginOutputReadLine();
-			Program.bedrockServerProcess.BeginErrorReadLine();
+			Program.serverProcess.Start();
+			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.serverProcess.StartInfo.FileName);
+			Program.serverProcess.BeginOutputReadLine();
+			Program.serverProcess.BeginErrorReadLine();
+			Program.serverInputStream = Program.serverProcess.StandardInput;
 
 			if (Program.serverConfigs.autoBackupEveryX)
 			{
 				int autoBackupEveryXTimerInterval = 0;
 				if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
 				else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
-				Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
+				Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 			}
 		}
 
@@ -229,10 +215,10 @@ Examples:
 
 			const string stopMessage = "Server closing in 10 seconds";
 
-			Program.bedrockServerInputStream.WriteLine($"say {stopMessage}");
+			Program.serverInputStream.WriteLine($"say {stopMessage}");
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
 			Thread.Sleep(10000);
-			Program.bedrockServerInputStream.WriteLine("stop");
+			Program.serverInputStream.WriteLine("stop");
 		}
 
 		private static void ShowConfigs(string key)
@@ -303,7 +289,7 @@ Examples:
 						int autoBackupEveryXTimerInterval = 0;
 						if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
 						else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration);
-						Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, null, autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
+						Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 					}
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryX are 'true' and 'false'.");
@@ -314,6 +300,14 @@ Examples:
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXDuration = result;
+
+					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX)
+					{
+						if (Program.serverConfigs.autoBackupEveryXTimeUnit == "minute")
+							Program.autoBackupEveryXTimer.Change(Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+						else if (Program.serverConfigs.autoBackupEveryXTimeUnit == "hour")
+							Program.autoBackupEveryXTimer.Change(Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+					}
 				}
 				else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
 			}
@@ -323,13 +317,13 @@ Examples:
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
 				}
 				else if (value == "hour")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.autoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer = new Timer(Backup.PerformBackup, Program.serverConfigs, Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
+					if (Program.serverConfigs.serverRunning && Program.serverConfigs.autoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.autoBackupEveryXDuration));
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
 			}

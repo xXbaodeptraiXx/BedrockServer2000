@@ -27,7 +27,7 @@ This software is still in development process and some features haven't been imp
 
 ## Known bugs
 
-No bugs were found since last test.
+- backupLimit doesn't update instantly after using the `set` command
 
 ## Screenshots
 
