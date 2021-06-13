@@ -277,7 +277,7 @@ Examples:
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.autoStartServer = Convert.ToBoolean(value);
+					Program.serverConfigs.autoBackupOnDate = Convert.ToBoolean(value);
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupOnDate are 'true' and 'false'.");
 			}
@@ -356,7 +356,7 @@ Examples:
 				if (int.TryParse(value, out int result))
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.autoBackupEveryXDuration = result;
+					Program.serverConfigs.backupLimit = result;
 				}
 				else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
 			}

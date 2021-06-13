@@ -21,12 +21,6 @@ namespace BedrockServer2000
 			// debug line
 			//Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
-			serverConfigs.serverRunning = false;
-			serverConfigs.backupRunning = false;
-			serverConfigs.exitRequest = false;
-			serverConfigs.loadRequest = false;
-			serverConfigs.serverWasRunningBefore = false;
-
 			Process.GetCurrentProcess().Exited += new EventHandler(Events.ProgramExited);
 
 			serverConfigs.LoadConfigs();

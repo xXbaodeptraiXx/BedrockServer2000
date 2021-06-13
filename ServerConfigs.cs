@@ -6,12 +6,12 @@ namespace BedrockServer2000
 {
 	public class ServerConfig
 	{
-		public bool serverExecutableExists { get; set; }
-		public bool backupRunning { get; set; }
-		public bool serverRunning { get; set; }
-		public bool loadRequest { get; set; }
-		public bool exitRequest { get; set; }
-		public bool serverWasRunningBefore { get; set; }
+		public bool serverExecutableExists { get; set; } = false;
+		public bool serverRunning { get; set; } = false;
+		public bool backupRunning { get; set; } = false;
+		public bool loadRequest { get; set; } = false;
+		public bool exitRequest { get; set; } = false;
+		public bool serverWasRunningBefore { get; set; } = false;
 
 		public bool autoStartServer { get; set; }
 
