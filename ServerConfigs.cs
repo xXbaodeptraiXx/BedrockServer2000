@@ -109,7 +109,7 @@ namespace BedrockServer2000
 					worldPath = Configs.GetValue("worldPath");
 				Console.WriteLine($"worldPath: {worldPath}");
 
-				backupPath = Configs.GetValue("backup`Path");
+				backupPath = Configs.GetValue("backupPath");
 				Console.WriteLine($"backupPath: {backupPath}");
 
 				if (!int.TryParse(Configs.GetValue("backupLimit"), out importVal))
