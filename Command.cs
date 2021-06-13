@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 
@@ -366,10 +365,7 @@ Examples:
 
 		private static void SaveConfig(string key, string value)
 		{
-			Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			configuration.Save(ConfigurationSaveMode.Modified);
-			configuration.AppSettings.Settings[key].Value = value;
-			configuration.Save(ConfigurationSaveMode.Modified);
+			Configs.SetValue(key, value);
 			Console.WriteLine($"{Timing.LogDateTime()} {key} was set to {value}");
 		}
 

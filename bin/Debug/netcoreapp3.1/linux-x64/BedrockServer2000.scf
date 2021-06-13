@@ -1,0 +1,18 @@
+autoStartServer=false
+# autoStartServer is a boolean value to specify whether or not to start the server when the program starts up [default: false]
+autoBackupOnDate=false
+# autoBackupOnDate is a boolean value to specify whether or not to automatically run a backup every {autoBackupOnDate_Time} [default: false]
+autoBackupOnDate_Time=00:00:00
+# autoBackupOnDate_Time is a time value for autoBackupOnDate to specify when to run an automatic backup [default: 00:00:00]
+autoBackupEveryX=false
+# autoBackupEveryX is a boolean value to specify whether or not to automatically run a backup every {autoBackupEveryXDuration} {autoBackupEveryXTimeUnit} [default: false]
+autoBackupEveryXDuration=1
+# autoBackupEveryXDuration is an integer value to specify the duration between each auto backup [default: 1]
+autoBackupEveryXTimeUnit=hour
+# autoBackupEveryXTimeUnit is a string value to specify the time unit for autoBackupEveryXDuration, accepted values are "minute" or "hour" [default: hour]
+worldPath=
+# worldPath is a string value to specify the directory where the world folder is stored, usually "\worlds\{worldName}", leave empty to use the first directory in "\worlds"
+backupPath=
+# backupPath is a string value to specify the directory to store world backups, the program will not perform a backup if this key is empty
+backupLimit=32
+# backupLimit is an integer value to specify how many backups can be stored before deletintg the oldest one to leave space for more backups [default: 32]
