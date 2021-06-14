@@ -17,22 +17,11 @@ namespace BedrockServer2000
 		static void Main()
 		{
 			// debug line
-			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
-			// Process
+			//  Process events
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(Events.OnExit);
-
-			serverProcess = new Process();
-			serverProcess.StartInfo.FileName = "bedrock_server";
-			serverProcess.StartInfo.UseShellExecute = false;
-			serverProcess.StartInfo.CreateNoWindow = true;
-			serverProcess.StartInfo.RedirectStandardInput = true;
-			serverProcess.StartInfo.RedirectStandardOutput = true;
-			serverProcess.StartInfo.RedirectStandardError = true;
-			serverProcess.EnableRaisingEvents = true;
-			serverProcess.OutputDataReceived += new DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
-			serverProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
 
 			serverConfigs.LoadConfigs();
 

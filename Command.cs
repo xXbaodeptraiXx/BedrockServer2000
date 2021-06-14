@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Globalization;
 using System.IO;
@@ -193,7 +194,18 @@ Examples:
 
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server");
 
+			Program.serverProcess = new Process();
+			Program.serverProcess.StartInfo.FileName = "bedrock_server";
+			Program.serverProcess.StartInfo.UseShellExecute = false;
+			Program.serverProcess.StartInfo.CreateNoWindow = true;
+			Program.serverProcess.StartInfo.RedirectStandardInput = true;
+			Program.serverProcess.StartInfo.RedirectStandardOutput = true;
+			Program.serverProcess.StartInfo.RedirectStandardError = true;
+			Program.serverProcess.EnableRaisingEvents = true;
+			Program.serverProcess.OutputDataReceived += new DataReceivedEventHandler(Events.BedrockServerProcess_OutputDataReceived);
+			Program.serverProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
 			Program.serverProcess.Start();
+
 			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.serverProcess.StartInfo.FileName);
 			Program.serverProcess.BeginOutputReadLine();
 			Program.serverProcess.BeginErrorReadLine();

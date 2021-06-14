@@ -12,10 +12,8 @@ This software is still in development process and some features haven't been imp
 
 ### Current features
 
-- Auto start server
-- Server closing message to let players know that the server will close in 10 seconds
-- Automated backup saving
-- Automated backup loading
+- Server stop message to let players know that the server will close in 10 seconds
+- Automated backup saving, loading and other automated functions
 - Configuration file
 
 ### Unimplemented features
@@ -27,8 +25,12 @@ This software is still in development process and some features haven't been imp
 
 ## Known bugs
 
-- backupLimit doesn't update instantly after using the `set` command
+No bugs were found since the last test.
 
 ## Screenshots
 
-![app_screenshot](app_screenshot.png)
+![app_screenshot]
+
+Image obsolete, TODO update new screenshot.
+
+(app_screenshot.png)
