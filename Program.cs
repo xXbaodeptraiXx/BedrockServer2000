@@ -10,7 +10,6 @@ namespace BedrockServer2000
 		public static ServerConfig serverConfigs = new ServerConfig();
 		public static Process serverProcess;
 		public static StreamWriter serverInputStream;
-		public static Thread consoleInputThread;
 		public static Timer autoBackupEveryXTimer = new Timer(Backup.PerformBackup);
 		public static Timer ExitTImeoutTImer = new Timer(Events.ExitTImeoutTImer_Tick);
 		public static string appName = "BedrockServer2000";
@@ -26,16 +25,12 @@ namespace BedrockServer2000
 
 			serverConfigs.LoadConfigs();
 
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started.");
+			Console.ResetColor();
 
 			if (serverConfigs.AutoStartServer) Command.ProcessCommand("start");
 
-			consoleInputThread = new Thread(ConsoleInput);
-			consoleInputThread.Start();
-		}
-
-		static void ConsoleInput()
-		{
 			while (true)
 			{
 				if (serverConfigs.LoadRequest) continue;

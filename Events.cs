@@ -13,7 +13,9 @@ namespace BedrockServer2000
 
 			Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
 
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server stopped.");
+			Console.ResetColor();
 
 			if (Program.serverConfigs.LoadRequest)
 			{
@@ -22,7 +24,9 @@ namespace BedrockServer2000
 			}
 			else if (Program.serverConfigs.ExitRequest)
 			{
+				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
+				Console.ResetColor();
 				Environment.Exit(0);
 			}
 		}

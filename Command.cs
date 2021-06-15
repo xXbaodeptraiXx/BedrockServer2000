@@ -23,24 +23,35 @@ namespace BedrockServer2000
 					Thread StopServerThread = new Thread(StopServer);
 					StopServerThread.Start();
 				}
-				else Console.WriteLine("Server is not currently running.");
+				else
+				{
+					CustomConsoleColor.SetColor_Warning();
+					Console.WriteLine("Server is not currently running.");
+					Console.ResetColor();
+				}
 			}
 			else if (formattedCommand == "load")
 			{
 				// check if the configs are correct, cancel the backup if found any error
 				if (!Directory.Exists(Program.serverConfigs.WorldPath))
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"World path incorrect");
+					Console.ResetColor();
 					return;
 				}
 				if (!Directory.Exists(Program.serverConfigs.BackupPath))
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup path incorrect");
+					Console.ResetColor();
 					return;
 				}
 				if (Directory.Exists(Program.serverConfigs.BackupPath) && Directory.GetDirectories(Program.serverConfigs.BackupPath).Length < 1)
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"There are no backups to load");
+					Console.ResetColor();
 					return;
 				}
 
@@ -58,17 +69,23 @@ namespace BedrockServer2000
 				// check if the configs are correct, cancel the backup if found any error
 				if (!Directory.Exists(Program.serverConfigs.WorldPath))
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"World path incorrect, can't perform backup.");
+					Console.ResetColor();
 					return;
 				}
 				if (!Directory.Exists(Program.serverConfigs.BackupPath))
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup path incorrect, can't perform backup.");
+					Console.ResetColor();
 					return;
 				}
 				if (Program.serverConfigs.BackupLimit <= 0)
 				{
+					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
+					Console.ResetColor();
 					return;
 				}
 
@@ -86,7 +103,12 @@ namespace BedrockServer2000
 						Program.serverInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
 					}
-					else Console.WriteLine("Server is not currently running.");
+					else
+					{
+						CustomConsoleColor.SetColor_Warning();
+						Console.WriteLine("Server is not currently running.");
+						Console.ResetColor();
+					}
 				}
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 2)
 				{
@@ -95,7 +117,12 @@ namespace BedrockServer2000
 					else
 					{
 						if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
-						else Console.WriteLine("Unknown command.");
+						else
+						{
+							CustomConsoleColor.SetColor_Warning();
+							Console.WriteLine("Unknown command.");
+							Console.ResetColor();
+						}
 					}
 				}
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 3)
@@ -104,13 +131,23 @@ namespace BedrockServer2000
 					else
 					{
 						if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
-						else Console.WriteLine("Unknown command.");
+						else
+						{
+							CustomConsoleColor.SetColor_Warning();
+							Console.WriteLine("Unknown command.");
+							Console.ResetColor();
+						}
 					}
 				}
 				else
 				{
 					if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
-					else Console.WriteLine("Unknown command.");
+					else
+					{
+						CustomConsoleColor.SetColor_Warning();
+						Console.WriteLine("Unknown command.");
+						Console.ResetColor();
+					}
 				}
 			}
 			else if (formattedCommand == "clear") Console.Clear();
@@ -118,7 +155,12 @@ namespace BedrockServer2000
 			else
 			{
 				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
-				else Console.WriteLine("Unknown command.");
+				else
+				{
+					CustomConsoleColor.SetColor_Warning();
+					Console.WriteLine("Unknown command.");
+					Console.ResetColor();
+				}
 			}
 		}
 
@@ -186,13 +228,17 @@ Examples:
 		{
 			if (!Program.serverConfigs.ServerExecutableExists)
 			{
+				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine("Server executable not found, can't start server.");
+				Console.ResetColor();
 				return;
 			}
 
 			Program.serverConfigs.ServerRunning = true;
 
+			CustomConsoleColor.SetColor_WorkStart();
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server");
+			Console.ResetColor();
 
 			Program.serverProcess = new Process();
 			Program.serverProcess.StartInfo.FileName = "bedrock_server";
@@ -206,7 +252,9 @@ Examples:
 			Program.serverProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
 			Program.serverProcess.Start();
 
+			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.serverProcess.StartInfo.FileName);
+			Console.ResetColor();
 			Program.serverProcess.BeginOutputReadLine();
 			Program.serverProcess.BeginErrorReadLine();
 			Program.serverInputStream = Program.serverProcess.StandardInput;
@@ -228,7 +276,9 @@ Examples:
 			const string stopMessage = "Server closing in 10 seconds";
 
 			Program.serverInputStream.WriteLine($"say {stopMessage}");
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
+			Console.ResetColor();
 			Thread.Sleep(10000);
 			Program.serverInputStream.WriteLine("stop");
 
@@ -375,12 +425,16 @@ Examples:
 		private static void SaveConfig(string key, string value)
 		{
 			Configs.SetValue(key, value);
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} {key} was set to {value}");
+			Console.ResetColor();
 		}
 
 		private static void ShowSyntaxError()
 		{
+			CustomConsoleColor.SetColor_Error();
 			Console.WriteLine("Error: Incorrect command syntax.");
+			Console.ResetColor();
 		}
 
 		private static void RunExitProcedure()
@@ -393,7 +447,9 @@ Examples:
 			}
 			else
 			{
+				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
+				Console.ResetColor();
 				Environment.Exit(0);
 			}
 		}

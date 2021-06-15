@@ -28,13 +28,17 @@ namespace BedrockServer2000
 			if (Program.serverConfigs.ServerRunning)
 			{
 				Program.serverInputStream.WriteLine("say Performing backup");
-				Console.WriteLine($"{Timing.LogDateTime()} Telling players that the server is running a backup.");
+				CustomConsoleColor.SetColor_Success();
+				Console.WriteLine($"{Timing.LogDateTime()} Server backup message sent.");
+				Console.ResetColor();
 				Program.serverInputStream.WriteLine("save hold");
 				Thread.Sleep(5000);
 			}
 
+			CustomConsoleColor.SetColor_WorkStart();
 			Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
 
+			CustomConsoleColor.SetColor_Work();
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
 			int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
@@ -51,7 +55,9 @@ namespace BedrockServer2000
 			CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
 
 			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("save resume");
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
+			Console.ResetColor();
 			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("say Backup complete");
 
 			Program.serverConfigs.BackupRunning = false;
@@ -93,7 +99,9 @@ namespace BedrockServer2000
 
 			if (input.Trim().ToLower() == "c")
 			{
-				Console.WriteLine("Load canceled.");
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine($"{Timing.LogDateTime()} Load canceled.");
+				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
@@ -103,22 +111,29 @@ namespace BedrockServer2000
 			}
 			else if (!int.TryParse(input, out choice))
 			{
-				Console.WriteLine("Invalid input, load canceled.");
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
+				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
-				Console.WriteLine("Invalid input, load canceled.");
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
+				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
 			Directory.Delete(Program.serverConfigs.WorldPath, true);
+			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupLIst[choice - 1]}\"");
 			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.WorldPath);
+			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupLIst[choice - 1]}\"");
+			Console.ResetColor();
 
 			if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 		}

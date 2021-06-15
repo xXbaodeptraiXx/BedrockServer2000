@@ -31,9 +31,12 @@ namespace BedrockServer2000
 		{
 			try
 			{
+				CustomConsoleColor.SetColor_WorkStart();
 				Console.WriteLine($"{Timing.LogDateTime()} Loading configs");
+				Console.ResetColor();
 
 				ServerExecutableExists = File.Exists("bedrock_server");
+				CustomConsoleColor.SetColor_Work();
 				Console.WriteLine($"serverExecutableExists: {ServerExecutableExists}");
 
 				if (Configs.GetValue("autoStartServer") != "true" && Configs.GetValue("autoStartServer") != "false")
@@ -126,6 +129,7 @@ namespace BedrockServer2000
 				else
 					BackupLimit = Convert.ToInt32(Configs.GetValue("backupLimit"));
 				Console.WriteLine($"backupLimit: {BackupLimit}");
+				Console.ResetColor();
 			}
 			catch (Exception e)
 			{
