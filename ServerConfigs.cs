@@ -6,25 +6,26 @@ namespace BedrockServer2000
 {
 	public class ServerConfig
 	{
-		public bool serverExecutableExists { get; set; } = false;
-		public bool serverRunning { get; set; } = false;
-		public bool backupRunning { get; set; } = false;
-		public bool loadRequest { get; set; } = false;
-		public bool exitRequest { get; set; } = false;
-		public bool serverWasRunningBefore { get; set; } = false;
+		public bool ServerExecutableExists { get; set; } = false;
+		public bool ServerRunning { get; set; } = false;
+		public bool BackupRunning { get; set; } = false;
+		public bool LoadRequest { get; set; } = false;
+		public bool ExitRequest { get; set; } = false;
+		public bool ServerWasRunningBefore { get; set; } = false;
+		public bool ExitCompleted { get; set; } = true;
 
-		public bool autoStartServer { get; set; }
+		public bool AutoStartServer { get; set; }
 
-		public bool autoBackupOnDate { get; set; }
-		public string autoBackupOnDate_Time { get; set; }
+		public bool AutoBackupOnDate { get; set; }
+		public string AutoBackupOnDate_Time { get; set; }
 
-		public bool autoBackupEveryX { get; set; }
-		public int autoBackupEveryXDuration { get; set; }
-		public string autoBackupEveryXTimeUnit { get; set; }
+		public bool AutoBackupEveryX { get; set; }
+		public int AutoBackupEveryXDuration { get; set; }
+		public string AutoBackupEveryXTimeUnit { get; set; }
 
-		public string worldPath { get; set; }
-		public string backupPath { get; set; }
-		public int backupLimit { get; set; }
+		public string WorldPath { get; set; }
+		public string BackupPath { get; set; }
+		public int BackupLimit { get; set; }
 
 		public void LoadConfigs()
 		{
@@ -32,99 +33,99 @@ namespace BedrockServer2000
 			{
 				Console.WriteLine($"{Timing.LogDateTime()} Loading configs");
 
-				serverExecutableExists = File.Exists("bedrock_server");
-				Console.WriteLine($"serverExecutableExists: {serverExecutableExists}");
+				ServerExecutableExists = File.Exists("bedrock_server");
+				Console.WriteLine($"serverExecutableExists: {ServerExecutableExists}");
 
 				if (Configs.GetValue("autoStartServer") != "true" && Configs.GetValue("autoStartServer") != "false")
 				{
 					Configs.SetValue("autoStartServer", "false");
-					autoStartServer = false;
+					AutoStartServer = false;
 				}
 				else
 				{
-					if (Configs.GetValue("autoStartServer") == "true") autoStartServer = true;
-					else autoStartServer = false;
+					if (Configs.GetValue("autoStartServer") == "true") AutoStartServer = true;
+					else AutoStartServer = false;
 				}
-				Console.WriteLine($"autoStartServer: {autoStartServer}");
+				Console.WriteLine($"autoStartServer: {AutoStartServer}");
 
 				if (Configs.GetValue("autoBackupOnDate") != "true" && Configs.GetValue("autoBackupOnDate") != "false")
 				{
 					Configs.SetValue("autoBackupOnDate", "false");
-					autoBackupOnDate = false;
+					AutoBackupOnDate = false;
 				}
 				else
 				{
-					if (Configs.GetValue("autoBackupOnDate") == "true") autoBackupOnDate = true;
-					else autoBackupOnDate = false;
+					if (Configs.GetValue("autoBackupOnDate") == "true") AutoBackupOnDate = true;
+					else AutoBackupOnDate = false;
 				}
-				Console.WriteLine($"autoBackupOnDate: {autoBackupOnDate}");
+				Console.WriteLine($"autoBackupOnDate: {AutoBackupOnDate}");
 
 				if (Configs.GetValue("autoBackupOnDate_Time") == "" || !DateTime.TryParseExact(Configs.GetValue("autoBackupOnDate_Time"), "H:m:s", null, DateTimeStyles.None, out DateTime result))
 				{
 					Configs.SetValue("autoBackupOnDate_Time", "00:00:00");
-					autoBackupOnDate_Time = "00:00:00";
+					AutoBackupOnDate_Time = "00:00:00";
 				}
 				else
-					autoBackupOnDate_Time = Configs.GetValue("autoBackupOnDate_Time");
-				Console.WriteLine($"utoBackupOnDate_Time: {autoBackupOnDate_Time}");
+					AutoBackupOnDate_Time = Configs.GetValue("autoBackupOnDate_Time");
+				Console.WriteLine($"utoBackupOnDate_Time: {AutoBackupOnDate_Time}");
 
 				if (Configs.GetValue("autoBackupEveryX") != "true" && Configs.GetValue("autoBackupEveryX") != "false")
 				{
 					Configs.SetValue("autoBackupEveryX", "false");
-					autoBackupEveryX = false;
+					AutoBackupEveryX = false;
 				}
 				else
 				{
-					if (Configs.GetValue("autoBackupEveryX") == "true") autoBackupEveryX = true;
-					else autoBackupEveryX = false;
+					if (Configs.GetValue("autoBackupEveryX") == "true") AutoBackupEveryX = true;
+					else AutoBackupEveryX = false;
 				}
-				Console.WriteLine($"autoBackupEveryX: {autoBackupEveryX}");
+				Console.WriteLine($"autoBackupEveryX: {AutoBackupEveryX}");
 
 				if (!int.TryParse(Configs.GetValue("autoBackupEveryXDuration"), out int importVal))
 				{
 					Configs.SetValue("autoBackupEveryXDuration", "1");
-					autoBackupEveryXDuration = 1;
+					AutoBackupEveryXDuration = 1;
 				}
 				else
-					autoBackupEveryXDuration = Convert.ToInt32(Configs.GetValue("autoBackupEveryXDuration"));
-				Console.WriteLine($"autoBackupEveryXDuration: {autoBackupEveryXDuration}");
+					AutoBackupEveryXDuration = Convert.ToInt32(Configs.GetValue("autoBackupEveryXDuration"));
+				Console.WriteLine($"autoBackupEveryXDuration: {AutoBackupEveryXDuration}");
 
 				if (Configs.GetValue("autoBackupEveryXTimeUnit") != "minute" && Configs.GetValue("autoBackupEveryXTimeUnit") != "hour")
 				{
 					Configs.SetValue("autoBackupEveryXTimeUnit", "hour");
-					autoBackupEveryXTimeUnit = "hour";
+					AutoBackupEveryXTimeUnit = "hour";
 				}
-				else autoBackupEveryXTimeUnit = Configs.GetValue("autoBackupEveryXTimeUnit");
-				Console.WriteLine($"autoBackupEveryXTimeUnit: {autoBackupEveryXTimeUnit}");
+				else AutoBackupEveryXTimeUnit = Configs.GetValue("autoBackupEveryXTimeUnit");
+				Console.WriteLine($"autoBackupEveryXTimeUnit: {AutoBackupEveryXTimeUnit}");
 
 				if (Configs.GetValue("worldPath") == "" && Directory.Exists("worlds"))
 				{
 					if (Directory.GetDirectories("worlds").Length >= 1)
 					{
 						Configs.SetValue("worldPath", Directory.GetDirectories("worlds")[0]);
-						worldPath = Directory.GetDirectories("worlds")[0];
+						WorldPath = Directory.GetDirectories("worlds")[0];
 					}
 				}
 				else
-					worldPath = Configs.GetValue("worldPath");
-				Console.WriteLine($"worldPath: {worldPath}");
+					WorldPath = Configs.GetValue("worldPath");
+				Console.WriteLine($"worldPath: {WorldPath}");
 
-				backupPath = Configs.GetValue("backupPath");
-				Console.WriteLine($"backupPath: {backupPath}");
+				BackupPath = Configs.GetValue("backupPath");
+				Console.WriteLine($"backupPath: {BackupPath}");
 
 				if (!int.TryParse(Configs.GetValue("backupLimit"), out importVal))
 				{
 					Configs.SetValue("backupLimit", "32");
-					backupLimit = 32;
+					BackupLimit = 32;
 				}
 				else if (importVal < 1)
 				{
 					Configs.SetValue("backupLimit", "32");
-					backupLimit = 32;
+					BackupLimit = 32;
 				}
 				else
-					backupLimit = Convert.ToInt32(Configs.GetValue("backupLimit"));
-				Console.WriteLine($"backupLimit: {backupLimit}");
+					BackupLimit = Convert.ToInt32(Configs.GetValue("backupLimit"));
+				Console.WriteLine($"backupLimit: {BackupLimit}");
 			}
 			catch (Exception e)
 			{

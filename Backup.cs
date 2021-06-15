@@ -23,9 +23,9 @@ namespace BedrockServer2000
 
 		public static void PerformBackup(object args)
 		{
-			Program.serverConfigs.backupRunning = true;
+			Program.serverConfigs.BackupRunning = true;
 
-			if (Program.serverConfigs.serverRunning)
+			if (Program.serverConfigs.ServerRunning)
 			{
 				Program.serverInputStream.WriteLine("say Performing backup");
 				Console.WriteLine($"{Timing.LogDateTime()} Telling players that the server is running a backup.");
@@ -37,31 +37,31 @@ namespace BedrockServer2000
 
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
-			int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
-			while (currentNumberOfBackups >= Program.serverConfigs.backupLimit)
+			int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
+			while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
 			{
-				string[] backups = Directory.GetDirectories(Program.serverConfigs.backupPath);
+				string[] backups = Directory.GetDirectories(Program.serverConfigs.BackupPath);
 				Directory.Delete(backups[0], true);
 				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
-				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
+				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 			}
 			DateTime now = DateTime.Now;
 			string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
 			Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
-			CopyFilesRecursively(Program.serverConfigs.worldPath, Program.serverConfigs.backupPath + "/" + newBackupName);
+			CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
 
-			if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine("save resume");
-			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.backupPath + "/" + newBackupName}");
-			if (Program.serverConfigs.serverRunning) Program.serverInputStream.WriteLine("say Backup complete");
+			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("save resume");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
+			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("say Backup complete");
 
-			Program.serverConfigs.backupRunning = false;
+			Program.serverConfigs.BackupRunning = false;
 		}
 
 		public static void LoadBackup()
 		{
-			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.backupPath).Length;
+			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 
-			string[] backupLIst = Directory.GetDirectories(Program.serverConfigs.backupPath);
+			string[] backupLIst = Directory.GetDirectories(Program.serverConfigs.BackupPath);
 
 			// sort backup list by date
 			while (true)
@@ -94,7 +94,7 @@ namespace BedrockServer2000
 			if (input.Trim().ToLower() == "c")
 			{
 				Console.WriteLine("Load canceled.");
-				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (input.Trim().ToLower() == "r")
@@ -104,23 +104,23 @@ namespace BedrockServer2000
 			else if (!int.TryParse(input, out choice))
 			{
 				Console.WriteLine("Invalid input, load canceled.");
-				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
 				Console.WriteLine("Invalid input, load canceled.");
-				if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
-			Directory.Delete(Program.serverConfigs.worldPath, true);
+			Directory.Delete(Program.serverConfigs.WorldPath, true);
 			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupLIst[choice - 1]}\"");
-			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.worldPath);
+			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.WorldPath);
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupLIst[choice - 1]}\"");
 
-			if (Program.serverConfigs.serverWasRunningBefore) Command.ProcessCommand("start");
+			if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 		}
 	}
 }

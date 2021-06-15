@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace BedrockServer2000
 {
@@ -7,15 +8,19 @@ namespace BedrockServer2000
 	{
 		public static void BedrockServerProcess_Exited(object sender, EventArgs e)
 		{
-			Program.serverConfigs.serverRunning = false;
+			Program.serverConfigs.ServerRunning = false;
+			Program.serverConfigs.ExitCompleted = true;
+
+			Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
+
 			Console.WriteLine($"{Timing.LogDateTime()} Server stopped.");
 
-			if (Program.serverConfigs.loadRequest)
+			if (Program.serverConfigs.LoadRequest)
 			{
 				Backup.LoadBackup();
-				Program.serverConfigs.loadRequest = false;
+				Program.serverConfigs.LoadRequest = false;
 			}
-			else if (Program.serverConfigs.exitRequest)
+			else if (Program.serverConfigs.ExitRequest)
 			{
 				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
 				Environment.Exit(0);
@@ -33,11 +38,24 @@ namespace BedrockServer2000
 			}
 		}
 
-		public static void OnExit(object sender, EventArgs args)
+		public static void OnExit(object sender, EventArgs e)
 		{
-			if (Program.serverConfigs.serverRunning && !Program.serverProcess.HasExited)
+			if (Program.serverConfigs.ServerRunning && !Program.serverProcess.HasExited)
 			{
 				Program.serverProcess.Kill();
+			}
+		}
+
+		public static void ExitTImeoutTImer_Tick(object args)
+		{
+			if (!Program.serverConfigs.ExitCompleted)
+			{
+				Console.WriteLine($"{Timing.LogDateTime()} Exit timed out.");
+				Program.serverProcess.Kill();
+				Console.WriteLine($"{Timing.LogDateTime()} Force killed server process.");
+				Program.serverConfigs.ExitCompleted = true;
+
+				Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
 			}
 		}
 	}

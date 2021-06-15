@@ -12,12 +12,13 @@ namespace BedrockServer2000
 		public static StreamWriter serverInputStream;
 		public static Thread consoleInputThread;
 		public static Timer autoBackupEveryXTimer = new Timer(Backup.PerformBackup);
+		public static Timer ExitTImeoutTImer = new Timer(Events.ExitTImeoutTImer_Tick);
 		public static string appName = "BedrockServer2000";
 
 		static void Main()
 		{
 			// debug line
-			Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
 			//  Process events
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
@@ -27,7 +28,7 @@ namespace BedrockServer2000
 
 			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started.");
 
-			if (serverConfigs.autoStartServer) Command.ProcessCommand("start");
+			if (serverConfigs.AutoStartServer) Command.ProcessCommand("start");
 
 			consoleInputThread = new Thread(ConsoleInput);
 			consoleInputThread.Start();
@@ -37,7 +38,7 @@ namespace BedrockServer2000
 		{
 			while (true)
 			{
-				if (serverConfigs.loadRequest) continue;
+				if (serverConfigs.LoadRequest) continue;
 				Command.ProcessCommand(Console.ReadLine());
 			}
 		}
