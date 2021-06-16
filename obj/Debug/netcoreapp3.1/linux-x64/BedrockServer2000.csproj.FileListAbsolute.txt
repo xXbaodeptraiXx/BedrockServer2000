@@ -20,4 +20,5 @@
 /home/bao/Documents/GitHub/BedrockServer2000/obj/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.dll
 /home/bao/Documents/GitHub/BedrockServer2000/obj/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.pdb
 /home/bao/Documents/GitHub/BedrockServer2000/obj/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.genruntimeconfig.cache
-/home/bao/Documents/GitHub/BedrockServer2000/bin/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.scf
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.banlist
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Debug/netcoreapp3.1/linux-x64/BedrockServer2000.conf

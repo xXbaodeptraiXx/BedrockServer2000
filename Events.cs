@@ -40,6 +40,26 @@ namespace BedrockServer2000
 				if (outputData.StartsWith("NO LOG FILE! - ")) outputData = outputData.Remove(0, 15);
 				Console.WriteLine($"{Timing.LogDateTime()} {outputData}");
 			}
+
+			if (e.Data.Contains("[INFO] Player connected: "))
+			{
+				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+				foreach (string name in Program.serverConfigs.BanList)
+				{
+					if (name == playerName)
+					{
+						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{playerName}\" found in ban list.");
+						AutoKIck(playerName, 5000);
+						break;
+					}
+				}
+			}
+		}
+
+		private static async void AutoKIck(string name, int delay)
+		{
+			Thread.Sleep(delay);
+			Program.serverInputStream.WriteLine($"kick {name}");
 		}
 
 		public static void OnExit(object sender, EventArgs e)

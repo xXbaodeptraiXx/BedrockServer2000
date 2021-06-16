@@ -9,7 +9,12 @@
   </PropertyGroup>
 
 <ItemGroup>
-    <None Update="*.scf">
+    <None Update="*.conf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Update="*.banlist">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

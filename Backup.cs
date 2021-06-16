@@ -45,7 +45,18 @@ namespace BedrockServer2000
 			while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
 			{
 				string[] backups = Directory.GetDirectories(Program.serverConfigs.BackupPath);
-				Directory.Delete(backups[0], true);
+				try
+				{
+					Directory.Delete(backups[0], true);
+				}
+				catch (Exception e)
+				{
+					CustomConsoleColor.SetColor_Error();
+					Console.WriteLine($"{Timing.LogDateTime()} Exception thrown: {e.Message}");
+					Console.WriteLine($"{Timing.LogDateTime()} Backup failed.");
+					Console.ResetColor();
+					return;
+				}
 				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
 				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 			}
@@ -126,7 +137,18 @@ namespace BedrockServer2000
 				return;
 			}
 
-			Directory.Delete(Program.serverConfigs.WorldPath, true);
+			try
+			{
+				Directory.Delete(Program.serverConfigs.WorldPath, true);
+			}
+			catch (Exception e)
+			{
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine($"{Timing.LogDateTime()} Exception thrown: {e.Message}");
+				Console.WriteLine($"{Timing.LogDateTime()} Load failed.");
+				Console.ResetColor();
+				return;
+			}
 			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupLIst[choice - 1]}\"");

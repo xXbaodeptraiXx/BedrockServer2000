@@ -17,6 +17,7 @@ This software is still in development process, some features haven't been implem
 - Server exit timeout (automatically kill the server process if its exit procedure takes more than 30 seconds)
 - Configuration file
 - Color-highlighted output in terminal
+- Ban list
 
 ### Unimplemented features
 
@@ -28,7 +29,7 @@ This software is still in development process, some features haven't been implem
 
 ## Known bugs
 
-No bugs were found since the last test.
+- Backup function occasionally throws DirectoryNotEmpty exception and I don't know why, please help |;-;|
 
 ## Screenshots
 
