@@ -32,7 +32,7 @@ namespace BedrockServer2000
 			}
 			else if (formattedCommand == "load")
 			{
-				// check if the configs are correct, cancel the backup if found any error
+				// check if the configs are correct, cancel load if found any error
 				if (!Directory.Exists(Program.serverConfigs.WorldPath))
 				{
 					CustomConsoleColor.SetColor_Error();
