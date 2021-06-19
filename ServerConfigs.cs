@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
 
 namespace BedrockServer2000
 {
@@ -9,12 +10,14 @@ namespace BedrockServer2000
 		public bool ServerExecutableExists { get; set; } = false;
 		public bool ServerRunning { get; set; } = false;
 		public bool BackupRunning { get; set; } = false;
-		public bool LoadRequest { get; set; } = false;
-		public bool ExitRequest { get; set; } = false;
-		public bool PlayerListRequest { get; set; } = false;
-		public bool PlayerJoinSinceLastBackup { get; set; } = true;
 		public bool ServerWasRunningBefore { get; set; } = false;
 		public bool ExitCompleted { get; set; } = true;
+		public bool LoadRequest { get; set; } = false;
+		public bool ExitRequest { get; set; } = false;
+		public bool PlayerJoinSinceLastBackup { get; set; } = true;
+
+		public int playerCount { get; set; } = 0;
+		public List<string> playerList { get; set; } = new List<string>();
 
 		public string[] BanList { get; set; }
 

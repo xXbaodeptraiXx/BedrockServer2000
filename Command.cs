@@ -89,7 +89,7 @@ namespace BedrockServer2000
 					return;
 				}
 
-				Backup.PerformBackup(null);
+				Backup.PerformBackup(true);
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.serverConfigs.LoadConfigs();

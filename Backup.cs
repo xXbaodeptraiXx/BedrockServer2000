@@ -21,30 +21,10 @@ namespace BedrockServer2000
 			}
 		}
 
-		public static void PerformBackup(object args)
+		public static void PerformBackup(bool manualCall)
 		{
-			// check if the configs are correct, cancel the backup if found any error
-			if (!Directory.Exists(Program.serverConfigs.WorldPath))
-			{
-				CustomConsoleColor.SetColor_Error();
-				Console.WriteLine($"World path incorrect, can't perform backup.");
-				Console.ResetColor();
-				return;
-			}
-			if (!Directory.Exists(Program.serverConfigs.BackupPath))
-			{
-				CustomConsoleColor.SetColor_Error();
-				Console.WriteLine($"Backup path incorrect, can't perform backup.");
-				Console.ResetColor();
-				return;
-			}
-			if (Program.serverConfigs.BackupLimit <= 0)
-			{
-				CustomConsoleColor.SetColor_Error();
-				Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
-				Console.ResetColor();
-				return;
-			}
+			Program.serverConfigs.PlayerJoinSinceLastBackup = false;
+			if (!Program.serverConfigs.PlayerJoinSinceLastBackup) return;
 
 			Program.serverConfigs.BackupRunning = true;
 			try
