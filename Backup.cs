@@ -24,53 +24,51 @@ namespace BedrockServer2000
 		public static void PerformBackup(object args)
 		{
 			Program.serverConfigs.BackupRunning = true;
-
-			if (Program.serverConfigs.ServerRunning)
+			try
 			{
-				Program.serverInputStream.WriteLine("say Performing backup");
-				CustomConsoleColor.SetColor_Success();
-				Console.WriteLine($"{Timing.LogDateTime()} Server backup message sent.");
-				Console.ResetColor();
-				Program.serverInputStream.WriteLine("save hold");
-				Thread.Sleep(5000);
-			}
-
-			CustomConsoleColor.SetColor_WorkStart();
-			Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
-
-			CustomConsoleColor.SetColor_Work();
-			// Remove oldest backups if the number of backups existing is over backupLimit
-			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
-			int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
-			while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
-			{
-				string[] backups = Directory.GetDirectories(Program.serverConfigs.BackupPath);
-				try
+				if (Program.serverConfigs.ServerRunning)
 				{
-					Directory.Delete(backups[0], true);
-				}
-				catch (Exception e)
-				{
-					CustomConsoleColor.SetColor_Error();
-					Console.WriteLine($"{Timing.LogDateTime()} Exception thrown: {e.Message}");
-					Console.WriteLine($"{Timing.LogDateTime()} Backup failed.");
+					CustomConsoleColor.SetColor_Success();
+					Console.WriteLine($"{Timing.LogDateTime()} Server backup message sent.");
 					Console.ResetColor();
-					return;
+					Program.serverInputStream.WriteLine("save hold");
+					Thread.Sleep(5000);
 				}
-				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
-				currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
+
+				CustomConsoleColor.SetColor_WorkStart();
+				Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
+
+				CustomConsoleColor.SetColor_Work();
+				// Remove oldest backups if the number of backups existing is over backupLimit
+				// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
+				int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
+				while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
+				{
+					string[] backups = Directory.GetDirectories(Program.serverConfigs.BackupPath);
+					Directory.Delete(backups[0], true);
+					Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
+					currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
+				}
+				DateTime now = DateTime.Now;
+				string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
+				Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
+				CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
+
+				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("save resume");
+				CustomConsoleColor.SetColor_Success();
+				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
+				Console.ResetColor();
 			}
-			DateTime now = DateTime.Now;
-			string newBackupName = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
-			Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
-			CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
-
-			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("save resume");
-			CustomConsoleColor.SetColor_Success();
-			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
-			Console.ResetColor();
-			if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("say Backup complete");
-
+			catch (Exception e)
+			{
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine($"EXCEPTION THROWN: {e.Message}");
+				Console.WriteLine($"Data: {e.Data}");
+				Console.WriteLine($"Source: {e.Source}");
+				Console.WriteLine($"StackTrace: {e.StackTrace}");
+				Console.ResetColor();
+				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
+			}
 			Program.serverConfigs.BackupRunning = false;
 		}
 
