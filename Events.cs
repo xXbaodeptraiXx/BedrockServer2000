@@ -69,13 +69,13 @@ namespace BedrockServer2000
 
 			if (e.Data.Contains("[INFO] Player connected: "))
 			{
-				if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerJoinSinceLastBackup) Program.serverConfigs.PlayerJoinSinceLastBackup = true;
+				if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
 
 				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-				if (!Program.serverConfigs.playerList.Exists(x => x == playerName))
+				if (!Program.serverConfigs.PlayerList.Exists(x => x == playerName))
 				{
-					Program.serverConfigs.playerList.Add(playerName);
-					Program.serverConfigs.playerCount += 1;
+					Program.serverConfigs.PlayerList.Add(playerName);
+					Program.serverConfigs.PlayerCount += 1;
 				}
 				foreach (string name in Program.serverConfigs.BanList)
 				{
@@ -89,11 +89,13 @@ namespace BedrockServer2000
 			}
 			else if (e.Data.Contains("[INFO] Player disconnected: "))
 			{
-				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-				if (Program.serverConfigs.playerList.Exists(x => x == playerName))
+				if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
+
+				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer disconnected: ") + 28).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+				if (Program.serverConfigs.PlayerList.Exists(x => x == playerName))
 				{
-					Program.serverConfigs.playerList.Remove(playerName);
-					if (Program.serverConfigs.playerCount > 0) Program.serverConfigs.playerCount -= 1;
+					Program.serverConfigs.PlayerList.Remove(playerName);
+					if (Program.serverConfigs.PlayerCount > 0) Program.serverConfigs.PlayerCount -= 1;
 				}
 			}
 		}

@@ -23,17 +23,13 @@ namespace BedrockServer2000
 
 		public static void PerformBackup(bool manualCall)
 		{
-			Program.serverConfigs.PlayerJoinSinceLastBackup = false;
-			if (!manualCall && !Program.serverConfigs.PlayerJoinSinceLastBackup) return;
+			if (!manualCall && !Program.serverConfigs.PlayerActivitySinceLastBackup) return;
 
 			Program.serverConfigs.BackupRunning = true;
 			try
 			{
 				if (Program.serverConfigs.ServerRunning)
 				{
-					CustomConsoleColor.SetColor_Success();
-					Console.WriteLine($"{Timing.LogDateTime()} Server backup message sent.");
-					Console.ResetColor();
 					Program.serverInputStream.WriteLine("save hold");
 					Thread.Sleep(5000);
 				}
@@ -72,6 +68,8 @@ namespace BedrockServer2000
 				Console.ResetColor();
 				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
 			}
+
+			if (Program.serverConfigs.PlayerCount == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 			Program.serverConfigs.BackupRunning = false;
 		}
 
