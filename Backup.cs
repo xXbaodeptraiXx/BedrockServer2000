@@ -24,7 +24,7 @@ namespace BedrockServer2000
 		public static void PerformBackup(bool manualCall)
 		{
 			Program.serverConfigs.PlayerJoinSinceLastBackup = false;
-			if (!Program.serverConfigs.PlayerJoinSinceLastBackup) return;
+			if (!manualCall && !Program.serverConfigs.PlayerJoinSinceLastBackup) return;
 
 			Program.serverConfigs.BackupRunning = true;
 			try

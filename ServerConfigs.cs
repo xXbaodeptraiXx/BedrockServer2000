@@ -14,7 +14,7 @@ namespace BedrockServer2000
 		public bool ExitCompleted { get; set; } = true;
 		public bool LoadRequest { get; set; } = false;
 		public bool ExitRequest { get; set; } = false;
-		public bool PlayerJoinSinceLastBackup { get; set; } = true;
+		public bool PlayerJoinSinceLastBackup { get; set; } = false;
 
 		public int playerCount { get; set; } = 0;
 		public List<string> playerList { get; set; } = new List<string>();
