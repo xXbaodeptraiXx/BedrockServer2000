@@ -126,5 +126,21 @@ namespace BedrockServer2000
 				Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
 			}
 		}
+
+		public static void BanlistScanTimer_Tick(object args)
+		{
+			if (Program.serverConfigs.BackupRunning || !Program.serverConfigs.ServerRunning) return;
+			foreach (string name in Program.serverConfigs.PlayerList)
+			{
+				for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
+				{
+					if (name == Program.serverConfigs.BanList[i])
+					{
+						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{name}\" found in ban list.");
+						Program.serverInputStream.WriteLine($"kick {name}");
+					}
+				}
+			}
+		}
 	}
 }

@@ -101,7 +101,9 @@ namespace BedrockServer2000
 					if (Program.serverConfigs.ServerRunning)
 					{
 						Program.serverInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
+						CustomConsoleColor.SetColor_Success();
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
+						Console.ResetColor();
 					}
 					else
 					{

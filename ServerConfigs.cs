@@ -146,6 +146,8 @@ namespace BedrockServer2000
 					if (i != BanList.Length - 1) Console.Write(", ");
 				}
 				Console.WriteLine("}");
+
+				Events.BanlistScanTimer_Tick(null);
 			}
 			else Console.WriteLine("Ban list is empty.");
 			Console.ResetColor();
