@@ -45,9 +45,26 @@ namespace BedrockServer2000
 				int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 				while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
 				{
-					string[] backupsDirectories = Directory.GetDirectories(Program.serverConfigs.BackupPath);
-					Directory.Delete(backupsDirectories[0], true);
-					Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupsDirectories[0]}");
+					string[] backupList = Directory.GetDirectories(Program.serverConfigs.BackupPath);
+					// sort the backup list
+					while (true)
+					{
+						bool sortPerformed = false;
+						for (int i = 0, i2 = i + 1; i < backupList.Length - 1 && i2 < backupList.Length; i += 1, i2 += 1)
+						{
+							if (DateTime.Compare(Conversions.GetBackupDate(Path.GetFileName(backupList[i])), Conversions.GetBackupDate(Path.GetFileName(backupList[i2]))) > 0)
+							{
+								string cache = backupList[i2];
+								backupList[i2] = backupList[i];
+								backupList[i] = cache;
+								sortPerformed = true;
+							}
+						}
+						if (!sortPerformed) break;
+					}
+
+					Directory.Delete(backupList[0], true);
+					Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
 					currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 				}
 				DateTime now = DateTime.Now;
@@ -80,19 +97,19 @@ namespace BedrockServer2000
 		{
 			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 
-			string[] backupLIst = Directory.GetDirectories(Program.serverConfigs.BackupPath);
+			string[] backupList = Directory.GetDirectories(Program.serverConfigs.BackupPath);
 
 			// sort backup list by date
 			while (true)
 			{
 				bool sortPerformed = false;
-				for (int i = 0, i2 = i + 1; i < backupLIst.Length - 1 && i2 < backupLIst.Length; i += 1, i2 += 1)
+				for (int i = 0, i2 = i + 1; i < backupList.Length - 1 && i2 < backupList.Length; i += 1, i2 += 1)
 				{
-					if (DateTime.Compare(Directory.GetCreationTime(backupLIst[i]), Directory.GetCreationTime(backupLIst[i2])) > 0)
+					if (DateTime.Compare(Conversions.GetBackupDate(Path.GetFileName(backupList[i])), Conversions.GetBackupDate(Path.GetFileName(backupList[i2]))) > 0)
 					{
-						string cache = backupLIst[i2];
-						backupLIst[i2] = backupLIst[i];
-						backupLIst[i] = cache;
+						string cache = backupList[i2];
+						backupList[i2] = backupList[i];
+						backupList[i] = cache;
 						sortPerformed = true;
 					}
 				}
@@ -100,9 +117,9 @@ namespace BedrockServer2000
 			}
 
 			Console.WriteLine($"There are {backupsSaved} backups saved, which one would you like to load? (By continuing, you agree to overwrite the existing world and replace it with a chosen backup)");
-			for (int i = 0; i < backupLIst.Length; i += 1)
+			for (int i = 0; i < backupList.Length; i += 1)
 			{
-				Console.WriteLine($"{i + 1}: {backupLIst[i]}");
+				Console.WriteLine($"{i + 1}: {backupList[i]}");
 			}
 			Console.WriteLine("r: Most recent backup");
 			Console.WriteLine("c: Cancel");
@@ -120,7 +137,7 @@ namespace BedrockServer2000
 			}
 			else if (input.Trim().ToLower() == "r")
 			{
-				choice = backupLIst.Length;
+				choice = backupList.Length;
 			}
 			else if (!int.TryParse(input, out choice))
 			{
@@ -153,10 +170,10 @@ namespace BedrockServer2000
 			}
 			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
-			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupLIst[choice - 1]}\"");
-			CopyFilesRecursively(backupLIst[choice - 1], Program.serverConfigs.WorldPath);
+			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1]}\"");
+			CopyFilesRecursively(backupList[choice - 1], Program.serverConfigs.WorldPath);
 			CustomConsoleColor.SetColor_Success();
-			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupLIst[choice - 1]}\"");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1]}\"");
 			Console.ResetColor();
 
 			if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");

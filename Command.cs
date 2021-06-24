@@ -264,8 +264,8 @@ Examples:
 			if (Program.serverConfigs.AutoBackupEveryX)
 			{
 				int autoBackupEveryXTimerInterval = 0;
-				if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
-				else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+				if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+				else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
 				Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 			}
 		}
@@ -354,8 +354,8 @@ Examples:
 					if (Program.serverConfigs.ServerRunning && value == "true")
 					{
 						int autoBackupEveryXTimerInterval = 0;
-						if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
-						else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+						if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+						else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
 						Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 					}
 				}
@@ -371,9 +371,9 @@ Examples:
 					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX)
 					{
 						if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute")
-							Program.autoBackupEveryXTimer.Change(Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+							Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
 						else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour")
-							Program.autoBackupEveryXTimer.Change(Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+							Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
 					}
 				}
 				else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
@@ -384,13 +384,13 @@ Examples:
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.AutoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Timing.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
 				}
 				else if (value == "hour")
 				{
 					SaveConfig(key, value);
 					Program.serverConfigs.AutoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Timing.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
 			}
