@@ -17,7 +17,7 @@ namespace BedrockServer2000
 
 		static void Main()
 		{
-			// debug line
+			// debug code
 			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
 
 			//  Process events
@@ -32,7 +32,10 @@ namespace BedrockServer2000
 
 			if (serverConfigs.AutoStartServer) Command.ProcessCommand("start");
 
+			//TODO: add "banlistScanInterval" key in configuration file to specify the interval between each scan in seconds
 			BanlistScanTImer.Change(15000, 15000);
+
+			// console input
 			while (true)
 			{
 				if (serverConfigs.LoadRequest) continue;

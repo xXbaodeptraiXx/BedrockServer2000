@@ -16,7 +16,6 @@ namespace BedrockServer2000
 		public bool ExitRequest { get; set; } = false;
 		public bool PlayerActivitySinceLastBackup { get; set; } = false;
 
-		public int PlayerCount { get; set; } = 0;
 		public List<string> PlayerList { get; set; } = new List<string>();
 
 		public string[] BanList { get; set; }

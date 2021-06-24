@@ -23,19 +23,21 @@ namespace BedrockServer2000
 
 		public static void PerformBackup(bool manualCall)
 		{
+			Program.serverConfigs.BackupRunning = true;
+
 			if (!manualCall && !Program.serverConfigs.PlayerActivitySinceLastBackup) return;
 
-			Program.serverConfigs.BackupRunning = true;
 			try
 			{
+				CustomConsoleColor.SetColor_WorkStart();
+				Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
+
 				if (Program.serverConfigs.ServerRunning)
 				{
 					Program.serverInputStream.WriteLine("save hold");
-					Thread.Sleep(5000);
+					//TODO: use the "save query" command and parse the server output to check and wait for the save to complete then continue
+					Thread.Sleep(10000);
 				}
-
-				CustomConsoleColor.SetColor_WorkStart();
-				Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
 
 				CustomConsoleColor.SetColor_Work();
 				// Remove oldest backups if the number of backups existing is over backupLimit
@@ -43,9 +45,9 @@ namespace BedrockServer2000
 				int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 				while (currentNumberOfBackups >= Program.serverConfigs.BackupLimit)
 				{
-					string[] backups = Directory.GetDirectories(Program.serverConfigs.BackupPath);
-					Directory.Delete(backups[0], true);
-					Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backups[0]}");
+					string[] backupsDirectories = Directory.GetDirectories(Program.serverConfigs.BackupPath);
+					Directory.Delete(backupsDirectories[0], true);
+					Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupsDirectories[0]}");
 					currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 				}
 				DateTime now = DateTime.Now;
@@ -66,10 +68,11 @@ namespace BedrockServer2000
 				Console.WriteLine($"Source: {e.Source}");
 				Console.WriteLine($"StackTrace: {e.StackTrace}");
 				Console.ResetColor();
+				// Send error message to in-game chat
 				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
 			}
 
-			if (Program.serverConfigs.PlayerCount == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
+			if (Program.serverConfigs.PlayerList.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 			Program.serverConfigs.BackupRunning = false;
 		}
 

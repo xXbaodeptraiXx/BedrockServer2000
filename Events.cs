@@ -75,7 +75,6 @@ namespace BedrockServer2000
 				if (!Program.serverConfigs.PlayerList.Exists(x => x == playerName))
 				{
 					Program.serverConfigs.PlayerList.Add(playerName);
-					Program.serverConfigs.PlayerCount += 1;
 				}
 				foreach (string name in Program.serverConfigs.BanList)
 				{
@@ -95,7 +94,6 @@ namespace BedrockServer2000
 				if (Program.serverConfigs.PlayerList.Exists(x => x == playerName))
 				{
 					Program.serverConfigs.PlayerList.Remove(playerName);
-					if (Program.serverConfigs.PlayerCount > 0) Program.serverConfigs.PlayerCount -= 1;
 				}
 			}
 		}
