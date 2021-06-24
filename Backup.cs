@@ -31,6 +31,7 @@ namespace BedrockServer2000
 			{
 				CustomConsoleColor.SetColor_WorkStart();
 				Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
+				CustomConsoleColor.SetColor_Work();
 
 				if (Program.serverConfigs.ServerRunning)
 				{
@@ -39,7 +40,6 @@ namespace BedrockServer2000
 					Thread.Sleep(10000);
 				}
 
-				CustomConsoleColor.SetColor_Work();
 				// Remove oldest backups if the number of backups existing is over backupLimit
 				// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
 				int currentNumberOfBackups = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;

@@ -13,7 +13,7 @@ This software is still in development process, some features haven't been implem
 ### Current features
 
 - Server stop message to let players know that the server will close in 10 seconds
-- Automated backup saving, loading and other automated functions (has major bugs)
+- Automated backup saving, loading and other automated functions
 - Server exit timeout (automatically kill the server process if its exit procedure takes more than 30 seconds)
 - Configuration file
 - Ban list (has minor bugs)
@@ -29,9 +29,9 @@ This software is still in development process, some features haven't been implem
 
 ## Known bugs
 
-- Backup function deletes the wrong backup when number of backups reach backup limit which can results in loss of newer backups so you probably should not use the backup function until it's fixed (MAJOR BUG).
 - An empty ban list file will be created when none is found during config loading, but it results in an exception but the file is created anyway, the wrapper can start working fine again after restart (minor bug).
 
 ## Screenshots
 
+//TODO: update new screenshot, this one is obsolete
 ![app_screenshot](app_screenshot.png)
