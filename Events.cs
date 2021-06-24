@@ -7,7 +7,7 @@ namespace BedrockServer2000
 {
 	public class Events
 	{
-		public static void AutoBackupEveryXTimer_TIck(object args)
+		public static void AutoBackupEveryXTimer_TIck(object timerAargs)
 		{
 			// check if the configs are correct, cancel the backup if found any error
 			if (!Directory.Exists(Program.serverConfigs.WorldPath))
@@ -114,7 +114,7 @@ namespace BedrockServer2000
 			}
 		}
 
-		public static void ExitTImeoutTImer_Tick(object args)
+		public static void ExitTImeoutTImer_Tick(object timerArgs)
 		{
 			if (!Program.serverConfigs.ExitCompleted)
 			{
@@ -127,7 +127,7 @@ namespace BedrockServer2000
 			}
 		}
 
-		public static void BanlistScanTimer_Tick(object args)
+		public static void BanlistScanTimer_Tick(object timerArgs)
 		{
 			if (Program.serverConfigs.BackupRunning || !Program.serverConfigs.ServerRunning) return;
 			foreach (string name in Program.serverConfigs.PlayerList)
