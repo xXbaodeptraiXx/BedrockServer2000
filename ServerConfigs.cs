@@ -134,6 +134,15 @@ namespace BedrockServer2000
 				BackupLimit = Convert.ToInt32(Configs.GetValue("backupLimit"));
 			Console.WriteLine($"backupLimit: {BackupLimit}");
 
+			if (!File.Exists($"{Program.appName}.banlist"))
+			{
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine("Ban list file not found.");
+				CustomConsoleColor.SetColor_Success();
+
+				File.Create($"{Program.appName}.banlist");
+				Console.WriteLine("Empty ban list file generated.");
+			}
 			BanList = File.ReadAllLines($"{Program.appName}.banlist");
 			Console.WriteLine($"Ban list loaded.");
 			if (BanList.Length >= 1)

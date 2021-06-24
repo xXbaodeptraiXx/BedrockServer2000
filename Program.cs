@@ -13,12 +13,20 @@ namespace BedrockServer2000
 		public static Timer autoBackupEveryXTimer = new Timer(Events.AutoBackupEveryXTimer_TIck);
 		public static Timer ExitTImeoutTImer = new Timer(Events.ExitTImeoutTImer_Tick);
 		public static Timer BanlistScanTImer = new Timer(Events.BanlistScanTimer_Tick);
-		public static string appName = "BedrockServer2000";
+		public const string appName = "BedrockServer2000";
 
 		static void Main()
 		{
 			// debug code
 			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
+
+			if (!File.Exists($"{appName}.conf"))
+			{
+				CustomConsoleColor.SetColor_Error();
+				Console.WriteLine("Configuration file not found.");
+				Console.ResetColor();
+				return;
+			}
 
 			//  Process events
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
