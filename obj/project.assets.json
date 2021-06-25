@@ -582,7 +582,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
-      "projectName": "BedrockServer2000",
+      "projectName": "bs2k",
       "projectPath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
       "packagesPath": "/home/bao/.nuget/packages/",
       "outputPath": "/home/bao/Documents/GitHub/BedrockServer2000/obj/",

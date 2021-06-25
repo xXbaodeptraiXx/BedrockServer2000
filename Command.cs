@@ -59,7 +59,7 @@ namespace BedrockServer2000
 				Program.serverConfigs.LoadRequest = Program.serverConfigs.ServerRunning;
 				if (Program.serverConfigs.ServerRunning)
 				{
-					Program.serverInputStream.WriteLine("say The server is about to close to load a backup.");
+					Program.serverInputStream.WriteLine("say The server is about to restart to load a backup.");
 					StopServer();
 				}
 				else Backup.LoadBackup();
@@ -239,7 +239,7 @@ Examples:
 			Program.serverConfigs.ServerRunning = true;
 
 			CustomConsoleColor.SetColor_WorkStart();
-			Console.WriteLine($"{Timing.LogDateTime()} Starting server");
+			Console.WriteLine($"{Timing.LogDateTime()} Starting server.");
 			Console.ResetColor();
 
 			Program.serverProcess = new Process();

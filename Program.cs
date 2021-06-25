@@ -13,7 +13,7 @@ namespace BedrockServer2000
 		public static Timer autoBackupEveryXTimer = new Timer(Events.AutoBackupEveryXTimer_TIck);
 		public static Timer ExitTImeoutTImer = new Timer(Events.ExitTImeoutTImer_Tick);
 		public static Timer BanlistScanTImer = new Timer(Events.BanlistScanTimer_Tick);
-		public const string appName = "BedrockServer2000";
+		public const string appName = "bs2k";
 
 		static void Main()
 		{

@@ -7,12 +7,12 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {},
     ".NETCoreApp,Version=v3.1/linux-x64": {
-      "BedrockServer2000/1.0.0": {
+      "bs2k/1.0.0": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "5.0.0"
         },
         "runtime": {
-          "BedrockServer2000.dll": {}
+          "bs2k.dll": {}
         }
       },
       "Microsoft.NETCore.Platforms/5.0.0": {},
@@ -104,7 +104,7 @@
     }
   },
   "libraries": {
-    "BedrockServer2000/1.0.0": {
+    "bs2k/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
