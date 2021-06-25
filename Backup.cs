@@ -8,13 +8,13 @@ namespace BedrockServer2000
 	{
 		private static void CopyFilesRecursively(string sourcePath, string targetPath)
 		{
-			//Now Create all of the directories
+			// Now Create all of the directories
 			foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
 			{
 				Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
 			}
 
-			//Copy all the files & Replaces any files with the same name
+			// Copy all the files & Replaces any files with the same name
 			foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
 			{
 				File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
@@ -24,8 +24,6 @@ namespace BedrockServer2000
 		public static void PerformBackup(bool manualCall)
 		{
 			Program.serverConfigs.BackupRunning = true;
-
-			if (!manualCall && !Program.serverConfigs.PlayerActivitySinceLastBackup) return;
 
 			try
 			{
@@ -89,7 +87,6 @@ namespace BedrockServer2000
 				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
 			}
 
-			if (Program.serverConfigs.PlayerList.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 			Program.serverConfigs.BackupRunning = false;
 		}
 

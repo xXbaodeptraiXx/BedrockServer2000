@@ -9,6 +9,8 @@ namespace BedrockServer2000
 	{
 		public static void AutoBackupEveryXTimer_TIck(object timerAargs)
 		{
+			if (!Program.serverConfigs.PlayerActivitySinceLastBackup) return;
+
 			// check if the configs are correct, cancel the backup if found any error
 			if (!Directory.Exists(Program.serverConfigs.WorldPath))
 			{
@@ -30,6 +32,8 @@ namespace BedrockServer2000
 			}
 
 			Backup.PerformBackup(false);
+
+			if (Program.serverConfigs.PlayerList.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 		}
 
 		public static void BedrockServerProcess_Exited(object sender, EventArgs e)
