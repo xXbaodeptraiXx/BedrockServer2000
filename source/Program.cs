@@ -7,19 +7,21 @@ namespace BedrockServer2000
 {
 	class Program
 	{
+		// main configs
+		public const string appName = "bs2k";
 		public static ServerConfig serverConfigs = new ServerConfig();
+
+		// server process
 		public static Process serverProcess;
-		public static StreamWriter serverInputStream;
+		public static StreamWriter serverInput;
+
+		// timers
 		public static Timer autoBackupEveryXTimer = new Timer(Events.AutoBackupEveryXTimer_TIck);
 		public static Timer ExitTImeoutTImer = new Timer(Events.ExitTImeoutTImer_Tick);
 		public static Timer BanlistScanTImer = new Timer(Events.BanlistScanTimer_Tick);
-		public const string appName = "bs2k";
 
 		static void Main()
 		{
-			// debug code
-			// Directory.SetCurrentDirectory("/home/bao/bedrock_server");
-
 			if (!File.Exists($"{appName}.conf"))
 			{
 				CustomConsoleColor.SetColor_Error();
@@ -28,7 +30,7 @@ namespace BedrockServer2000
 				return;
 			}
 
-			//  Process events
+			//  server process events
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Events.OnExit);
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(Events.OnExit);
 
@@ -43,7 +45,7 @@ namespace BedrockServer2000
 			//TODO: add "banlistScanInterval" key in configuration file to specify the interval between each scan in seconds
 			BanlistScanTImer.Change(15000, 15000);
 
-			// console input
+			// console input loop
 			while (true)
 			{
 				if (serverConfigs.LoadRequest) continue;

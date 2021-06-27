@@ -33,7 +33,7 @@ namespace BedrockServer2000
 
 				if (Program.serverConfigs.ServerRunning)
 				{
-					Program.serverInputStream.WriteLine("save hold");
+					Program.serverInput.WriteLine("save hold");
 					//TODO: use the "save query" command and parse the server output to check and wait for the save to complete then continue
 					Thread.Sleep(10000);
 				}
@@ -70,7 +70,7 @@ namespace BedrockServer2000
 				Console.WriteLine($"{Timing.LogDateTime()} Copying backup...");
 				CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
 
-				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine("save resume");
+				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine("save resume");
 				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
 				Console.ResetColor();
@@ -84,7 +84,7 @@ namespace BedrockServer2000
 				Console.WriteLine($"StackTrace: {e.StackTrace}");
 				Console.ResetColor();
 				// Send error message to in-game chat
-				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
+				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
 			}
 
 			Program.serverConfigs.BackupRunning = false;

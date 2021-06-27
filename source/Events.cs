@@ -105,7 +105,7 @@ namespace BedrockServer2000
 		private static async void AutoKick(string name, int delay)
 		{
 			Thread.Sleep(delay);
-			Program.serverInputStream.WriteLine($"kick {name} Banned player detected");
+			Program.serverInput.WriteLine($"kick {name} Banned player detected");
 		}
 
 		public static void OnExit(object sender, EventArgs e)
@@ -139,7 +139,7 @@ namespace BedrockServer2000
 					if (name == Program.serverConfigs.BanList[i])
 					{
 						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{name}\" found in ban list.");
-						Program.serverInputStream.WriteLine($"kick {name}");
+						Program.serverInput.WriteLine($"kick {name}");
 					}
 				}
 			}

@@ -59,7 +59,7 @@ namespace BedrockServer2000
 				Program.serverConfigs.LoadRequest = Program.serverConfigs.ServerRunning;
 				if (Program.serverConfigs.ServerRunning)
 				{
-					Program.serverInputStream.WriteLine("say The server is about to restart to load a backup.");
+					Program.serverInput.WriteLine("say The server is about to restart to load a backup.");
 					StopServer();
 				}
 				else Backup.LoadBackup();
@@ -100,7 +100,7 @@ namespace BedrockServer2000
 				{
 					if (Program.serverConfigs.ServerRunning)
 					{
-						Program.serverInputStream.WriteLine("say " + command.Trim().Remove(0, 4));
+						Program.serverInput.WriteLine("say " + command.Trim().Remove(0, 4));
 						CustomConsoleColor.SetColor_Success();
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
 						Console.ResetColor();
@@ -118,7 +118,7 @@ namespace BedrockServer2000
 					else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], "");
 					else
 					{
-						if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
+						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
 							CustomConsoleColor.SetColor_Warning();
@@ -132,7 +132,7 @@ namespace BedrockServer2000
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
 					else
 					{
-						if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
+						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
 							CustomConsoleColor.SetColor_Warning();
@@ -143,7 +143,7 @@ namespace BedrockServer2000
 				}
 				else
 				{
-					if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
+					if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 					else
 					{
 						CustomConsoleColor.SetColor_Warning();
@@ -156,7 +156,7 @@ namespace BedrockServer2000
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else
 			{
-				if (Program.serverConfigs.ServerRunning) Program.serverInputStream.WriteLine(command);
+				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 				else
 				{
 					CustomConsoleColor.SetColor_Warning();
@@ -259,7 +259,7 @@ Examples:
 			Console.ResetColor();
 			Program.serverProcess.BeginOutputReadLine();
 			Program.serverProcess.BeginErrorReadLine();
-			Program.serverInputStream = Program.serverProcess.StandardInput;
+			Program.serverInput = Program.serverProcess.StandardInput;
 
 			if (Program.serverConfigs.AutoBackupEveryX)
 			{
@@ -277,12 +277,12 @@ Examples:
 
 			const string stopMessage = "Server closing in 10 seconds";
 
-			Program.serverInputStream.WriteLine($"say {stopMessage}");
+			Program.serverInput.WriteLine($"say {stopMessage}");
 			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
 			Console.ResetColor();
 			Thread.Sleep(10000);
-			Program.serverInputStream.WriteLine("stop");
+			Program.serverInput.WriteLine("stop");
 
 			Program.serverConfigs.ExitCompleted = false;
 			Program.ExitTImeoutTImer.Change(30000, 30000);

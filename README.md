@@ -21,7 +21,6 @@ This software is still in development process, some features haven't been implem
 
 ### Unimplemented features
 
-- Sort backup list by folder names (D_M_Y-H_M_S)
 - Automatic backup on DateTIme
 - Logging
 - Chat input and logging (depends on server software, which hasn't implement that)
@@ -29,9 +28,8 @@ This software is still in development process, some features haven't been implem
 
 ## Known bugs
 
-- An empty ban list file will be created when none is found during config loading, but it results in an exception but the file is created anyway, the wrapper can start working fine again after restart (minor bug).
+- Exception thrown when ban list file is not found.
 
 ## Screenshots
 
-//TODO: update new screenshot, this one is obsolete
-![app_screenshot](app_screenshot.png)
+![app_screenshot](/resources/screenshots/app_screenshot.png)
