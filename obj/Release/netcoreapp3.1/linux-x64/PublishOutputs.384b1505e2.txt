@@ -1,0 +1,2 @@
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/linux-x64/publish/bs2k.pdb
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/linux-x64/publish/bs2k

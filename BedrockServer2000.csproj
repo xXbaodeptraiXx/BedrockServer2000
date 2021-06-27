@@ -10,15 +10,20 @@
   </PropertyGroup>
 
 <ItemGroup>
-    <None Update="*.conf">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+  <ContentWithTargetPath Include="source/assets/bs2k.conf">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <TargetPath>publish/bs2k.conf</TargetPath>
+  </ContentWithTargetPath>
 
-    <None Update="*.banlist">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ContentWithTargetPath Include="source/assets/bs2k.banlist">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <TargetPath>publish/bs2k.banlist</TargetPath>
+  </ContentWithTargetPath>
+  
+  <Content Include="source/assets/bs2k.conf" />
+  <Content Include="source/assets/bs2k.banlist" />
 </ItemGroup>
 
 <ItemGroup>
