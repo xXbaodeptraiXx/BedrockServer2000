@@ -24,9 +24,7 @@ namespace BedrockServer2000
 		{
 			if (!File.Exists($"{appName}.conf"))
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine("Configuration file not found.");
-				Console.ResetColor();
 				return;
 			}
 
@@ -36,9 +34,7 @@ namespace BedrockServer2000
 
 			serverConfigs.LoadConfigs();
 
-			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started.");
-			Console.ResetColor();
 
 			if (serverConfigs.AutoStartServer) Command.ProcessCommand("start");
 

@@ -230,17 +230,13 @@ Examples:
 		{
 			if (!Program.serverConfigs.ServerExecutableExists)
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine("Server executable not found, can't start server.");
-				Console.ResetColor();
 				return;
 			}
 
 			Program.serverConfigs.ServerRunning = true;
 
-			CustomConsoleColor.SetColor_WorkStart();
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server.");
-			Console.ResetColor();
 
 			Program.serverProcess = new Process();
 			Program.serverProcess.StartInfo.FileName = "bedrock_server";
@@ -254,9 +250,7 @@ Examples:
 			Program.serverProcess.Exited += new EventHandler(Events.BedrockServerProcess_Exited);
 			Program.serverProcess.Start();
 
-			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} Using this terminal: " + Program.serverProcess.StartInfo.FileName);
-			Console.ResetColor();
 			Program.serverProcess.BeginOutputReadLine();
 			Program.serverProcess.BeginErrorReadLine();
 			Program.serverInput = Program.serverProcess.StandardInput;
@@ -278,9 +272,7 @@ Examples:
 			const string stopMessage = "Server closing in 10 seconds";
 
 			Program.serverInput.WriteLine($"say {stopMessage}");
-			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
-			Console.ResetColor();
 			Thread.Sleep(10000);
 			Program.serverInput.WriteLine("stop");
 
@@ -427,16 +419,12 @@ Examples:
 		private static void SaveConfig(string key, string value)
 		{
 			Configs.SetValue(key, value);
-			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} {key} was set to {value}");
-			Console.ResetColor();
 		}
 
 		private static void ShowSyntaxError()
 		{
-			CustomConsoleColor.SetColor_Error();
 			Console.WriteLine("Error: Incorrect command syntax.");
-			Console.ResetColor();
 		}
 
 		private static void RunExitProcedure()
@@ -449,9 +437,7 @@ Examples:
 			}
 			else
 			{
-				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
-				Console.ResetColor();
 				Environment.Exit(0);
 			}
 		}

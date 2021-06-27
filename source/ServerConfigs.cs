@@ -35,12 +35,9 @@ namespace BedrockServer2000
 
 		public void LoadConfigs()
 		{
-			CustomConsoleColor.SetColor_WorkStart();
 			Console.WriteLine($"{Timing.LogDateTime()} Loading configs");
-			Console.ResetColor();
 
 			ServerExecutableExists = File.Exists("bedrock_server");
-			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"serverExecutableExists: {ServerExecutableExists}");
 
 			if (Configs.GetValue("autoStartServer") != "true" && Configs.GetValue("autoStartServer") != "false")
@@ -136,9 +133,7 @@ namespace BedrockServer2000
 
 			if (!File.Exists($"{Program.appName}.banlist"))
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine("Ban list file not found.");
-				CustomConsoleColor.SetColor_Success();
 
 				File.Create($"{Program.appName}.banlist");
 				Console.WriteLine("Empty ban list file generated.");
@@ -158,7 +153,6 @@ namespace BedrockServer2000
 				Events.BanlistScanTimer_Tick(null);
 			}
 			else Console.WriteLine("Ban list is empty.");
-			Console.ResetColor();
 		}
 	}
 }

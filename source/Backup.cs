@@ -27,9 +27,7 @@ namespace BedrockServer2000
 
 			try
 			{
-				CustomConsoleColor.SetColor_WorkStart();
 				Console.WriteLine($"{Timing.LogDateTime()} Starting backup");
-				CustomConsoleColor.SetColor_Work();
 
 				if (Program.serverConfigs.ServerRunning)
 				{
@@ -71,18 +69,15 @@ namespace BedrockServer2000
 				CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + newBackupName);
 
 				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine("save resume");
-				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + newBackupName}");
-				Console.ResetColor();
 			}
 			catch (Exception e)
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine($"EXCEPTION THROWN: {e.Message}");
 				Console.WriteLine($"Data: {e.Data}");
 				Console.WriteLine($"Source: {e.Source}");
 				Console.WriteLine($"StackTrace: {e.StackTrace}");
-				Console.ResetColor();
+
 				// Send error message to in-game chat
 				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
 			}
@@ -126,9 +121,7 @@ namespace BedrockServer2000
 
 			if (input.Trim().ToLower() == "c")
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine($"{Timing.LogDateTime()} Load canceled.");
-				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
@@ -138,17 +131,13 @@ namespace BedrockServer2000
 			}
 			else if (!int.TryParse(input, out choice))
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
-				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
-				Console.ResetColor();
 				if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
@@ -159,19 +148,14 @@ namespace BedrockServer2000
 			}
 			catch (Exception e)
 			{
-				CustomConsoleColor.SetColor_Error();
 				Console.WriteLine($"{Timing.LogDateTime()} Exception thrown: {e.Message}");
 				Console.WriteLine($"{Timing.LogDateTime()} Load failed.");
-				Console.ResetColor();
 				return;
 			}
-			CustomConsoleColor.SetColor_Work();
 			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1]}\"");
 			CopyFilesRecursively(backupList[choice - 1], Program.serverConfigs.WorldPath);
-			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1]}\"");
-			Console.ResetColor();
 
 			if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 		}

@@ -14,20 +14,17 @@ namespace BedrockServer2000
 			// check if the configs are correct, cancel the backup if found any error
 			if (!Directory.Exists(Program.serverConfigs.WorldPath))
 			{
-				CustomConsoleColor.SetColor_Error();
-				Console.ResetColor();
+				Console.WriteLine($"World path incorrect, can't perform backup.");
 				return;
 			}
 			if (!Directory.Exists(Program.serverConfigs.BackupPath))
 			{
-				CustomConsoleColor.SetColor_Error();
-				Console.ResetColor();
+				Console.WriteLine($"Backup path incorrect, can't perform backup.");
 				return;
 			}
 			if (Program.serverConfigs.BackupLimit <= 0)
 			{
-				CustomConsoleColor.SetColor_Error();
-				Console.ResetColor();
+				Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
 				return;
 			}
 
@@ -43,9 +40,7 @@ namespace BedrockServer2000
 
 			Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
 
-			CustomConsoleColor.SetColor_Success();
 			Console.WriteLine($"{Timing.LogDateTime()} Server stopped.");
-			Console.ResetColor();
 
 			if (Program.serverConfigs.LoadRequest)
 			{
@@ -54,9 +49,7 @@ namespace BedrockServer2000
 			}
 			else if (Program.serverConfigs.ExitRequest)
 			{
-				CustomConsoleColor.SetColor_Success();
 				Console.WriteLine($"{Timing.LogDateTime()} Server wrapper stopped.");
-				Console.ResetColor();
 				Environment.Exit(0);
 			}
 		}
