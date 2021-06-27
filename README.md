@@ -32,4 +32,4 @@ This software is still in development process, some features haven't been implem
 
 ## Screenshots
 
-![app_screenshot](/resources/screenshots/app_screenshot.png)
+![app_screenshot](resources/screenshots/app_screenshot.png)

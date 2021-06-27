@@ -25,9 +25,7 @@ namespace BedrockServer2000
 				}
 				else
 				{
-					CustomConsoleColor.SetColor_Warning();
 					Console.WriteLine("Server is not currently running.");
-					Console.ResetColor();
 				}
 			}
 			else if (formattedCommand == "load")
@@ -35,23 +33,17 @@ namespace BedrockServer2000
 				// check if the configs are correct, cancel load if found any error
 				if (!Directory.Exists(Program.serverConfigs.WorldPath))
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"World path incorrect");
-					Console.ResetColor();
 					return;
 				}
 				if (!Directory.Exists(Program.serverConfigs.BackupPath))
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup path incorrect");
-					Console.ResetColor();
 					return;
 				}
 				if (Directory.Exists(Program.serverConfigs.BackupPath) && Directory.GetDirectories(Program.serverConfigs.BackupPath).Length < 1)
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"There are no backups to load");
-					Console.ResetColor();
 					return;
 				}
 
@@ -69,23 +61,17 @@ namespace BedrockServer2000
 				// check if the configs are correct, cancel the backup if found any error
 				if (!Directory.Exists(Program.serverConfigs.WorldPath))
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"World path incorrect, can't perform backup.");
-					Console.ResetColor();
 					return;
 				}
 				if (!Directory.Exists(Program.serverConfigs.BackupPath))
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup path incorrect, can't perform backup.");
-					Console.ResetColor();
 					return;
 				}
 				if (Program.serverConfigs.BackupLimit <= 0)
 				{
-					CustomConsoleColor.SetColor_Error();
 					Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
-					Console.ResetColor();
 					return;
 				}
 
@@ -101,15 +87,11 @@ namespace BedrockServer2000
 					if (Program.serverConfigs.ServerRunning)
 					{
 						Program.serverInput.WriteLine("say " + command.Trim().Remove(0, 4));
-						CustomConsoleColor.SetColor_Success();
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
-						Console.ResetColor();
 					}
 					else
 					{
-						CustomConsoleColor.SetColor_Warning();
 						Console.WriteLine("Server is not currently running.");
-						Console.ResetColor();
 					}
 				}
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 2)
@@ -121,9 +103,7 @@ namespace BedrockServer2000
 						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
-							CustomConsoleColor.SetColor_Warning();
 							Console.WriteLine("Unknown command.");
-							Console.ResetColor();
 						}
 					}
 				}
@@ -135,9 +115,7 @@ namespace BedrockServer2000
 						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
-							CustomConsoleColor.SetColor_Warning();
 							Console.WriteLine("Unknown command.");
-							Console.ResetColor();
 						}
 					}
 				}
@@ -146,9 +124,7 @@ namespace BedrockServer2000
 					if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 					else
 					{
-						CustomConsoleColor.SetColor_Warning();
 						Console.WriteLine("Unknown command.");
-						Console.ResetColor();
 					}
 				}
 			}
@@ -159,9 +135,7 @@ namespace BedrockServer2000
 				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
 				else
 				{
-					CustomConsoleColor.SetColor_Warning();
 					Console.WriteLine("Unknown command.");
-					Console.ResetColor();
 				}
 			}
 		}
