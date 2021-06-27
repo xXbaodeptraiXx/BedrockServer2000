@@ -189,13 +189,14 @@ Syntax:
   + 'configs' : show status of all configs
   + 'configs [config_key]' : show status of a specific config key
 
-use 'configs' to know all the config keys
+use 'configs' to know all the config keys.
+use 'configs banlist' to show banned players.
 
 Examples:
   + configs
   + configs autoStartServer
   + configs autoBackupEveryXDuration
-			");
+");
 			}
 			else ShowSyntaxError();
 		}
@@ -267,6 +268,19 @@ Examples:
 				Console.WriteLine($"worldPath = {Program.serverConfigs.WorldPath}");
 				Console.WriteLine($"backupPath = {Program.serverConfigs.BackupPath}");
 				Console.WriteLine($"backupLimit = {Program.serverConfigs.BackupLimit}");
+				if (Program.serverConfigs.BanList.Length >= 1)
+				{
+					Console.Write("Banned players: {");
+					for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
+					{
+						Console.Write(Program.serverConfigs.BanList[i]);
+						if (i != Program.serverConfigs.BanList.Length - 1) Console.Write(", ");
+					}
+					Console.WriteLine("}");
+
+					Events.BanlistScanTimer_Tick(null);
+				}
+				else Console.WriteLine("Ban list is empty.");
 			}
 			else if (key == "autostartserver") Console.WriteLine($"autoStartServer = {Program.serverConfigs.AutoStartServer}");
 			else if (key == "autobackupondate") Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.AutoBackupOnDate}");
@@ -277,6 +291,22 @@ Examples:
 			else if (key == "worldpath") Console.WriteLine($"worldPath = {Program.serverConfigs.WorldPath}");
 			else if (key == "backuppath") Console.WriteLine($"backupPath = {Program.serverConfigs.BackupPath}");
 			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {Program.serverConfigs.BackupLimit}");
+			else if (key == "banlist")
+			{
+				if (Program.serverConfigs.BanList.Length >= 1)
+				{
+					Console.Write("Banned players: {");
+					for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
+					{
+						Console.Write(Program.serverConfigs.BanList[i]);
+						if (i != Program.serverConfigs.BanList.Length - 1) Console.Write(", ");
+					}
+					Console.WriteLine("}");
+
+					Events.BanlistScanTimer_Tick(null);
+				}
+				else Console.WriteLine("Ban list is empty.");
+			}
 			else Console.WriteLine($"Error: Unknown config key");
 		}
 
