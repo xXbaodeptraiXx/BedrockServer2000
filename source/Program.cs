@@ -1,11 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Diagnostics;
-using System.IO;
 
 namespace BedrockServer2000
 {
-	class Program
+	public static class Program
 	{
 		// main configs
 		public const string appName = "bs2k";

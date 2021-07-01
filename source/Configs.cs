@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BedrockServer2000
 {
-	public class Configs
+	public static class Configs
 	{
 		public static int KeyCount()
 		{

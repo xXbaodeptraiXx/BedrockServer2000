@@ -1,11 +1,11 @@
 using System;
-using System.Diagnostics;
-using System.Threading;
 using System.IO;
+using System.Threading;
+using System.Diagnostics;
 
 namespace BedrockServer2000
 {
-	public class Events
+	public static class Events
 	{
 		public static void AutoBackupEveryXTimer_TIck(object timerAargs)
 		{
@@ -28,9 +28,10 @@ namespace BedrockServer2000
 				return;
 			}
 
-			Backup.PerformBackup(false);
+			if (Program.serverConfigs.ServerRunning) Backup.SendOnlineBackupRequest();
+			else Backup.PerformOfflineBackup();
 
-			if (Program.serverConfigs.PlayerList.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
+			if (Program.serverConfigs.Players.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 		}
 
 		public static void BedrockServerProcess_Exited(object sender, EventArgs e)
@@ -57,41 +58,44 @@ namespace BedrockServer2000
 		public static void BedrockServerProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
 		{
 			if (e.Data == null) return;
-			else
+
+			if (e.Data == "Data saved. Files are now ready to be copied." || e.Data == "Saving...")
 			{
-				string outputData = e.Data;
-				if (outputData.StartsWith("NO LOG FILE! - ")) outputData = outputData.Remove(0, 15);
-				Console.WriteLine($"{Timing.LogDateTime()} {outputData}");
+				Console.WriteLine($"{Timing.LogDateTime()} {e.Data}");
+				return;
 			}
 
+			if (Program.serverConfigs.BackupFileListRequest)
+			{
+				if (e.Data.Contains("/")
+				&& e.Data.Contains(".ldb")
+				&& e.Data.Contains(":")
+				&& e.Data.Contains(", "))
+				{
+					Console.WriteLine($"{Timing.LogDateTime()} Raw file list received.");
+					Backup.PerformOnlineBackup(e.Data);
+					return;
+				}
+				else
+				{
+					Program.serverInput.WriteLine("save query");
+				}
+			}
+
+			string outputData = e.Data;
+			if (outputData.StartsWith("NO LOG FILE! - ")) outputData = outputData.Remove(0, 15);
+			Console.WriteLine($"{Timing.LogDateTime()} {outputData}");
 			if (e.Data.Contains("[INFO] Player connected: "))
 			{
-				if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
-
 				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-				if (!Program.serverConfigs.PlayerList.Exists(x => x == playerName))
-				{
-					Program.serverConfigs.PlayerList.Add(playerName);
-				}
-				foreach (string name in Program.serverConfigs.BanList)
-				{
-					if (name == playerName)
-					{
-						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{playerName}\" found in ban list.");
-						AutoKick(playerName, 5000);
-						break;
-					}
-				}
+				string playerXuid = e.Data.Split(" ", StringSplitOptions.RemoveEmptyEntries)[^1];
+				OnPlayerJoin(new Player(playerName, playerXuid));
 			}
 			else if (e.Data.Contains("[INFO] Player disconnected: "))
 			{
-				if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
-
 				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer disconnected: ") + 28).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-				if (Program.serverConfigs.PlayerList.Exists(x => x == playerName))
-				{
-					Program.serverConfigs.PlayerList.Remove(playerName);
-				}
+				string playerXuid = e.Data.Split(" ", StringSplitOptions.RemoveEmptyEntries)[^1];
+				OnPlayerLeave(new Player(playerName, playerXuid));
 			}
 		}
 
@@ -125,16 +129,43 @@ namespace BedrockServer2000
 		public static void BanlistScanTimer_Tick(object timerArgs)
 		{
 			if (Program.serverConfigs.BackupRunning || !Program.serverConfigs.ServerRunning) return;
-			foreach (string name in Program.serverConfigs.PlayerList)
+			foreach (Player player in Program.serverConfigs.Players)
 			{
 				for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
 				{
-					if (name == Program.serverConfigs.BanList[i])
+					if (player.Name == Program.serverConfigs.BanList[i])
 					{
-						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{name}\" found in ban list.");
-						Program.serverInput.WriteLine($"kick {name}");
+						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{player.Name}\" found in ban list.");
+						Program.serverInput.WriteLine($"kick {player.Name}");
 					}
 				}
+			}
+		}
+
+		public static void OnPlayerJoin(Player player)
+		{
+			if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
+			if (!Program.serverConfigs.Players.Exists(x => x.Name == player.Name))
+			{
+				Program.serverConfigs.Players.Add(player);
+			}
+			foreach (string playerName in Program.serverConfigs.BanList)
+			{
+				if (playerName == player.Name)
+				{
+					Console.WriteLine($"{Timing.LogDateTime()} Player name \"{playerName}\" found in ban list.");
+					AutoKick(playerName, 5000);
+					break;
+				}
+			}
+		}
+
+		public static void OnPlayerLeave(Player player)
+		{
+			if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
+			if (Program.serverConfigs.Players.Exists(x => x.Name == player.Name))
+			{
+				Program.serverConfigs.Players.Remove(Program.serverConfigs.Players.Find(x => x.Name == player.Name));
 			}
 		}
 	}

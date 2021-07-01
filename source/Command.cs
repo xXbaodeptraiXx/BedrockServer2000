@@ -6,7 +6,7 @@ using System.IO;
 
 namespace BedrockServer2000
 {
-	public class Command
+	public static class Command
 	{
 		public static void ProcessCommand(string command)
 		{
@@ -75,7 +75,8 @@ namespace BedrockServer2000
 					return;
 				}
 
-				Backup.PerformBackup(true);
+				if (Program.serverConfigs.ServerRunning) Backup.SendOnlineBackupRequest();
+				else Backup.PerformOfflineBackup();
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.serverConfigs.LoadConfigs();

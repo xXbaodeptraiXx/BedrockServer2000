@@ -13,9 +13,8 @@ This software is still in development process, some features haven't been implem
 ### Current features
 
 - Server stop message to let players know that the server will close in 10 seconds
-- Automated backup saving, loading and other automated functions (has major bugs)
+- Automated backup saving, loading and other automated functions
 - Server exit timeout (automatically kill the server process if its exit procedure takes more than 30 seconds)
-- Configuration file
 - Ban list (has minor bugs)
 
 ### Unimplemented features
@@ -28,8 +27,8 @@ This software is still in development process, some features haven't been implem
 ## Known bugs
 
 - Exception thrown when ban list file is not found.
-- Automatic backup function sometimes causes some items or entities in the game to get deleted.
 
 ## Screenshots
 
+Screenshot is obsolete.
 ![app_screenshot](resources/screenshots/app_screenshot.png)

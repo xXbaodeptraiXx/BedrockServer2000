@@ -2,16 +2,20 @@ using System;
 
 namespace BedrockServer2000
 {
-	public static class Conversions
+	// This is not the kind of "backup path" that is specified in the configuration file
+	// this kind of backup path looks like this: "backups/30_6_2021-13_42_7"
+	public struct BackupPath : IComparable<BackupPath>
 	{
-		// TIme convertions
-		public static int HourToMilliseconds(int hour) => hour * 3600000;
-		public static int MinuteToMilliseconds(int minute) => minute * 60000;
+		public string Path { get; private set; }
+		public DateTime CreationDate { get; private set; }
 
-		// Converts backup folder formatted as "day_month_year-hour_minute_second" to DateTime value
-		//! Method is obsolete since it is no longer used in the program
-		public static DateTime GetBackupCreationDate(string directoryName)
+		public int CompareTo(BackupPath other) => this.CreationDate.CompareTo(other.CreationDate);
+
+		public BackupPath(string path)
 		{
+			this.Path = path;
+
+			string directoryName = System.IO.Path.GetFileName(Path);
 			string date = directoryName.Split("-", StringSplitOptions.RemoveEmptyEntries)[0];
 			string time = directoryName.Split("-", StringSplitOptions.RemoveEmptyEntries)[1];
 
@@ -23,7 +27,7 @@ namespace BedrockServer2000
 			int minute = Convert.ToInt32(time.Split("_", StringSplitOptions.RemoveEmptyEntries)[1]);
 			int second = Convert.ToInt32(time.Split("_", StringSplitOptions.RemoveEmptyEntries)[2]);
 
-			return new DateTime(year, month, day, hour, minute, second);
+			this.CreationDate = new DateTime(year, month, day, hour, minute, second);
 		}
 	}
 }
