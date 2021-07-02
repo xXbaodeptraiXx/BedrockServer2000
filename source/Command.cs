@@ -145,6 +145,7 @@ namespace BedrockServer2000
 		{
 			if (args == "")
 			{
+				//TODO: Insert embedded content (commands)
 				Console.WriteLine(@"Commands:
 - commands : show this message
 - start : start the server
@@ -157,10 +158,12 @@ namespace BedrockServer2000
 - clear : clear the console
 - exit : stop the server wrapper* Commands with ^ before their names can be used with 'commands [comand]' to show more information.
   + Example: 'commands set'
-Other commands are processed by the bedrock server software if it's running.");
+Other commands are processed by the bedrock server software if it's running.
+");
 			}
 			else if (args == "set")
 			{
+				//TODO: Insert embedded content (commands_set)
 				Console.WriteLine(@"Commands > set:
 Purpose: change server wrapper configs
 Syntax: set [config_key] [config_value]
@@ -176,14 +179,15 @@ Syntax: set [config_key] [config_value]
   + backupLimit [positive integer]
 
 Examples:
-  + set worldPath C:\\bedrock_server\\world backups
+  + set worldPath backups
   + set autoStartServer true
   + set backupLimit 32
   + set autoBackupEveryXTimeUnit hour
-				");
+");
 			}
 			else if (args == "configs")
 			{
+				//TODO: Insert embedded content (commands_configs)
 				Console.WriteLine(@"Commands > configs:
 Purpose: show server wrapper configs
 Syntax: 

@@ -30,5 +30,24 @@ This software is still in development process, some features haven't been implem
 
 ## Screenshots
 
-Screenshot is obsolete.
-![app_screenshot](resources/screenshots/app_screenshot.png)
+### Misc
+
+![app_screenshot_server_start_stop](resources/screenshots/app_screenshot_server_start_stop.png)
+Server start/stop
+
+![app_screenshot_commands](resources/screenshots/app_screenshot_commands.png)
+Commands
+
+![app_screenshot_configs](resources/screenshots/app_screenshot_configs.png)
+Configs
+
+### Automated backups saving/loading
+
+![app_screenshot_online_backup](resources/screenshots/app_screenshot_online_backup.png)
+Online backup
+
+![app_screenshot_offline_backup](resources/screenshots/app_screenshot_offline_backup.png)
+Offline backup
+
+![app_screenshot_auto_backup](resources/screenshots/app_screenshot_auto_backup.png)
+Automatic backups

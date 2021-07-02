@@ -9,11 +9,11 @@ namespace BedrockServer2000
 	{
 		// main configs
 		public const string appName = "bs2k";
+		public static Process serverProcess;
+		public static StreamWriter serverInput;
 		public static ServerConfig serverConfigs = new ServerConfig();
 
 		// server process
-		public static Process serverProcess;
-		public static StreamWriter serverInput;
 
 		// timers
 		public static Timer autoBackupEveryXTimer = new Timer(Events.AutoBackupEveryXTimer_TIck);

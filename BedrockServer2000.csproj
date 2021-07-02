@@ -16,4 +16,10 @@
     </None>
 </ItemGroup>
 
+<ItemGroup>
+  <!-- <EmbeddedResource Include="resources/embedded_contents/commands_help_output/commands.txt" />
+  <EmbeddedResource Include="resources/embedded_contents/commands_help_output/comands_set.txt" />
+  <EmbeddedResource Include="resources/embedded_contents/commands_help_output/commands_configs.txt" /> -->
+</ItemGroup>
+
 </Project>
