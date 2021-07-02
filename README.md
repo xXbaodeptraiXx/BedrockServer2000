@@ -15,22 +15,39 @@ This software is still in development process, some features haven't been implem
 - Server stop message to let players know that the server will close in 10 seconds
 - Automated backup saving, loading and other automated functions
 - Server exit timeout (automatically kill the server process if its exit procedure takes more than 30 seconds)
-- Configuration file
-- Color-highlighted output in terminal
-- Ban list
+- Ban list (has minor bugs)
 
 ### Unimplemented features
 
-- Sort backup list by folder names (D_M_Y-H_M_S)
 - Automatic backup on DateTIme
 - Logging
-- Chat input and logging (depends on server software, which hasn't implement that)
+- Chat logging
 - Better exception handlers
 
 ## Known bugs
 
-- Backup function occasionally throws DirectoryNotEmpty exception and I don't know why, please help |;-;|
+- Exception thrown when ban list file is not found.
 
 ## Screenshots
 
-![app_screenshot](app_screenshot.png)
+### Misc
+
+![app_screenshot_server_start_stop](resources/screenshots/app_screenshot_server_start_stop.png)
+Server start/stop
+
+![app_screenshot_commands](resources/screenshots/app_screenshot_commands.png)
+Commands
+
+![app_screenshot_configs](resources/screenshots/app_screenshot_configs.png)
+Configs
+
+### Automated backups saving/loading
+
+![app_screenshot_online_backup](resources/screenshots/app_screenshot_online_backup.png)
+Online backup
+
+![app_screenshot_offline_backup](resources/screenshots/app_screenshot_offline_backup.png)
+Offline backup
+
+![app_screenshot_auto_backup](resources/screenshots/app_screenshot_auto_backup.png)
+Automatic backups

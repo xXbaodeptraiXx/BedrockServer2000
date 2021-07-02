@@ -1,18 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MpcVOxB3OgGmKJ9cqLFc0bc2C9ML9ks2xbugT1Y3i6/WIPkNRIII79ncwi7CxYuyTGpEF8l1ZyoMbTJCo0JuBg==",
+  "dgSpecHash": "vBYrwSLploIEvXhf0NSa2hh9gdUP8vrT9MjkM705RXnc5EYOAR3vcyNroU8cd4Nq4zm0PCgbYsmyWm29WkRdoA==",
   "success": true,
   "projectFilePath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
-  "expectedPackageFiles": [
-    "/home/bao/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/microsoft.win32.systemevents/5.0.0/microsoft.win32.systemevents.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.configuration.configurationmanager/5.0.0/system.configuration.configurationmanager.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.drawing.common/5.0.0/system.drawing.common.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.security.accesscontrol/5.0.0/system.security.accesscontrol.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.security.cryptography.protecteddata/5.0.0/system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.security.permissions/5.0.0/system.security.permissions.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
-    "/home/bao/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

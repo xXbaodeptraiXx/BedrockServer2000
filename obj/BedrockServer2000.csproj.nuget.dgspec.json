@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
-        "projectName": "BedrockServer2000",
+        "projectName": "bs2k",
         "projectPath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
         "packagesPath": "/home/bao/.nuget/packages/",
         "outputPath": "/home/bao/Documents/GitHub/BedrockServer2000/obj/",
@@ -24,6 +24,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -35,12 +36,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "dependencies": {
-            "System.Configuration.ConfigurationManager": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            }
-          },
+          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -56,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.410/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

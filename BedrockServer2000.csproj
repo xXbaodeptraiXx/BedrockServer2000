@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
    <PropertyGroup>
+    <AssemblyName>bs2k</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
@@ -9,19 +10,16 @@
   </PropertyGroup>
 
 <ItemGroup>
-    <None Update="*.conf">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-
-    <None Update="*.banlist">
+    <None Update="bs2k.*">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
 </ItemGroup>
 
 <ItemGroup>
-  <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  <!-- <EmbeddedResource Include="resources/embedded_contents/commands_help_output/commands.txt" />
+  <EmbeddedResource Include="resources/embedded_contents/commands_help_output/comands_set.txt" />
+  <EmbeddedResource Include="resources/embedded_contents/commands_help_output/commands_configs.txt" /> -->
 </ItemGroup>
 
 </Project>
