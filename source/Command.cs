@@ -179,7 +179,7 @@ Syntax: set [config_key] [config_value]
   + backupLimit [positive integer]
 
 Examples:
-  + set worldPath backups
+  + set worldPath worlds/Abc
   + set autoStartServer true
   + set backupLimit 32
   + set autoBackupEveryXTimeUnit hour
