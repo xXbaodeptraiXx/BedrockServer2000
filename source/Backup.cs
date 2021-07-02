@@ -156,16 +156,16 @@ namespace BedrockServer2000
 		{
 			int backupsSaved = Directory.GetDirectories(Program.serverConfigs.BackupPath).Length;
 
-
 			List<BackupPath> backupList = new List<BackupPath>();
 			foreach (string path in Directory.GetDirectories(Program.serverConfigs.BackupPath)) backupList.Add(new BackupPath(path));
 			backupList.Sort();
 
-			Console.WriteLine($"There are {backupsSaved} backups saved, which one would you like to load? (By continuing, you agree to overwrite the existing world and replace it with a chosen backup)");
 			for (int i = 0; i < backupList.Count; i += 1)
 			{
 				Console.WriteLine($"{i + 1}: {backupList[i]}");
 			}
+			Console.WriteLine($"There are {backupsSaved}/{Program.serverConfigs.BackupLimit} backups saved, which one would you like to load?");
+			Console.WriteLine("By continuing, you agree to overwrite the existing world and replace it with a chosen backup.");
 			Console.WriteLine("r: Most recent backup");
 			Console.WriteLine("c: Cancel");
 
@@ -195,17 +195,6 @@ namespace BedrockServer2000
 				return;
 			}
 
-			try
-			{
-				Directory.Delete(Program.serverConfigs.WorldPath, true);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine($"{Timing.LogDateTime()} Exception thrown: {e.Message}");
-				Console.WriteLine($"{Timing.LogDateTime()} Load failed.");
-				return;
-			}
-			Console.WriteLine($"{Timing.LogDateTime()} World folder deleted.");
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1]}\"");
 			CopyFilesRecursively(backupList[choice - 1].Path, Program.serverConfigs.WorldPath);
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1]}\"");
