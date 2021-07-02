@@ -162,7 +162,7 @@ namespace BedrockServer2000
 
 			for (int i = 0; i < backupList.Count; i += 1)
 			{
-				Console.WriteLine($"{i + 1}: {backupList[i]}");
+				Console.WriteLine($"{i + 1}: {backupList[i].Path}");
 			}
 			Console.WriteLine($"There are {backupsSaved}/{Program.serverConfigs.BackupLimit} backups saved, which one would you like to load?");
 			Console.WriteLine("By continuing, you agree to overwrite the existing world and replace it with a chosen backup.");
@@ -195,9 +195,9 @@ namespace BedrockServer2000
 				return;
 			}
 
-			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1]}\"");
+			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1].Path}\"");
 			CopyFilesRecursively(backupList[choice - 1].Path, Program.serverConfigs.WorldPath);
-			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1]}\"");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1].Path}\"");
 
 			if (Program.serverConfigs.ServerWasRunningBefore) Command.ProcessCommand("start");
 		}
