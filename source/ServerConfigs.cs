@@ -7,21 +7,25 @@ namespace BedrockServer2000
 {
 	public class ServerConfig
 	{
+		// server properties
+		public List<Player> Players { get; set; } = new List<Player>();
+		public string[] BanList { get; set; }
+
+		// server status
 		public bool ServerExecutableExists { get; set; } = false;
 		public bool ServerRunning { get; set; } = false;
 		public bool BackupRunning { get; set; } = false;
 		public bool ServerWasRunningBefore { get; set; } = false;
 		public bool ExitCompleted { get; set; } = true;
+		public bool PlayerActivitySinceLastBackup { get; set; } = false;
+
+		// requests
 		public bool LoadRequest { get; set; } = false;
 		public bool ExitRequest { get; set; } = false;
 		public bool BackupFileListRequest { get; set; } = false;
-		public string BackupFileLUst { get; set; }
-		public bool PlayerActivitySinceLastBackup { get; set; } = false;
+		public string BackupFileLUst { get; set; } = "";
 
-		public List<Player> Players { get; set; } = new List<Player>();
-
-		public string[] BanList { get; set; }
-
+		// server configs
 		public bool AutoStartServer { get; set; }
 
 		public bool AutoBackupOnDate { get; set; }

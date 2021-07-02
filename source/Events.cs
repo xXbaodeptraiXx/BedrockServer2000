@@ -7,39 +7,23 @@ namespace BedrockServer2000
 {
 	public static class Events
 	{
-		public static void AutoBackupEveryXTimer_TIck(object timerAargs)
+		#region Program Events
+		public static void OnProgramExit(object sender, EventArgs e)
 		{
-			if (!Program.serverConfigs.PlayerActivitySinceLastBackup) return;
-
-			// check if the configs are correct, cancel the backup if found any error
-			if (!Directory.Exists(Program.serverConfigs.WorldPath))
+			if (Program.serverConfigs.ServerRunning && !Program.serverProcess.HasExited)
 			{
-				Console.WriteLine($"World path incorrect, can't perform backup.");
-				return;
+				Program.serverProcess.Kill();
 			}
-			if (!Directory.Exists(Program.serverConfigs.BackupPath))
-			{
-				Console.WriteLine($"Backup path incorrect, can't perform backup.");
-				return;
-			}
-			if (Program.serverConfigs.BackupLimit <= 0)
-			{
-				Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
-				return;
-			}
-
-			if (Program.serverConfigs.ServerRunning) Backup.SendOnlineBackupRequest();
-			else Backup.PerformOfflineBackup();
-
-			if (Program.serverConfigs.Players.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 		}
+		#endregion
 
+		#region Bedrock Server Process Events		
 		public static void BedrockServerProcess_Exited(object sender, EventArgs e)
 		{
 			Program.serverConfigs.ServerRunning = false;
 			Program.serverConfigs.ExitCompleted = true;
 
-			Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
+			Program.exitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
 
 			Console.WriteLine($"{Timing.LogDateTime()} Server stopped.");
 
@@ -82,9 +66,9 @@ namespace BedrockServer2000
 				}
 			}
 
-			string outputData = e.Data;
-			if (outputData.StartsWith("NO LOG FILE! - ")) outputData = outputData.Remove(0, 15);
-			Console.WriteLine($"{Timing.LogDateTime()} {outputData}");
+			// remove "NO LOG FILE - " from the server's output data
+			if (e.Data.StartsWith("NO LOG FILE! - ")) Console.WriteLine($"{Timing.LogDateTime()} {e.Data.Remove(0, 15)}");
+
 			if (e.Data.Contains("[INFO] Player connected: "))
 			{
 				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
@@ -98,32 +82,34 @@ namespace BedrockServer2000
 				OnPlayerLeave(new Player(playerName, playerXuid));
 			}
 		}
+		#endregion
 
-		private static async void AutoKick(string name, int delay)
+		#region Timer Ticks
+		public static void AutoBackupEveryXTimer_TIck(object timerAargs)
 		{
-			Thread.Sleep(delay);
-			Program.serverInput.WriteLine($"kick {name} Banned player detected");
-		}
+			if (!Program.serverConfigs.PlayerActivitySinceLastBackup) return;
 
-		public static void OnExit(object sender, EventArgs e)
-		{
-			if (Program.serverConfigs.ServerRunning && !Program.serverProcess.HasExited)
+			// check if the configs are correct, cancel the backup if found any error
+			if (!Directory.Exists(Program.serverConfigs.WorldPath))
 			{
-				Program.serverProcess.Kill();
+				Console.WriteLine($"World path incorrect, can't perform backup.");
+				return;
 			}
-		}
-
-		public static void ExitTImeoutTImer_Tick(object timerArgs)
-		{
-			if (!Program.serverConfigs.ExitCompleted)
+			if (!Directory.Exists(Program.serverConfigs.BackupPath))
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Exit timed out.");
-				Program.serverProcess.Kill();
-				Console.WriteLine($"{Timing.LogDateTime()} Force killed server process.");
-				Program.serverConfigs.ExitCompleted = true;
-
-				Program.ExitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
+				Console.WriteLine($"Backup path incorrect, can't perform backup.");
+				return;
 			}
+			if (Program.serverConfigs.BackupLimit <= 0)
+			{
+				Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
+				return;
+			}
+
+			if (Program.serverConfigs.ServerRunning) Backup.SendOnlineBackupRequest();
+			else Backup.PerformOfflineBackup();
+
+			if (Program.serverConfigs.Players.Count == 0) Program.serverConfigs.PlayerActivitySinceLastBackup = false;
 		}
 
 		public static void BanlistScanTimer_Tick(object timerArgs)
@@ -142,6 +128,21 @@ namespace BedrockServer2000
 			}
 		}
 
+		public static void ExitTImeoutTImer_Tick(object timerArgs)
+		{
+			if (!Program.serverConfigs.ExitCompleted)
+			{
+				Console.WriteLine($"{Timing.LogDateTime()} Exit timed out.");
+				Program.serverProcess.Kill();
+				Console.WriteLine($"{Timing.LogDateTime()} Force killed server process.");
+				Program.serverConfigs.ExitCompleted = true;
+
+				Program.exitTImeoutTImer.Change(Timeout.Infinite, Timeout.Infinite);
+			}
+		}
+		#endregion
+
+		#region Player connection activity
 		public static void OnPlayerJoin(Player player)
 		{
 			if (Program.serverConfigs.AutoBackupEveryX && !Program.serverConfigs.PlayerActivitySinceLastBackup) Program.serverConfigs.PlayerActivitySinceLastBackup = true;
@@ -168,5 +169,14 @@ namespace BedrockServer2000
 				Program.serverConfigs.Players.Remove(Program.serverConfigs.Players.Find(x => x.Name == player.Name));
 			}
 		}
+		#endregion
+
+		#region Actions
+		private static async void AutoKick(string name, int delay)
+		{
+			Thread.Sleep(delay);
+			Program.serverInput.WriteLine($"kick {name} Banned player detected");
+		}
+		#endregion
 	}
 }

@@ -257,7 +257,7 @@ Examples:
 			Program.serverInput.WriteLine("stop");
 
 			Program.serverConfigs.ExitCompleted = false;
-			Program.ExitTImeoutTImer.Change(30000, 30000);
+			Program.exitTImeoutTImer.Change(30000, 30000);
 		}
 
 		private static void ShowConfigs(string key)
