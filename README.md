@@ -53,7 +53,9 @@ Offline backup
 ![app_screenshot_auto_backup](resources/screenshots/app_screenshot_auto_backup.png)
 Automatic backups
 
-## Compiling
+## Compiling and running
+
+This program is built with .NET Core 3.1 so you need to install the SDK to compile the code.
 
 To build the source for different platforms, you need to use the `dotnet build` command with a RuntimeIdentifier (`-r {RuntimeIdentifier}`).
 

@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "vBYrwSLploIEvXhf0NSa2hh9gdUP8vrT9MjkM705RXnc5EYOAR3vcyNroU8cd4Nq4zm0PCgbYsmyWm29WkRdoA==",
+  "dgSpecHash": "y1VbR2SE5R7gQOo8jncYbhPx4n6Rt+fT63sPpXu2NDuY9+fofddkqlRBi+b147DlEpVBEgmM/0skEPZBCo2tYg==",
   "success": true,
   "projectFilePath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/bao/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/3.1.16/microsoft.netcore.app.runtime.linux-x64.3.1.16.nupkg.sha512",
+    "/home/bao/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/3.1.16/microsoft.aspnetcore.app.runtime.linux-x64.3.1.16.nupkg.sha512"
+  ],
   "logs": []
 }
