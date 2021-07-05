@@ -52,3 +52,17 @@ Offline backup
 
 ![app_screenshot_auto_backup](resources/screenshots/app_screenshot_auto_backup.png)
 Automatic backups
+
+## Compiling
+
+To build the source for different platforms, you need to use the `dotnet build` command with a RuntimeIdentifier (`-r {RuntimeIdentifier}`).
+
+For Windows, the RID is `win-x64` and for Linux, the RID is `linux-x64`.
+
+The same goes for `dotnet publish` and `dotnet run`.
+
+### Example
+
+- `dotnet run -r linux-x64`
+- `dotnet build -r win-x64`
+- `dotnet publish -c Release -r linux-x64`
