@@ -9,6 +9,7 @@ namespace BedrockServer2000
 	{
 		// configs
 		public const string appName = "bs2k";
+		public const string appVersion = "preAlpha-1.0";
 		public static ServerConfig serverConfigs;
 
 		// server process
@@ -46,7 +47,7 @@ namespace BedrockServer2000
 
 			InitializeComponents();
 
-			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started.");
+			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started ({appName}:{appVersion}).");
 
 			if (serverConfigs.AutoStartServer) Command.ProcessCommand("start");
 
