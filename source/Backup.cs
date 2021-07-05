@@ -56,9 +56,9 @@ namespace BedrockServer2000
 			DateTime now = DateTime.Now;
 			string backupDate = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
 			Console.WriteLine($"{Timing.LogDateTime()} Copying world...");
-			CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + "/" + backupDate);
+			CopyFilesRecursively(Program.serverConfigs.WorldPath, Program.serverConfigs.BackupPath + Path.DirectorySeparatorChar + backupDate);
 
-			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + backupDate}");
+			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath}{Path.DirectorySeparatorChar}{backupDate}");
 			Program.serverConfigs.BackupRunning = false;
 		}
 
@@ -101,7 +101,7 @@ namespace BedrockServer2000
 				Console.WriteLine($"{Timing.LogDateTime()} Creating destination paths.");
 				foreach (string file in filesToCopy)
 				{
-					destinations.Add($"{Program.serverConfigs.BackupPath}/{backupDate}/{file.Remove(0, file.IndexOf("/") + 1)}");
+					destinations.Add($"{Program.serverConfigs.BackupPath}{Path.DirectorySeparatorChar}{backupDate}{Path.DirectorySeparatorChar}{file.Remove(0, file.IndexOf(Path.DirectorySeparatorChar) + 1)}");
 					// converts paths in filesToCopy to destination path that points to the backup path
 					// examples:
 					// "backups/30_6_2021-13_42_7/MyWorl/db/076668.ldb"
@@ -112,7 +112,7 @@ namespace BedrockServer2000
 				Console.WriteLine($"{Timing.LogDateTime()} Creating directories...");
 				foreach (string path in destinations)
 				{
-					string createDirectoryPath = path.Remove(path.LastIndexOf("/"));
+					string createDirectoryPath = path.Remove(path.LastIndexOf(Path.DirectorySeparatorChar));
 					// converts destination paths to paths without file names at the end
 					// examples:
 					// "backups/30_6_2021-13_42_7/MyWorl/db"
@@ -123,10 +123,10 @@ namespace BedrockServer2000
 				Console.WriteLine($"{Timing.LogDateTime()} Copying files...");
 				for (int i = 0; i < destinations.Count; i += 1)
 				{
-					string sourcePath = $"{Program.serverConfigs.WorldPath.Remove(Program.serverConfigs.WorldPath.LastIndexOf("/"))}/{filesToCopy[i]}";
+					string sourcePath = $"{Program.serverConfigs.WorldPath.Remove(Program.serverConfigs.WorldPath.LastIndexOf(Path.DirectorySeparatorChar))}{Path.DirectorySeparatorChar}{filesToCopy[i]}";
 					// joints the world path with the paths in filesToCopy to generate source paths for the files
 					// examples:
-					// "worlds//MyWorl/db/076668.ldb"
+					// "worlds/MyWorl/db/076668.ldb"
 					// "worlds/MyWorl/db/076172.ldb"
 					// "worlds/MyWorl/db/075035.ldb"
 
@@ -134,7 +134,7 @@ namespace BedrockServer2000
 				}
 
 				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine("save resume");
-				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath + "/" + backupDate}");
+				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {Program.serverConfigs.BackupPath}{Path.DirectorySeparatorChar}{backupDate}");
 			}
 			catch (Exception e)
 			{
