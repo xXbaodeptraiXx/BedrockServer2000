@@ -1,0 +1,4 @@
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/publish/bs2k.banlist
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/publish/bs2k.conf
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/publish/bs2k.pdb
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/publish/bs2k.exe

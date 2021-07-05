@@ -1,0 +1,15 @@
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.banlist
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.conf
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.exe
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.deps.json
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.runtimeconfig.json
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.runtimeconfig.dev.json
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.dll
+/home/bao/Documents/GitHub/BedrockServer2000/bin/Release/netcoreapp3.1/win-x64/bs2k.pdb
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/BedrockServer2000.csproj.AssemblyReference.cache
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/BedrockServer2000.AssemblyInfoInputs.cache
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/BedrockServer2000.AssemblyInfo.cs
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/BedrockServer2000.csproj.CoreCompileInputs.cache
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/bs2k.dll
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/bs2k.pdb
+/home/bao/Documents/GitHub/BedrockServer2000/obj/Release/netcoreapp3.1/win-x64/BedrockServer2000.genruntimeconfig.cache
