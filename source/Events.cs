@@ -66,8 +66,10 @@ namespace BedrockServer2000
 				}
 			}
 
+			string outputData = e.Data;
 			// remove "NO LOG FILE - " from the server's output data
-			if (e.Data.StartsWith("NO LOG FILE! - ")) Console.WriteLine($"{Timing.LogDateTime()} {e.Data.Remove(0, 15)}");
+			if (outputData.StartsWith("NO LOG FILE! - ")) outputData = outputData.Remove(0, 15);
+			Console.WriteLine($"{Timing.LogDateTime()} {outputData}");
 
 			if (e.Data.Contains("[INFO] Player connected: "))
 			{
