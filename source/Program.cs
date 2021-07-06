@@ -10,7 +10,7 @@ namespace BedrockServer2000
 		// configs
 		public const string appName = "bs2k";
 		public const string appVersion = "preAlpha-1.0";
-		public static ServerConfig serverConfigs;
+		public static ServerStatus serverConfigs;
 
 		// server process
 		public static Process serverProcess;
@@ -33,8 +33,8 @@ namespace BedrockServer2000
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(Events.OnProgramExit);
 
 			// serverConfigs
-			serverConfigs = new ServerConfig();
-			serverConfigs.LoadConfigs();
+			serverConfigs = new ServerStatus();
+			serverConfigs.LoadServerConfigs();
 		}
 
 		static void Main()

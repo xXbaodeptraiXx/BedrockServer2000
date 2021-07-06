@@ -2,14 +2,14 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace BedrockServer2000
 {
-	public class ServerConfig
+	public class ServerStatus
 	{
 		// server properties
 		public List<Player> Players { get; set; } = new List<Player>();
-		public string[] BanList { get; set; }
 
 		// server status
 		public bool ServerExecutableExists { get; set; } = false;
@@ -26,6 +26,18 @@ namespace BedrockServer2000
 		public string BackupFileLUst { get; set; } = "";
 
 		// server configs
+		Hashtable ServerConfigs = new Hashtable();
+		// this hashtable contains the configs for the server, data is taken from the 2 configuration files, bs2k.conf and bs2k.banlist
+		// current available keys and values are:
+		// autoStartServer : boolean value
+		// autoBackupOnDate : boolean value
+		// autoBackupOnDate_TIme : DateTIme value
+		// autoBackupEveryX : boolean value
+		// autoBackupEveryXDuration : positive integer value
+		// autoBackupEveryXTImeUnit : 
+
+
+
 		public bool AutoStartServer { get; set; }
 
 		public bool AutoBackupOnDate { get; set; }
@@ -39,7 +51,9 @@ namespace BedrockServer2000
 		public string BackupPath { get; set; }
 		public int BackupLimit { get; set; }
 
-		public void LoadConfigs()
+		public string[] BanList { get; set; }
+
+		public void LoadServerConfigs()
 		{
 			Console.WriteLine($"{Timing.LogDateTime()} Loading configs");
 
