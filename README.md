@@ -8,6 +8,29 @@ _Some small parts of the code are based on my other repository (<https://github.
 
 This software is still in development process, some features haven't been implemented and there are lots of bugs so don't expect it to work perfectly.
 
+
+## Compiling
+
+This program is built with .NET Core 3.1 so you need to install the SDK to compile the code.
+
+To build the source for different platforms, you need to use the `dotnet build` command with a RuntimeIdentifier (`-r {RuntimeIdentifier}`).
+
+For Windows, the RID is `win-x64` and for Linux, the RID is `linux-x64`.
+
+The same goes for `dotnet publish` and `dotnet run`.
+
+### Example
+
+- `dotnet run -r linux-x64`
+- `dotnet build -r win-x64`
+- `dotnet publish -c Release -r linux-x64`
+
+## Start the wrapper
+
+Simply copy the wrapper executable `bs2k` and its other 2 configuration files named `bs2k.conf` and `bs2k.banlist` to the bedrock server folder then execute the `bs2k` executable to run it.
+
+Use the `commands` command to know more about the available commands in the program.
+
 ## Features
 
 ### Current features
@@ -52,19 +75,3 @@ Offline backup
 
 ![app_screenshot_auto_backup](resources/screenshots/app_screenshot_auto_backup.png)
 Automatic backups
-
-## Compiling and running
-
-This program is built with .NET Core 3.1 so you need to install the SDK to compile the code.
-
-To build the source for different platforms, you need to use the `dotnet build` command with a RuntimeIdentifier (`-r {RuntimeIdentifier}`).
-
-For Windows, the RID is `win-x64` and for Linux, the RID is `linux-x64`.
-
-The same goes for `dotnet publish` and `dotnet run`.
-
-### Example
-
-- `dotnet run -r linux-x64`
-- `dotnet build -r win-x64`
-- `dotnet publish -c Release -r linux-x64`
