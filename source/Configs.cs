@@ -8,7 +8,7 @@ namespace BedrockServer2000
 	{
 		public static int KeyCount()
 		{
-			if (!File.Exists("BedrockServer2000.conf")) return 0;
+			if (!File.Exists($"{Program.appName}.conf")) throw new FileNotFoundException();
 
 			string[] rawLines = File.ReadAllLines($"{Program.appName}.conf");
 			List<string> configLInes = new List<string>();
@@ -20,7 +20,7 @@ namespace BedrockServer2000
 
 		public static string GetValue(string key)
 		{
-			if (!File.Exists($"{Program.appName}.conf")) return "";
+			if (!File.Exists($"{Program.appName}.conf")) throw new FileNotFoundException();
 
 			string[] rawLines = File.ReadAllLines($"{Program.appName}.conf");
 			List<string> configLines = new List<string>();
