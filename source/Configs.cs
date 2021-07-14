@@ -8,9 +8,9 @@ namespace BedrockServer2000
 	{
 		public static int KeyCount()
 		{
-			if (!File.Exists($"{Program.appName}.conf")) throw new FileNotFoundException();
+			if (!File.Exists($"{Program.AppName}.conf")) throw new FileNotFoundException();
 
-			string[] rawLines = File.ReadAllLines($"{Program.appName}.conf");
+			string[] rawLines = File.ReadAllLines($"{Program.AppName}.conf");
 			List<string> configLInes = new List<string>();
 			foreach (string line in rawLines)
 				if (!line.StartsWith("#") && line != "") configLInes.Add(line);
@@ -20,9 +20,9 @@ namespace BedrockServer2000
 
 		public static string GetValue(string key)
 		{
-			if (!File.Exists($"{Program.appName}.conf")) throw new FileNotFoundException();
+			if (!File.Exists($"{Program.AppName}.conf")) throw new FileNotFoundException();
 
-			string[] rawLines = File.ReadAllLines($"{Program.appName}.conf");
+			string[] rawLines = File.ReadAllLines($"{Program.AppName}.conf");
 			List<string> configLines = new List<string>();
 			foreach (string line in rawLines)
 				if (!line.StartsWith("#") && line != "") configLines.Add(line);
@@ -32,7 +32,7 @@ namespace BedrockServer2000
 				string _key = line.Split('=', StringSplitOptions.RemoveEmptyEntries)[0];
 				string value;
 				if (line.Split('=', StringSplitOptions.RemoveEmptyEntries).Length == 1) value = "";
-				else value = line.Split('=', StringSplitOptions.RemoveEmptyEntries)[1];
+				else value = line.Remove(0, line.IndexOf("=") + 1);
 
 				if (_key == key) return value;
 			}
@@ -41,9 +41,9 @@ namespace BedrockServer2000
 
 		public static void SetValue(string key, string value)
 		{
-			if (!File.Exists($"{Program.appName}.conf")) throw new FileNotFoundException();
+			if (!File.Exists($"{Program.AppName}.conf")) throw new FileNotFoundException();
 
-			string[] rawLines = File.ReadAllLines($"{Program.appName}.conf");
+			string[] rawLines = File.ReadAllLines($"{Program.AppName}.conf");
 
 			int lineIndexToChange = 0;
 
@@ -64,7 +64,7 @@ namespace BedrockServer2000
 			else
 			{
 				rawLines[lineIndexToChange - 1] = $"{rawLines[lineIndexToChange - 1].Split('=', StringSplitOptions.RemoveEmptyEntries)[0]}={value}";
-				File.WriteAllLines($"{Program.appName}.conf", rawLines);
+				File.WriteAllLines($"{Program.AppName}.conf", rawLines);
 			}
 		}
 	}

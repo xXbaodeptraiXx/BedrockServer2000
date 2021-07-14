@@ -7,6 +7,12 @@ namespace BedrockServer2000
 		// TIme convertions
 		public static int HourToMilliseconds(int hour) => hour * 3600000;
 		public static int MinuteToMilliseconds(int minute) => minute * 60000;
+		public static AutoBackupTimeUnit StringToAutoBackupTimeUnit(string timeUnit)
+		{
+			if (timeUnit.ToLower() == "minute") return AutoBackupTimeUnit.Minute;
+			else if (timeUnit.ToLower() == "hour") return AutoBackupTimeUnit.Hour;
+			else return AutoBackupTimeUnit.None;
+		}
 
 		// Converts backup folder formatted as "day_month_year-hour_minute_second" to DateTime value
 		//! Method is obsolete since it is no longer used in the program

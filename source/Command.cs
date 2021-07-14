@@ -3,14 +3,15 @@ using System.Diagnostics;
 using System.Threading;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
 
 namespace BedrockServer2000
 {
-	public static class Command
+	static class Command
 	{
 		public static void ProcessCommand(string command)
 		{
-			if (Program.serverConfigs.BackupRunning) return;
+			if (Program.BackupRunning) return;
 
 			string formattedCommand = command.Trim().ToLower();
 
@@ -18,7 +19,7 @@ namespace BedrockServer2000
 			else if (formattedCommand == "start") StartServer();
 			else if (formattedCommand == "stop")
 			{
-				if (Program.serverConfigs.ServerRunning)
+				if (Program.ServerRunning)
 				{
 					Thread StopServerThread = new Thread(StopServer);
 					StopServerThread.Start();
@@ -31,61 +32,61 @@ namespace BedrockServer2000
 			else if (formattedCommand == "load")
 			{
 				// check if the configs are correct, cancel load if found any error
-				if (!Directory.Exists(Program.serverConfigs.WorldPath))
+				if (!Directory.Exists((string)Program.ServerConfigs["worldPath"]))
 				{
 					Console.WriteLine($"World path incorrect");
 					return;
 				}
-				if (!Directory.Exists(Program.serverConfigs.BackupPath))
+				if (!Directory.Exists((string)Program.ServerConfigs["backupPath"]))
 				{
 					Console.WriteLine($"Backup path incorrect");
 					return;
 				}
-				if (Directory.Exists(Program.serverConfigs.BackupPath) && Directory.GetDirectories(Program.serverConfigs.BackupPath).Length < 1)
+				if (Directory.Exists((string)Program.ServerConfigs["backupPath"]) && Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length < 1)
 				{
 					Console.WriteLine($"There are no backups to load");
 					return;
 				}
 
-				Program.serverConfigs.ServerWasRunningBefore = Program.serverConfigs.ServerRunning;
-				Program.serverConfigs.LoadRequest = Program.serverConfigs.ServerRunning;
-				if (Program.serverConfigs.ServerRunning)
+				Program.ServerWasRunningBefore = Program.ServerRunning;
+				Program.LoadRequest = Program.ServerRunning;
+				if (Program.ServerRunning)
 				{
 					Program.serverInput.WriteLine("say The server is about to restart to load a backup.");
 					StopServer();
 				}
 				else Backup.LoadBackup();
 			}
-			else if (formattedCommand == "backup" && !Program.serverConfigs.BackupRunning)
+			else if (formattedCommand == "backup" && !Program.BackupRunning)
 			{
 				// check if the configs are correct, cancel the backup if found any error
-				if (!Directory.Exists(Program.serverConfigs.WorldPath))
+				if (!Directory.Exists((string)Program.ServerConfigs["worldPath"]))
 				{
 					Console.WriteLine($"World path incorrect, can't perform backup.");
 					return;
 				}
-				if (!Directory.Exists(Program.serverConfigs.BackupPath))
+				if (!Directory.Exists((string)Program.ServerConfigs["backupPath"]))
 				{
 					Console.WriteLine($"Backup path incorrect, can't perform backup.");
 					return;
 				}
-				if (Program.serverConfigs.BackupLimit <= 0)
+				if ((int)Program.ServerConfigs["backupLimit"] <= 0)
 				{
 					Console.WriteLine($"Backup limit can't be smaller than 1, can't perform backup.");
 					return;
 				}
 
-				if (Program.serverConfigs.ServerRunning) Backup.SendOnlineBackupRequest();
+				if (Program.ServerRunning) Backup.SendOnlineBackupRequest();
 				else Backup.PerformOfflineBackup();
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
-			else if (formattedCommand == "reload") Program.serverConfigs.LoadConfigs();
+			else if (formattedCommand == "reload") Program.ReloadConfigs();
 			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
 			{
 				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "say")
 				{
-					if (Program.serverConfigs.ServerRunning)
+					if (Program.ServerRunning)
 					{
 						Program.serverInput.WriteLine("say " + command.Trim().Remove(0, 4));
 						Console.WriteLine($"Message sent to chat (\"{command.Trim().Remove(0, 4)}\")");
@@ -101,7 +102,7 @@ namespace BedrockServer2000
 					else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], "");
 					else
 					{
-						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
+						if (Program.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
 							Console.WriteLine("Unknown command.");
@@ -113,7 +114,7 @@ namespace BedrockServer2000
 					if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "set") Set(formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1], formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[2]);
 					else
 					{
-						if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
+						if (Program.ServerRunning) Program.serverInput.WriteLine(command);
 						else
 						{
 							Console.WriteLine("Unknown command.");
@@ -122,7 +123,7 @@ namespace BedrockServer2000
 				}
 				else
 				{
-					if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
+					if (Program.ServerRunning) Program.serverInput.WriteLine(command);
 					else
 					{
 						Console.WriteLine("Unknown command.");
@@ -133,7 +134,7 @@ namespace BedrockServer2000
 			else if (formattedCommand == "exit") RunExitProcedure();
 			else
 			{
-				if (Program.serverConfigs.ServerRunning) Program.serverInput.WriteLine(command);
+				if (Program.ServerRunning) Program.serverInput.WriteLine(command);
 				else
 				{
 					Console.WriteLine("Unknown command.");
@@ -208,13 +209,13 @@ Examples:
 
 		private static void StartServer()
 		{
-			if (!Program.serverConfigs.ServerExecutableExists)
+			if (!Program.ServerExecutableExists)
 			{
 				Console.WriteLine("Server executable not found, can't start server.");
 				return;
 			}
 
-			Program.serverConfigs.ServerRunning = true;
+			Program.ServerRunning = true;
 
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server.");
 
@@ -235,19 +236,19 @@ Examples:
 			Program.serverProcess.BeginErrorReadLine();
 			Program.serverInput = Program.serverProcess.StandardInput;
 
-			if (Program.serverConfigs.AutoBackupEveryX)
+			if ((bool)Program.ServerConfigs["autoBackupEveryX"])
 			{
 				int autoBackupEveryXTimerInterval = 0;
-				if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
-				else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+				if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Minute) autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]);
+				else if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Hour) autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]);
 				Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 			}
 		}
 
 		private static void StopServer()
 		{
-			Program.serverConfigs.ServerRunning = false;
-			if (Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
+			Program.ServerRunning = false;
+			if ((bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
 			const string stopMessage = "Server closing in 10 seconds";
 
@@ -256,7 +257,7 @@ Examples:
 			Thread.Sleep(10000);
 			Program.serverInput.WriteLine("stop");
 
-			Program.serverConfigs.ExitCompleted = false;
+			Program.ExitCompleted = false;
 			Program.exitTImeoutTImer.Change(30000, 30000);
 		}
 
@@ -264,22 +265,22 @@ Examples:
 		{
 			if (key == "")
 			{
-				Console.WriteLine($"autoStartServer = {Program.serverConfigs.AutoStartServer}");
-				Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.AutoBackupOnDate}");
-				Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.AutoBackupOnDate_Time}");
-				Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.AutoBackupEveryX}");
-				Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.AutoBackupEveryXDuration}");
-				Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.AutoBackupEveryXTimeUnit}");
-				Console.WriteLine($"worldPath = {Program.serverConfigs.WorldPath}");
-				Console.WriteLine($"backupPath = {Program.serverConfigs.BackupPath}");
-				Console.WriteLine($"backupLimit = {Program.serverConfigs.BackupLimit}");
-				if (Program.serverConfigs.BanList.Length >= 1)
+				Console.WriteLine($"autoStartServer = {(bool)Program.ServerConfigs["autoStartServer"]}");
+				Console.WriteLine($"utoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
+				Console.WriteLine($"autoBackupOnDate_Time = {(string)Program.ServerConfigs["autoBackupOnDate_Time"]}");
+				Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
+				Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
+				Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
+				Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
+				Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
+				Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
+				if (((string[])Program.ServerConfigs["banList"]).Length >= 1)
 				{
 					Console.Write("Banned players: {");
-					for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
+					for (int i = 0; i < ((string[])Program.ServerConfigs["banList"]).Length; i += 1)
 					{
-						Console.Write(Program.serverConfigs.BanList[i]);
-						if (i != Program.serverConfigs.BanList.Length - 1) Console.Write(", ");
+						Console.Write(((string[])Program.ServerConfigs["banList"])[i]);
+						if (i != ((string[])Program.ServerConfigs["banList"]).Length - 1) Console.Write(", ");
 					}
 					Console.WriteLine("}");
 
@@ -287,24 +288,24 @@ Examples:
 				}
 				else Console.WriteLine("Ban list is empty.");
 			}
-			else if (key == "autostartserver") Console.WriteLine($"autoStartServer = {Program.serverConfigs.AutoStartServer}");
-			else if (key == "autobackupondate") Console.WriteLine($"utoBackupOnDate = {Program.serverConfigs.AutoBackupOnDate}");
-			else if (key == "autobackupondate_time") Console.WriteLine($"autoBackupOnDate_Time = {Program.serverConfigs.AutoBackupOnDate_Time}");
-			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {Program.serverConfigs.AutoBackupEveryX}");
-			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {Program.serverConfigs.AutoBackupEveryXDuration}");
-			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {Program.serverConfigs.AutoBackupEveryXTimeUnit}");
-			else if (key == "worldpath") Console.WriteLine($"worldPath = {Program.serverConfigs.WorldPath}");
-			else if (key == "backuppath") Console.WriteLine($"backupPath = {Program.serverConfigs.BackupPath}");
-			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {Program.serverConfigs.BackupLimit}");
+			else if (key == "autostartserver") Console.WriteLine($"autoStartServer = {(bool)Program.ServerConfigs["autoStartServer"]}");
+			else if (key == "autobackupondate") Console.WriteLine($"utoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
+			else if (key == "autobackupondate_time") Console.WriteLine($"autoBackupOnDate_Time = {(string)Program.ServerConfigs["autoBackupOnDate_Time"]}");
+			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
+			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
+			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
+			else if (key == "worldpath") Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
+			else if (key == "backuppath") Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
+			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
 			else if (key == "banlist")
 			{
-				if (Program.serverConfigs.BanList.Length >= 1)
+				if (((string[])Program.ServerConfigs["banList"]).Length >= 1)
 				{
 					Console.Write("Banned players: {");
-					for (int i = 0; i < Program.serverConfigs.BanList.Length; i += 1)
+					for (int i = 0; i < ((string[])Program.ServerConfigs["banList"]).Length; i += 1)
 					{
-						Console.Write(Program.serverConfigs.BanList[i]);
-						if (i != Program.serverConfigs.BanList.Length - 1) Console.Write(", ");
+						Console.Write(((string[])Program.ServerConfigs["banList"])[i]);
+						if (i != ((string[])Program.ServerConfigs["banList"]).Length - 1) Console.Write(", ");
 					}
 					Console.WriteLine("}");
 
@@ -322,7 +323,7 @@ Examples:
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoStartServer = Convert.ToBoolean(value);
+					Program.ServerConfigs["autoStartServer"] = Convert.ToBoolean(value);
 				}
 				else Console.WriteLine($"Error: Available config values for autoStartServer are 'true' and 'false'.");
 			}
@@ -331,7 +332,7 @@ Examples:
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupOnDate = Convert.ToBoolean(value);
+					Program.ServerConfigs["autoBackupOnDate"] = Convert.ToBoolean(value);
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupOnDate are 'true' and 'false'.");
 			}
@@ -340,7 +341,7 @@ Examples:
 				if (DateTime.TryParseExact(value, "H:m:s", null, DateTimeStyles.None, out DateTime result))
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupOnDate_Time = value;
+					Program.ServerConfigs["autoBackupOnDate_TIme"] = value;
 				}
 				else Console.WriteLine($"Error: Value for autoBackupOnDate_Time must be a time value in h:m:s format.");
 			}
@@ -349,14 +350,14 @@ Examples:
 				if (value == "true" || value == "false")
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupEveryX = Convert.ToBoolean(value);
+					Program.ServerConfigs["autoBackupEveryXx"] = Convert.ToBoolean(value);
 
 					if (value == "false") Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
-					if (Program.serverConfigs.ServerRunning && value == "true")
+					if (Program.ServerRunning && value == "true")
 					{
 						int autoBackupEveryXTimerInterval = 0;
-						if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute") autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
-						else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour") autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration);
+						if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Minute) autoBackupEveryXTimerInterval = Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]);
+						else if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Hour) autoBackupEveryXTimerInterval = Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]);
 						Program.autoBackupEveryXTimer.Change(autoBackupEveryXTimerInterval, autoBackupEveryXTimerInterval);
 					}
 				}
@@ -367,62 +368,62 @@ Examples:
 				if (int.TryParse(value, out int result))
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupEveryXDuration = result;
+					Program.ServerConfigs["autoBackupEveryXDuration"] = result;
 
-					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX)
+					if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"])
 					{
-						if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "minute")
-							Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
-						else if (Program.serverConfigs.AutoBackupEveryXTimeUnit == "hour")
-							Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+						if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Minute)
+							Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+						else if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Hour)
+							Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
 					}
 				}
 				else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
 			}
 			else if (key == "autobackupeveryxtimeunit")
 			{
-				if (value == "minute")
+				if (value == AutoBackupTimeUnit.Minute.ToString().ToLower())
 				{
 					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.MinuteToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+					Program.ServerConfigs["autoBackupEveryXTimeUnit"] = Conversions.StringToAutoBackupTimeUnit(value);
+					if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+					else if (value == AutoBackupTimeUnit.Hour.ToString().ToLower())
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["AutoBackupTImeUnit"] = Conversions.StringToAutoBackupTimeUnit(value);
+						if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+					}
+					else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
 				}
-				else if (value == "hour")
+				else if (key == "worldpath")
 				{
-					SaveConfig(key, value);
-					Program.serverConfigs.AutoBackupEveryXTimeUnit = value;
-					if (Program.serverConfigs.ServerRunning && Program.serverConfigs.AutoBackupEveryX) Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration), Conversions.HourToMilliseconds(Program.serverConfigs.AutoBackupEveryXDuration));
+					if (Directory.Exists(value))
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["worldPath"] = value;
+					}
+					else Console.WriteLine("Error: Path does not exist.");
 				}
-				else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
+				else if (key == "backuppath")
+				{
+					if (Directory.Exists(value))
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["backupPath"] = value;
+					}
+					else Console.WriteLine("Error: Path does not exist.");
+				}
+				else if (key == "backuplimit")
+				{
+					if (int.TryParse(value, out int result))
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["backupLimit"] = result;
+					}
+					else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
+				}
+				else ShowSyntaxError();
 			}
-			else if (key == "worldpath")
-			{
-				if (Directory.Exists(value))
-				{
-					SaveConfig(key, value);
-					Program.serverConfigs.WorldPath = value;
-				}
-				else Console.WriteLine("Error: Path does not exist.");
-			}
-			else if (key == "backuppath")
-			{
-				if (Directory.Exists(value))
-				{
-					SaveConfig(key, value);
-					Program.serverConfigs.BackupPath = value;
-				}
-				else Console.WriteLine("Error: Path does not exist.");
-			}
-			else if (key == "backuplimit")
-			{
-				if (int.TryParse(value, out int result))
-				{
-					SaveConfig(key, value);
-					Program.serverConfigs.BackupLimit = result;
-				}
-				else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
-			}
-			else ShowSyntaxError();
 		}
 
 		private static void SaveConfig(string key, string value)
@@ -438,9 +439,9 @@ Examples:
 
 		private static void RunExitProcedure()
 		{
-			if (Program.serverConfigs.ServerRunning)
+			if (Program.ServerRunning)
 			{
-				Program.serverConfigs.ExitRequest = true;
+				Program.ExitRequest = true;
 				Thread StopServerThread = new Thread(StopServer);
 				StopServerThread.Start();
 			}
