@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
+      "projectUniqueName": "/home/bao/Documents/dev/Github repos/BedrockServer2000/BedrockServer2000.csproj",
       "projectName": "bs2k",
-      "projectPath": "/home/bao/Documents/GitHub/BedrockServer2000/BedrockServer2000.csproj",
+      "projectPath": "/home/bao/Documents/dev/Github repos/BedrockServer2000/BedrockServer2000.csproj",
       "packagesPath": "/home/bao/.nuget/packages/",
-      "outputPath": "/home/bao/Documents/GitHub/BedrockServer2000/obj/",
+      "outputPath": "/home/bao/Documents/dev/Github repos/BedrockServer2000/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/bao/.nuget/NuGet/NuGet.Config"

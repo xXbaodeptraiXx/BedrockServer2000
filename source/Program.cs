@@ -11,23 +11,23 @@ namespace BedrockServer2000
 	{
 		// configs
 		public const string AppName = "bs2k";
-		public const string AppVersion = "preAlpha-1.0";
+		public const string AppVersion = "preAlpha-1.1.0";
 
 		// this private dictionary contains the default configs for the server
 		private static Dictionary<object, object> DefaultServerConfigs { get; set; } = new Dictionary<object, object>()
 		{
 			{"autoStartServer", false},
 			{ "autoBackupOnDate", false},
-			{ "autoBackupOnDate_TIme", "00:00:00"},
+			{ "autoBackupOnDate_Time", "00:00:00"},
 			{ "autoBackupEveryX", false},
 			{ "autoBackupEveryXDuration", 1},
 			{ "autoBackupEveryXTimeUnit", AutoBackupTimeUnit.Hour},
 			{ "worldPath", ""},
 			{ "backupPath", ""},
 			{ "backupLimit", 32},
-			{ "banLIst", new string[0]}
+			{ "banList", new string[0]}
 		};
-		// this hashtable contains the configs for the server (modifiable)
+		// this public dictionary contains the configs for the server (modifiable)
 		public static Dictionary<object, object> ServerConfigs { get; set; } = DefaultServerConfigs;
 
 		// server process
@@ -59,9 +59,9 @@ namespace BedrockServer2000
 			// add config keys and their default values to the hashtable if they don't exist
 			Console.WriteLine($"{Timing.LogDateTime()} Locating Server executable...");
 			ServerExecutableExists = File.Exists("bedrock_server");
-			Console.WriteLine($"serverExecutableExists: {ServerExecutableExists}");
+			Console.WriteLine($"serverExecutableExists={ServerExecutableExists}");
 
-			Console.WriteLine($"{Timing.LogDateTime()} Loading configs...");
+			Console.WriteLine($"{Timing.LogDateTime()} Loading configurations...");
 
 			// autoStartServer
 			if (Configs.GetValue("autoStartServer") != "true" && Configs.GetValue("autoStartServer") != "false")
@@ -79,13 +79,13 @@ namespace BedrockServer2000
 			}
 			else ServerConfigs["autoBackupOnDate"] = Configs.GetValue("autoBackupOnDate") == "true";
 
-			// autoBackupOnDate_TIme
+			// autoBackupOnDate_Time
 			if (Configs.GetValue("autoBackupOnDate_Time") == "" || !DateTime.TryParseExact(Configs.GetValue("autoBackupOnDate_Time"), "H:m:s", null, DateTimeStyles.None, out DateTime result))
 			{
-				Configs.SetValue("autoBackupOnDate_Time", (string)DefaultServerConfigs["autoBackupOnDate_TIme"]);
-				ServerConfigs["autoBackupOnDate_TIme"] = (string)DefaultServerConfigs["autoBackupOnDate_TIme"];
+				Configs.SetValue("autoBackupOnDate_Time", (string)DefaultServerConfigs["autoBackupOnDate_Time"]);
+				ServerConfigs["autoBackupOnDate_Time"] = (string)DefaultServerConfigs["autoBackupOnDate_Time"];
 			}
-			else ServerConfigs["autoBackupOnDate_TIme"] = Configs.GetValue("autoBackupOnDate_TIme");
+			else ServerConfigs["autoBackupOnDate_Time"] = Configs.GetValue("autoBackupOnDate_Time");
 
 			// autoBackupEveryX
 			if (Configs.GetValue("autoBackupEveryX") != "true" && Configs.GetValue("autoBackupEveryX") != "false")
@@ -136,6 +136,17 @@ namespace BedrockServer2000
 			}
 			else ServerConfigs["backupLimit"] = Convert.ToInt32(Configs.GetValue("backupLimit"));
 
+			Console.WriteLine($"{Timing.LogDateTime()} Configurations loaded.");
+			Console.WriteLine($"autoStartServer={ServerConfigs["autoStartServer"]}");
+			Console.WriteLine($"autoBackupOnDate={ServerConfigs["autoBackupOnDate"]}");
+			Console.WriteLine($"autoBackupOnDate_Time={ServerConfigs["autoBackupOnDate_Time"]}");
+			Console.WriteLine($"autoBackupEveryX={ServerConfigs["autoBackupEveryX"]}");
+			Console.WriteLine($"autoBackupEveryXDuration={ServerConfigs["autoBackupEveryXDuration"]}");
+			Console.WriteLine($"autoBackupEveryXTimeUnit={ServerConfigs["autoBackupEveryXTimeUnit"]}");
+			Console.WriteLine($"worldPath={ServerConfigs["worldPath"]}");
+			Console.WriteLine($"backupPath={ServerConfigs["backupPath"]}");
+			Console.WriteLine($"backupLimit={ServerConfigs["backupLimit"]}");
+
 			// banList
 			if (!File.Exists($"{AppName}.banlist"))
 			{
@@ -185,7 +196,7 @@ namespace BedrockServer2000
 
 			InitializeComponents();
 
-			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started ({AppName}:{AppVersion}).");
+			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started. ({AppName}:{AppVersion})");
 
 			if ((bool)ServerConfigs["autoStartServer"]) Command.ProcessCommand("start");
 
