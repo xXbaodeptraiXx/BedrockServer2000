@@ -394,36 +394,36 @@ Examples:
 						if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
 					}
 					else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
-				}
-				else if (key == "worldpath")
-				{
-					if (Directory.Exists(value))
-					{
-						SaveConfig(key, value);
-						Program.ServerConfigs["worldPath"] = value;
-					}
-					else Console.WriteLine("Error: Path does not exist.");
-				}
-				else if (key == "backuppath")
-				{
-					if (Directory.Exists(value))
-					{
-						SaveConfig(key, value);
-						Program.ServerConfigs["backupPath"] = value;
-					}
-					else Console.WriteLine("Error: Path does not exist.");
-				}
-				else if (key == "backuplimit")
-				{
-					if (int.TryParse(value, out int result))
-					{
-						SaveConfig(key, value);
-						Program.ServerConfigs["backupLimit"] = result;
-					}
-					else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
-				}
-				else ShowSyntaxError();
+				}	
 			}
+			else if (key == "worldpath")
+			{
+				if (Directory.Exists(value))
+				{
+					SaveConfig(key, value);
+					Program.ServerConfigs["worldPath"] = value;
+				}
+				else Console.WriteLine("Error: Path does not exist.");
+			}
+			else if (key == "backuppath")
+			{
+				if (Directory.Exists(value))
+				{
+					SaveConfig(key, value);
+					Program.ServerConfigs["backupPath"] = value;
+				}
+				else Console.WriteLine("Error: Path does not exist.");
+			}
+			else if (key == "backuplimit")
+			{
+				if (int.TryParse(value, out int result))
+				{
+					SaveConfig(key, value);
+					Program.ServerConfigs["backupLimit"] = result;
+				}
+				else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
+			}
+			else ShowSyntaxError();
 		}
 
 		private static void SaveConfig(string key, string value)
