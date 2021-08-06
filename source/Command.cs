@@ -266,7 +266,7 @@ Examples:
 			if (key == "")
 			{
 				Console.WriteLine($"autoStartServer = {(bool)Program.ServerConfigs["autoStartServer"]}");
-				Console.WriteLine($"utoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
+				Console.WriteLine($"autoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
 				Console.WriteLine($"autoBackupOnDate_Time = {(string)Program.ServerConfigs["autoBackupOnDate_Time"]}");
 				Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
 				Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
@@ -291,7 +291,7 @@ Examples:
 			else if (key == "autostartserver") Console.WriteLine($"autoStartServer = {(bool)Program.ServerConfigs["autoStartServer"]}");
 			else if (key == "autobackupondate") Console.WriteLine($"utoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
 			else if (key == "autobackupondate_time") Console.WriteLine($"autoBackupOnDate_Time = {(string)Program.ServerConfigs["autoBackupOnDate_Time"]}");
-			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
+			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveryX"]}");
 			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
 			else if (key == "worldpath") Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
