@@ -22,6 +22,7 @@ namespace BedrockServer2000
 			{ "autoBackupEveryX", false},
 			{ "autoBackupEveryXDuration", 1},
 			{ "autoBackupEveryXTimeUnit", AutoBackupTimeUnit.Hour},
+			{ "serverStopTimeout", 20},
 			{ "worldPath", ""},
 			{ "backupPath", ""},
 			{ "backupLimit", 32},
@@ -94,7 +95,18 @@ namespace BedrockServer2000
 				ServerConfigs["autoBackupEveryX"] = (bool)DefaultServerConfigs["autoBackupEveryX"];
 			}
 			else ServerConfigs["autoBackupEveryX"] = Configs.GetValue("autoBackupEveryX") == "true";
-
+			
+			// serverStopTimeout
+			if (int.TryParse(Configs.GetValue("serverStopTimeout"), out int importVal) & importVal > 0)
+			{
+				ServerConfigs["serverStopTimeout"] = Convert.ToInt32(Configs.GetValue("serverStopTimeout"));
+			}
+			else
+			{
+				Configs.SetValue("serverStopTimeout", Convert.ToString((int)DefaultServerConfigs["serverStopTimeout"]));
+				ServerConfigs["serverStopTimeout"] = (int)DefaultServerConfigs["serverStopTimeout"];
+			}
+			
 			// autoBackupEveryXDuration
 			if (!int.TryParse(Configs.GetValue("autoBackupEveryXDuration"), out int importValue))
 			{
@@ -143,6 +155,7 @@ namespace BedrockServer2000
 			Console.WriteLine($"autoBackupEveryX={ServerConfigs["autoBackupEveryX"]}");
 			Console.WriteLine($"autoBackupEveryXDuration={ServerConfigs["autoBackupEveryXDuration"]}");
 			Console.WriteLine($"autoBackupEveryXTimeUnit={ServerConfigs["autoBackupEveryXTimeUnit"]}");
+			Console.WriteLine($"serverStopTimeout={ServerConfigs["serverStopTimeout"]}");
 			Console.WriteLine($"worldPath={ServerConfigs["worldPath"]}");
 			Console.WriteLine($"backupPath={ServerConfigs["backupPath"]}");
 			Console.WriteLine($"backupLimit={ServerConfigs["backupLimit"]}");
