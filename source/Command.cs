@@ -221,7 +221,9 @@ Examples:
 			Console.WriteLine($"{Timing.LogDateTime()} Starting server.");
 
 			Program.serverProcess = new Process();
-			Program.serverProcess.StartInfo.FileName = "bedrock_server";
+			if (File.Exists("bedrock_server")) Program.serverProcess.StartInfo.FileName = "bedrock_server";
+			else if (File.Exists("bedrock_server.exe")) Program.serverProcess.StartInfo.FileName = "bedrock_server.exe";
+			else throw new FileNotFoundException();
 			Program.serverProcess.StartInfo.UseShellExecute = false;
 			Program.serverProcess.StartInfo.CreateNoWindow = true;
 			Program.serverProcess.StartInfo.RedirectStandardInput = true;

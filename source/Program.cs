@@ -59,7 +59,7 @@ namespace BedrockServer2000
 		{
 			// add config keys and their default values to the hashtable if they don't exist
 			Console.WriteLine($"{Timing.LogDateTime()} Locating Server executable...");
-			ServerExecutableExists = File.Exists("bedrock_server");
+			ServerExecutableExists = File.Exists("bedrock_server") || File.Exists("bedrock_server.exe");
 			Console.WriteLine($"serverExecutableExists={ServerExecutableExists}");
 
 			Console.WriteLine($"{Timing.LogDateTime()} Loading configurations...");
