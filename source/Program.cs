@@ -95,7 +95,7 @@ namespace BedrockServer2000
 				ServerConfigs["autoBackupEveryX"] = (bool)DefaultServerConfigs["autoBackupEveryX"];
 			}
 			else ServerConfigs["autoBackupEveryX"] = Configs.GetValue("autoBackupEveryX") == "true";
-			
+
 			// serverStopTimeout
 			if (int.TryParse(Configs.GetValue("serverStopTimeout"), out int importVal) & importVal > 0)
 			{
@@ -106,7 +106,7 @@ namespace BedrockServer2000
 				Configs.SetValue("serverStopTimeout", Convert.ToString((int)DefaultServerConfigs["serverStopTimeout"]));
 				ServerConfigs["serverStopTimeout"] = (int)DefaultServerConfigs["serverStopTimeout"];
 			}
-			
+
 			// autoBackupEveryXDuration
 			if (!int.TryParse(Configs.GetValue("autoBackupEveryXDuration"), out int importValue))
 			{
@@ -125,12 +125,14 @@ namespace BedrockServer2000
 
 			// worldPath
 			if (Configs.GetValue("worldPath") == "" && Directory.Exists("worlds"))
+			{
 				if (Directory.GetDirectories("worlds").Length >= 1)
 				{
 					Configs.SetValue("worldPath", Directory.GetDirectories("worlds")[0]);
 					ServerConfigs["worldPath"] = Directory.GetDirectories("worlds")[0];
 				}
-				else ServerConfigs["worldPath"] = Configs.GetValue("worldPath");
+			}
+			else ServerConfigs["worldPath"] = Configs.GetValue("worldPath");
 
 			// backupPath
 			ServerConfigs["backupPath"] = Configs.GetValue("backupPath");

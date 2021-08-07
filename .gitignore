@@ -620,3 +620,9 @@ obj/Release/netcoreapp3.1/linux-x64/BedrockServer2000.genruntimeconfig.cache
 obj/Release/netcoreapp3.1/linux-x64/bs2k.deps.json
 obj/Release/netcoreapp3.1/linux-x64/bs2k.dll
 obj/Release/netcoreapp3.1/linux-x64/bs2k.pdb
+bin/Release/netcoreapp3.1/linux-x64/publish/bs2k
+bin/Release/netcoreapp3.1/linux-x64/publish/bs2k.pdb
+obj/Release/netcoreapp3.1/linux-x64/bs2k.dll
+obj/Release/netcoreapp3.1/linux-x64/bs2k.pdb
+bin/Release/netcoreapp3.1/linux-x64/bs2k.pdb
+bin/Release/netcoreapp3.1/linux-x64/bs2k.dll
