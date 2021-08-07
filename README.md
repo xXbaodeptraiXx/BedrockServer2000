@@ -39,9 +39,9 @@ Use the `commands` command to know more about the available commands in the prog
 
 ## Current features
 
-- Server stop message to let players know that the server will close in 10 seconds
+- Server stop message to let players know that the server will close in the specified duration located in the configuration file in seconds
 - Automated backup saving, loading and other automated functions (has major bugs)
-- Server exit timeout (automatically kill the server process if its exit procedure takes more than the specified duration located in the configuration file)
+- Server exit timeout (automatically kill the server process if its exit procedure takes more than 30 seconds)
 - Ban list (has minor bugs)
 
 ## Unimplemented features
