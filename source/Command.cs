@@ -175,6 +175,7 @@ Syntax: set [config_key] [config_value]
   + autoBackupEveryX [true / false]
   + autoBackupEveryXDuration [positive integer]
   + autoBackupEveryXTimeUnit [string: minute / hour]
+  + serverStopTimeout [int: seconds]
   + worldPath [path to the world folder]
   + backupPath [path to the backup folder]
   + backupLimit [positive integer]
@@ -250,11 +251,12 @@ Examples:
 			Program.ServerRunning = false;
 			if ((bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-			const string stopMessage = "Server closing in 10 seconds";
-
+			int T_out = (int)Program.ServerConfigs["serverStopTimeout"];
+			string stopMessage = "Server closing in "+ T_out +" seconds";
+			
 			Program.serverInput.WriteLine($"say {stopMessage}");
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
-			Thread.Sleep(10000);
+			Thread.Sleep(T_out * 1000);
 			Program.serverInput.WriteLine("stop");
 
 			Program.ExitCompleted = false;
@@ -271,6 +273,7 @@ Examples:
 				Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
 				Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 				Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
+				Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
 				Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
 				Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
 				Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
@@ -294,6 +297,7 @@ Examples:
 			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveryX"]}");
 			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
+			else if (key == "serverStopTimeout") Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
 			else if (key == "worldpath") Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
 			else if (key == "backuppath") Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
 			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
@@ -362,6 +366,15 @@ Examples:
 					}
 				}
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryX are 'true' and 'false'.");
+			}
+			else if (key == "serverstoptimeout")
+            		{
+				if (int.TryParse(value, out int result) & result > 0)
+                		{
+					SaveConfig(key, value);
+					Program.ServerConfigs["serverStopTimeout"] = result;
+                		}
+				else Console.WriteLine($"Error: Value for serverStopTimeout must be a positive integer.");
 			}
 			else if (key == "autobackupeveryxduration")
 			{
