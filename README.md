@@ -53,6 +53,8 @@ Use the `commands` command to know more about the available commands in the prog
 
 # Screenshots
 
+Screenshots are obsolete.
+
 ## Misc
 
 ![app_screenshot_server_start_stop](resources/screenshots/app_screenshot_server_start_stop.png)
