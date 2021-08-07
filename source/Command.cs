@@ -252,8 +252,8 @@ Examples:
 			if ((bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
 			int T_out = (int)Program.ServerConfigs["serverStopTimeout"];
-			string stopMessage = "Server closing in "+ T_out +" seconds";
-			
+			string stopMessage = "Server closing in " + T_out + " seconds";
+
 			Program.serverInput.WriteLine($"say {stopMessage}");
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
 			Thread.Sleep(T_out * 1000);
@@ -270,7 +270,7 @@ Examples:
 				Console.WriteLine($"autoStartServer = {(bool)Program.ServerConfigs["autoStartServer"]}");
 				Console.WriteLine($"autoBackupOnDate = {(bool)Program.ServerConfigs["autoBackupOnDate"]}");
 				Console.WriteLine($"autoBackupOnDate_Time = {(string)Program.ServerConfigs["autoBackupOnDate_Time"]}");
-				Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveyX"]}");
+				Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveryX"]}");
 				Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 				Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
 				Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
@@ -368,12 +368,12 @@ Examples:
 				else Console.WriteLine($"Error: Available config values for autoBackupEveryX are 'true' and 'false'.");
 			}
 			else if (key == "serverstoptimeout")
-            		{
+			{
 				if (int.TryParse(value, out int result) & result > 0)
-                		{
+				{
 					SaveConfig(key, value);
 					Program.ServerConfigs["serverStopTimeout"] = result;
-                		}
+				}
 				else Console.WriteLine($"Error: Value for serverStopTimeout must be a positive integer.");
 			}
 			else if (key == "autobackupeveryxduration")
@@ -407,7 +407,7 @@ Examples:
 						if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"]) Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
 					}
 					else Console.WriteLine($"Error: Available config values for autoBackupEveryXTimeUnit are 'minute' and 'hour'.");
-				}	
+				}
 			}
 			else if (key == "worldpath")
 			{
