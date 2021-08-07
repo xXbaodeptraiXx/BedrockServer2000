@@ -276,6 +276,7 @@ Examples:
 				Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 				Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
 				Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
+				Console.WriteLine($"banListScanInterval = {(int)Program.ServerConfigs["banListScanInterval"]}");
 				Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
 				Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
 				Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
@@ -299,7 +300,8 @@ Examples:
 			else if (key == "autobackupeveryx") Console.WriteLine($"autoBackupEveryX = {(bool)Program.ServerConfigs["autoBackupEveryX"]}");
 			else if (key == "autobackupeveryxduration") Console.WriteLine($"autoBackupEveryXDuration = {(int)Program.ServerConfigs["autoBackupEveryXDuration"]}");
 			else if (key == "autobackupeveryxtimeunit") Console.WriteLine($"autoBackupEveryXTimeUnit = {((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"]).ToString().ToLower()}");
-			else if (key == "serverStopTimeout") Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
+			else if (key == "serverstoptimeout") Console.WriteLine($"serverStopTimeout = {(int)Program.ServerConfigs["serverStopTimeout"]}");
+			else if (key == "banlistscaninterval") Console.WriteLine($"banListScanInterval = {(int)Program.ServerConfigs["banListScanInterval"]}");
 			else if (key == "worldpath") Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
 			else if (key == "backuppath") Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
 			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
@@ -371,27 +373,48 @@ Examples:
 			}
 			else if (key == "serverstoptimeout")
 			{
-				if (int.TryParse(value, out int result) & result > 0)
+				if (int.TryParse(value, out int result))
 				{
-					SaveConfig(key, value);
-					Program.ServerConfigs["serverStopTimeout"] = result;
+					if (result > 0)
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["serverStopTimeout"] = result;
+					}
+					else Console.WriteLine($"Error: Value for serverStopTimeout must be a positive integer.");
 				}
 				else Console.WriteLine($"Error: Value for serverStopTimeout must be a positive integer.");
+			}
+			else if (key == "banlistscaninterval")
+			{
+				if (int.TryParse(value, out int result))
+				{
+					if (result > 0)
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["banListScanInterval"] = result;
+					}
+					else Console.WriteLine($"Error: Value for banListScanInterval must be a positive integer.");
+				}
+				else Console.WriteLine($"Error: Value for banListScanInterval must be a positive integer.");
 			}
 			else if (key == "autobackupeveryxduration")
 			{
 				if (int.TryParse(value, out int result))
 				{
-					SaveConfig(key, value);
-					Program.ServerConfigs["autoBackupEveryXDuration"] = result;
-
-					if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"])
+					if (result > 0)
 					{
-						if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Minute)
-							Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
-						else if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Hour)
-							Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+						SaveConfig(key, value);
+						Program.ServerConfigs["autoBackupEveryXDuration"] = result;
+
+						if (Program.ServerRunning && (bool)Program.ServerConfigs["autoBackupEveryX"])
+						{
+							if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Minute)
+								Program.autoBackupEveryXTimer.Change(Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.MinuteToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+							else if ((AutoBackupTimeUnit)Program.ServerConfigs["autoBackupEveryXTimeUnit"] == AutoBackupTimeUnit.Hour)
+								Program.autoBackupEveryXTimer.Change(Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]), Conversions.HourToMilliseconds((int)Program.ServerConfigs["autoBackupEveryXDuration"]));
+						}
 					}
+					else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
 				}
 				else Console.WriteLine($"Error: Value for autoBackupEveryXDuration must be a positive integer.");
 			}
@@ -433,8 +456,12 @@ Examples:
 			{
 				if (int.TryParse(value, out int result))
 				{
-					SaveConfig(key, value);
-					Program.ServerConfigs["backupLimit"] = result;
+					if (result > 0)
+					{
+						SaveConfig(key, value);
+						Program.ServerConfigs["backupLimit"] = result;
+					}
+					else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
 				}
 				else Console.WriteLine($"Error: Value for backupLimit must be a positive integer.");
 			}

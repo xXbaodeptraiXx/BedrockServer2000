@@ -11,7 +11,7 @@ namespace BedrockServer2000
 	{
 		// configs
 		public const string AppName = "bs2k";
-		public const string AppVersion = "preAlpha-1.1.0";
+		public const string AppVersion = "preAlpha-1.2";
 
 		// this private dictionary contains the default configs for the server
 		private static Dictionary<object, object> DefaultServerConfigs { get; set; } = new Dictionary<object, object>()
@@ -23,6 +23,7 @@ namespace BedrockServer2000
 			{ "autoBackupEveryXDuration", 1},
 			{ "autoBackupEveryXTimeUnit", AutoBackupTimeUnit.Hour},
 			{ "serverStopTimeout", 20},
+			{ "banListScanInterval", 15},
 			{ "worldPath", ""},
 			{ "backupPath", ""},
 			{ "backupLimit", 32},
@@ -97,18 +98,23 @@ namespace BedrockServer2000
 			else ServerConfigs["autoBackupEveryX"] = Configs.GetValue("autoBackupEveryX") == "true";
 
 			// serverStopTimeout
-			if (int.TryParse(Configs.GetValue("serverStopTimeout"), out int importVal) & importVal > 0)
-			{
-				ServerConfigs["serverStopTimeout"] = Convert.ToInt32(Configs.GetValue("serverStopTimeout"));
-			}
-			else
+			if (!int.TryParse(Configs.GetValue("serverStopTimeout"), out int importValue))
 			{
 				Configs.SetValue("serverStopTimeout", Convert.ToString((int)DefaultServerConfigs["serverStopTimeout"]));
 				ServerConfigs["serverStopTimeout"] = (int)DefaultServerConfigs["serverStopTimeout"];
 			}
+			else ServerConfigs["serverStopTimeout"] = Convert.ToInt32(Configs.GetValue("serverStopTimeout"));
+
+			// banListScanInterval
+			if (!int.TryParse(Configs.GetValue("banListScanInterval"), out importValue))
+			{
+				Configs.SetValue("banListScanInterval", Convert.ToString((int)DefaultServerConfigs["banListScanInterval"]));
+				ServerConfigs["banListScanInterval"] = (int)DefaultServerConfigs["banListScanInterval"];
+			}
+			else ServerConfigs["banListScanInterval"] = Convert.ToInt32(Configs.GetValue("banListScanInterval"));
 
 			// autoBackupEveryXDuration
-			if (!int.TryParse(Configs.GetValue("autoBackupEveryXDuration"), out int importValue))
+			if (!int.TryParse(Configs.GetValue("autoBackupEveryXDuration"), out importValue))
 			{
 				Configs.SetValue("autoBackupEveryXDuration", Convert.ToString((int)DefaultServerConfigs["autoBackupEveryXDuration"]));
 				ServerConfigs["autoBackupEveryXDuration	"] = (int)DefaultServerConfigs["autoBackupEveryXDuration"];
@@ -151,40 +157,19 @@ namespace BedrockServer2000
 			else ServerConfigs["backupLimit"] = Convert.ToInt32(Configs.GetValue("backupLimit"));
 
 			Console.WriteLine($"{Timing.LogDateTime()} Configurations loaded.");
-			Console.WriteLine($"autoStartServer={ServerConfigs["autoStartServer"]}");
-			Console.WriteLine($"autoBackupOnDate={ServerConfigs["autoBackupOnDate"]}");
-			Console.WriteLine($"autoBackupOnDate_Time={ServerConfigs["autoBackupOnDate_Time"]}");
-			Console.WriteLine($"autoBackupEveryX={ServerConfigs["autoBackupEveryX"]}");
-			Console.WriteLine($"autoBackupEveryXDuration={ServerConfigs["autoBackupEveryXDuration"]}");
-			Console.WriteLine($"autoBackupEveryXTimeUnit={ServerConfigs["autoBackupEveryXTimeUnit"]}");
-			Console.WriteLine($"serverStopTimeout={ServerConfigs["serverStopTimeout"]}");
-			Console.WriteLine($"worldPath={ServerConfigs["worldPath"]}");
-			Console.WriteLine($"backupPath={ServerConfigs["backupPath"]}");
-			Console.WriteLine($"backupLimit={ServerConfigs["backupLimit"]}");
 
 			// banList
 			if (!File.Exists($"{AppName}.banlist"))
 			{
-				Console.WriteLine("Ban list file not found.");
+				Console.WriteLine($"{Timing.LogDateTime()} Ban list file not found.");
 
 				File.WriteAllText($"{AppName}.banlist", "");
-				Console.WriteLine("Empty ban list file generated.");
+				Console.WriteLine($"{Timing.LogDateTime()} Empty ban list file generated.");
 			}
 			ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist");
-			Console.WriteLine($"Ban list loaded.");
-			if (((string[])ServerConfigs["banList"]).Length >= 1)
-			{
-				Console.Write("Banned players: {");
-				for (int i = 0; i < ((string[])ServerConfigs["banList"]).Length; i += 1)
-				{
-					Console.Write(((string[])ServerConfigs["banList"])[i]);
-					if (i != ((string[])ServerConfigs["banList"]).Length - 1) Console.Write(", ");
-				}
-				Console.WriteLine("}");
+			Console.WriteLine($"{Timing.LogDateTime()} Ban list loaded.");
 
-				Events.BanlistScanTimer_Tick(null);
-			}
-			else Console.WriteLine("Ban list is empty.");
+			Command.ProcessCommand("configs");
 		}
 
 		private static void InitializeComponents()
@@ -216,8 +201,7 @@ namespace BedrockServer2000
 			if ((bool)ServerConfigs["autoStartServer"]) Command.ProcessCommand("start");
 
 			// start the banlist scan timer
-			//TODO: add "banlistScanInterval" key in configuration file to specify the interval between each scan in seconds
-			banlistScanTImer.Change(15000, 15000);
+			banlistScanTImer.Change((int)ServerConfigs["banListScanInterval"] * 1000, (int)ServerConfigs["banListScanInterval"] * 1000);
 
 			// console input loop
 			while (true)
