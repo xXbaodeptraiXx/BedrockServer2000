@@ -41,7 +41,7 @@ namespace BedrockServer2000
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
 			int currentNumberOfBackups = Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length;
-			while (currentNumberOfBackups >= (int)Program.ServerConfigs["ackupLimit"])
+			while (currentNumberOfBackups >= (int)Program.ServerConfigs["backupLimit"])
 			{
 				List<BackupPath> backupList = new List<BackupPath>();
 				foreach (string path in Directory.GetDirectories((string)Program.ServerConfigs["backupPath"])) backupList.Add(new BackupPath(path));
@@ -196,6 +196,8 @@ namespace BedrockServer2000
 			}
 
 			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1].Path}\"");
+			Directory.Delete((string)Program.ServerConfigs["worldPath"], true);
+			Directory.CreateDirectory((string)Program.ServerConfigs["worldPath"]);
 			CopyFilesRecursively(backupList[choice - 1].Path, (string)Program.ServerConfigs["worldPath"]);
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1].Path}\"");
 
