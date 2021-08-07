@@ -167,7 +167,7 @@ namespace BedrockServer2000
 			{
 				Console.WriteLine("Ban list file not found.");
 
-				File.Create($"{AppName}.banlist");
+				File.WriteAllText($"{AppName}.banlist", "");
 				Console.WriteLine("Empty ban list file generated.");
 			}
 			ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist");
