@@ -18,7 +18,7 @@ This software is still in development process, some features haven't been implem
 
 - None for now!!!
 
-# Compiling
+# Build from source
 
 This program is built with .NET Core 3.1 so you need to install the SDK to compile the code.
 
@@ -37,6 +37,8 @@ The same goes for `dotnet publish` and `dotnet run`.
 # Start the wrapper
 
 Simply copy the wrapper executable `bs2k` and its other 2 configuration files named `bs2k.conf` and `bs2k.banlist` to the bedrock server folder then execute the `bs2k` executable to run it.
+
+***Note that this program is not built self-contained by default, you can change the build options in the `.csproj` file, if you want to run the no-self-contained version you will need the dotnet core 3.1 runtime, see installation instructions here <https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#1804->.***
 
 Use the `commands` command to know more about the available commands in the program.
 
