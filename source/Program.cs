@@ -206,7 +206,7 @@ namespace BedrockServer2000
 			// console input loop
 			while (true)
 			{
-				if (LoadRequest) continue;
+				if (LoadRequest) continue; // skip normal command input when loading backup (idk how this works but it works fine so don't remove it)
 				Command.ProcessCommand(Console.ReadLine());
 			}
 		}
