@@ -1,13 +1,12 @@
 # BedrockServer2000
 
-A cross-platform command line Minecraft Bedrock server wrapper (supports Windows x64 and Linux x64)
+A cross-platform command line Minecraft Bedrock server wrapper (supports Windows 10+ x64 and Linux x64)
 
 _Some small parts of the code are based on my other repository (<https://github.com/BaoUida2000/minecraft-bedrock-server-manager>) which was forked from Benjerman's Minecraft Server Manager (<https://github.com/Benjerman/Minecraft-Server-Manager>)._
 
 ## Has been tested on
 
 - Windows 10 64bit
-- Windows 8.1 64bit
 - Ubuntu 18.04 64bit
 - Ubuntu 18.04.5 64bit
 
