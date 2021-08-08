@@ -10,7 +10,7 @@ This software is still in development process, some features haven't been implem
 
 # Known bugs
 
-- MAJOR BUG!: Online backups when loaded will cause missing files issues (no current solution).
+- None for now!!!
 
 # Compiling
 
