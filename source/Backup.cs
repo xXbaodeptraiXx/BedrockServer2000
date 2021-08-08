@@ -154,6 +154,9 @@ namespace BedrockServer2000
 
 		public static void LoadBackup()
 		{
+			Program.LoadRunning = true;
+			Program.LoadRequest = false;
+
 			int backupsSaved = Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length;
 
 			List<BackupPath> backupList = new List<BackupPath>();
@@ -184,13 +187,13 @@ namespace BedrockServer2000
 			}
 			else if (!int.TryParse(input, out choice))
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
+				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, oad canceled.");
+				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
@@ -201,6 +204,7 @@ namespace BedrockServer2000
 			CopyFilesRecursively(backupList[choice - 1].Path, (string)Program.ServerConfigs["worldPath"]);
 			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1].Path}\"");
 
+			Program.LoadRunning = false;
 			if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 		}
 	}

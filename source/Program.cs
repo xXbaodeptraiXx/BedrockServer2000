@@ -46,6 +46,7 @@ namespace BedrockServer2000
 		public static bool ServerExecutableExists { get; set; } = false;
 		public static bool ServerRunning { get; set; } = false;
 		public static bool BackupRunning { get; set; } = false;
+		public static bool LoadRunning { get; set; } = false;
 		public static bool ServerWasRunningBefore { get; set; } = false;
 		public static bool ExitCompleted { get; set; } = true;
 		public static bool PlayerActivitySinceLastBackup { get; set; } = false;
@@ -206,8 +207,11 @@ namespace BedrockServer2000
 			// console input loop
 			while (true)
 			{
-				if (LoadRequest) continue; // skip normal command input when loading backup (idk how this works but it works fine so don't remove it)
 				Command.ProcessCommand(Console.ReadLine());
+				while (LoadRequest || LoadRunning)
+				{
+					if (!LoadRequest && !LoadRunning) break;
+				}
 			}
 		}
 	}

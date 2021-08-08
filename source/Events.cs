@@ -29,7 +29,6 @@ namespace BedrockServer2000
 
 			if (Program.LoadRequest)
 			{
-				Program.LoadRequest = false;
 				Backup.LoadBackup();
 			}
 			else if (Program.ExitRequest)
