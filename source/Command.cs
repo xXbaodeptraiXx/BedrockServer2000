@@ -257,7 +257,7 @@ Examples:
 
 			Program.serverInput.WriteLine($"say {stopMessage}");
 			Console.WriteLine($"{Timing.LogDateTime()} Server stop message sent.");
-			Thread.Sleep(T_out * 1000);
+			Thread.Sleep((T_out * 1000) + 2000); //Additional 2 seconds for smooth delay with laggy conditions
 			Program.serverInput.WriteLine("stop");
 
 			Program.ExitCompleted = false;

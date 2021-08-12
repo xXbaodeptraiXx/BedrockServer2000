@@ -47,6 +47,7 @@ namespace BedrockServer2000
 				foreach (string path in Directory.GetDirectories((string)Program.ServerConfigs["backupPath"])) backupList.Add(new BackupPath(path));
 				backupList.Sort();
 
+				Console.WriteLine($"{Timing.LogDateTime()} Deleting oldest backup due to crossing backuplimit.");
 				Directory.Delete(backupList[0].Path, true);
 				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
 				currentNumberOfBackups = Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length;
@@ -169,6 +170,7 @@ namespace BedrockServer2000
 			}
 			Console.WriteLine($"There are {backupsSaved}/{(int)Program.ServerConfigs["backupLimit"]} backups saved, which one would you like to load?");
 			Console.WriteLine("By continuing, you agree to overwrite the existing world and replace it with a chosen backup.");
+			Console.WriteLine("Enter any number from the list above or otherwise:-");
 			Console.WriteLine("r: Most recent backup");
 			Console.WriteLine("c: Cancel");
 
