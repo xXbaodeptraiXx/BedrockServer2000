@@ -180,6 +180,7 @@ namespace BedrockServer2000
 			if (input.Trim().ToLower() == "c")
 			{
 				Console.WriteLine($"{Timing.LogDateTime()} Load canceled.");
+				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
@@ -190,12 +191,14 @@ namespace BedrockServer2000
 			else if (!int.TryParse(input, out choice))
 			{
 				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
+				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
 				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
+				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
