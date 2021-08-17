@@ -27,7 +27,9 @@ namespace BedrockServer2000
 			{ "worldPath", ""},
 			{ "backupPath", ""},
 			{ "backupLimit", 32},
-			{ "banList", new string[0]}
+			{ "banList", new string[0]},
+			{ "applicationLoggingLevel", ApplicationLoggingLevel.All},
+			{ "logPath", ""}
 		};
 		// this public dictionary contains the configs for the server (modifiable)
 		public static Dictionary<object, object> ServerConfigs { get; set; } = DefaultServerConfigs;
@@ -42,6 +44,7 @@ namespace BedrockServer2000
 		public static Timer banlistScanTImer;
 
 		// server properties
+		public static readonly DateTime SessionStartTime = DateTime.Now;
 		public static List<Player> Players { get; set; } = new List<Player>();
 		public static bool ServerExecutableExists { get; set; } = false;
 		public static bool ServerRunning { get; set; } = false;
