@@ -195,8 +195,8 @@ namespace BedrockServer2000
 				return;
 			}
 			
-			Logger.writer = File.CreateText($"{AppName}.log");
-			Logger.writer.AutoFlush = true;
+			ConsoleEx.writer = File.CreateText($"{AppName}.log");
+			ConsoleEx.writer.AutoFlush = true;
 
 			InitializeComponents();
 
