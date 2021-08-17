@@ -12,7 +12,7 @@ namespace BedrockServer2000
 		{
 			if (Program.BackupRunning) return;
 			
-			Logger.Log(command);
+			.Log(command);
 
 			string formattedCommand = command.Trim().ToLower();
 
