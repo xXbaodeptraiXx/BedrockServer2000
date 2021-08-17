@@ -9,7 +9,7 @@ namespace BedrockServer2000
         public static void WriteLine(string message)
         {
             Console.WriteLine(message);
-            Logger.Log(message);
+            Log(message);
         }
 
         public static void Log(string logMessage)
