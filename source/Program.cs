@@ -62,9 +62,9 @@ namespace BedrockServer2000
 			// add config keys and their default values to the hashtable if they don't exist
 			Console.WriteLine($"{Timing.LogDateTime()} Locating Server executable...");
 			ServerExecutableExists = File.Exists("bedrock_server") || File.Exists("bedrock_server.exe");
-			Console.WriteLine($"serverExecutableExists={ServerExecutableExists}");
+			ConsoleEx.WriteLine($"serverExecutableExists={ServerExecutableExists}");
 
-			Console.WriteLine($"{Timing.LogDateTime()} Loading configurations...");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Loading configurations...");
 
 			// autoStartServer
 			if (Configs.GetValue("autoStartServer") != "true" && Configs.GetValue("autoStartServer") != "false")
@@ -157,18 +157,18 @@ namespace BedrockServer2000
 			}
 			else ServerConfigs["backupLimit"] = Convert.ToInt32(Configs.GetValue("backupLimit"));
 
-			Console.WriteLine($"{Timing.LogDateTime()} Configurations loaded.");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Configurations loaded.");
 
 			// banList
 			if (!File.Exists($"{AppName}.banlist"))
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Ban list file not found.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Ban list file not found.");
 
 				File.WriteAllText($"{AppName}.banlist", "");
-				Console.WriteLine($"{Timing.LogDateTime()} Empty ban list file generated.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Empty ban list file generated.");
 			}
 			ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist");
-			Console.WriteLine($"{Timing.LogDateTime()} Ban list loaded.");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Ban list loaded.");
 
 			Command.ProcessCommand("configs");
 		}
@@ -191,13 +191,16 @@ namespace BedrockServer2000
 		{
 			if (!File.Exists($"{AppName}.conf"))
 			{
-				Console.WriteLine("Configuration file not found.");
+				ConsoleEx.WriteLine("Configuration file not found.");
 				return;
 			}
+			
+			ConsoleEx.writer = File.CreateText($"{AppName}.log");
+			ConsoleEx.writer.AutoFlush = true;
 
 			InitializeComponents();
 
-			Console.WriteLine($"{Timing.LogDateTime()} Server wrapper started. ({AppName}:{AppVersion})");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Server wrapper started. ({AppName}:{AppVersion})");
 
 			if ((bool)ServerConfigs["autoStartServer"]) Command.ProcessCommand("start");
 

@@ -26,7 +26,7 @@ namespace BedrockServer2000
 		{
 			Program.BackupRunning = true;
 
-			Console.WriteLine($"{Timing.LogDateTime()} Starting backup.");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Starting backup.");
 			Program.serverInput.WriteLine("save hold");
 			Thread.Sleep(5000);
 			Program.serverInput.WriteLine("save query");
@@ -36,7 +36,7 @@ namespace BedrockServer2000
 		public static void PerformOfflineBackup()
 		{
 			Program.BackupRunning = true;
-			Console.WriteLine($"{Timing.LogDateTime()} Starting backup.");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Starting backup.");
 
 			// Remove oldest backups if the number of backups existing is over backupLimit
 			// Keep deleting oldest backups until the number of existing backups is smaller than backupLimit
@@ -47,19 +47,19 @@ namespace BedrockServer2000
 				foreach (string path in Directory.GetDirectories((string)Program.ServerConfigs["backupPath"])) backupList.Add(new BackupPath(path));
 				backupList.Sort();
 
-				Console.WriteLine($"{Timing.LogDateTime()} Deleting oldest backup due to crossing backuplimit.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Deleting oldest backup due to crossing backuplimit.");
 				Directory.Delete(backupList[0].Path, true);
-				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
 				currentNumberOfBackups = Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length;
 			}
 
 			// copy world folder to backup directory
 			DateTime now = DateTime.Now;
 			string backupDate = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
-			Console.WriteLine($"{Timing.LogDateTime()} Copying world...");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Copying world...");
 			CopyFilesRecursively((string)Program.ServerConfigs["worldPath"], (string)Program.ServerConfigs["backupPath"] + Path.DirectorySeparatorChar + backupDate);
 
-			Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {(string)Program.ServerConfigs["backupPath"]}{Path.DirectorySeparatorChar}{backupDate}");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Backup saved: {(string)Program.ServerConfigs["backupPath"]}{Path.DirectorySeparatorChar}{backupDate}");
 			Program.BackupRunning = false;
 		}
 
@@ -79,14 +79,14 @@ namespace BedrockServer2000
 				backupList.Sort();
 
 				Directory.Delete(backupList[0].Path, true);
-				Console.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Backup deleted: {backupList[0]}");
 				currentNumberOfBackups = Directory.GetDirectories((string)Program.ServerConfigs["backupPath"]).Length;
 			}
 
 			try
 			{
 				List<string> filesToCopy = new List<string>();
-				Console.WriteLine($"{Timing.LogDateTime()} Parsing raw file list.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Parsing raw file list.");
 				foreach (string file in rawFileList.Split(",", StringSplitOptions.RemoveEmptyEntries)) filesToCopy.Add(file.Split(":", StringSplitOptions.RemoveEmptyEntries)[0].Trim());
 				// converts rawFileList to a list of paths
 				// examples:
@@ -99,7 +99,7 @@ namespace BedrockServer2000
 				string backupDate = $"{now.Day}_{now.Month}_{now.Year}-{now.Hour}_{now.Minute}_{now.Second}";
 				// example backupDate: "30_6_2021-13_42_7"
 
-				Console.WriteLine($"{Timing.LogDateTime()} Creating destination paths.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Creating destination paths.");
 				foreach (string file in filesToCopy)
 				{
 					destinations.Add($"{(string)Program.ServerConfigs["backupPath"]}{Path.DirectorySeparatorChar}{backupDate}{Path.DirectorySeparatorChar}{file.Remove(0, file.IndexOf(Path.DirectorySeparatorChar) + 1)}");
@@ -110,7 +110,7 @@ namespace BedrockServer2000
 					// "backups/30_6_2021-13_42_7/MyWorl/db/075035.ldb"
 				}
 
-				Console.WriteLine($"{Timing.LogDateTime()} Creating directories...");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Creating directories...");
 				foreach (string path in destinations)
 				{
 					string createDirectoryPath = path.Remove(path.LastIndexOf(Path.DirectorySeparatorChar));
@@ -121,7 +121,7 @@ namespace BedrockServer2000
 					Directory.CreateDirectory(createDirectoryPath);
 				}
 
-				Console.WriteLine($"{Timing.LogDateTime()} Copying files...");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Copying files...");
 				for (int i = 0; i < destinations.Count; i += 1)
 				{
 					string sourcePath = $"{((string)Program.ServerConfigs["worldPath"]).Remove(((string)Program.ServerConfigs["worldPath"]).LastIndexOf(Path.DirectorySeparatorChar))}{Path.DirectorySeparatorChar}{filesToCopy[i]}";
@@ -135,16 +135,16 @@ namespace BedrockServer2000
 				}
 
 				if (Program.ServerRunning) Program.serverInput.WriteLine("save resume");
-				Console.WriteLine($"{Timing.LogDateTime()} Backup saved: {(string)Program.ServerConfigs["backupPath"]}{Path.DirectorySeparatorChar}{backupDate}");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Backup saved: {(string)Program.ServerConfigs["backupPath"]}{Path.DirectorySeparatorChar}{backupDate}");
 			}
 			catch (Exception e)
 			{
 				Program.BackupRunning = false;
 
-				Console.WriteLine($"EXCEPTION THROWN: {e.Message}");
-				Console.WriteLine($"Data: {e.Data}");
-				Console.WriteLine($"Source: {e.Source}");
-				Console.WriteLine($"StackTrace: {e.StackTrace}");
+				ConsoleEx.WriteLine($"EXCEPTION THROWN: {e.Message}");
+				ConsoleEx.WriteLine($"Data: {e.Data}");
+				ConsoleEx.WriteLine($"Source: {e.Source}");
+				ConsoleEx.WriteLine($"StackTrace: {e.StackTrace}");
 
 				// Send error message to in-game chat if server is running
 				if (Program.ServerRunning) Program.serverInput.WriteLine($"say Error ocurred while running backup. Exception was thrown ({e.Message}), data:\"{e.Data}\", stackTRace:\"{e.StackTrace}\". PLease contact server admin.");
@@ -176,10 +176,11 @@ namespace BedrockServer2000
 
 			string input = Console.ReadLine();
 			int choice;
+			Logger.Log(input);
 
 			if (input.Trim().ToLower() == "c")
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Load canceled.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Load canceled.");
 				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
@@ -190,24 +191,24 @@ namespace BedrockServer2000
 			}
 			else if (!int.TryParse(input, out choice))
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
 				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 			else if (choice > backupsSaved || choice < 1)
 			{
-				Console.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
+				ConsoleEx.WriteLine($"{Timing.LogDateTime()} Invalid input, load canceled.");
 				Program.LoadRunning = false;
 				if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
 				return;
 			}
 
-			Console.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1].Path}\"");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Copying \"{backupList[choice - 1].Path}\"");
 			Directory.Delete((string)Program.ServerConfigs["worldPath"], true);
 			Directory.CreateDirectory((string)Program.ServerConfigs["worldPath"]);
 			CopyFilesRecursively(backupList[choice - 1].Path, (string)Program.ServerConfigs["worldPath"]);
-			Console.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1].Path}\"");
+			ConsoleEx.WriteLine($"{Timing.LogDateTime()} Backup loaded \"{backupList[choice - 1].Path}\"");
 
 			Program.LoadRunning = false;
 			if (Program.ServerWasRunningBefore) Command.ProcessCommand("start");
