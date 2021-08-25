@@ -50,7 +50,8 @@ namespace BedrockServer2000
 
 			if (Program.BackupFileListRequest)
 			{
-				if (e.Data.Contains(Path.DirectorySeparatorChar)
+				if ((e.Data.Contains(Path.DirectorySeparatorChar)
+				|| e.Data.Contains(Path.AltDirectorySeparatorChar))
 				&& e.Data.Contains(".ldb")
 				&& e.Data.Contains(":")
 				&& e.Data.Contains(", "))
