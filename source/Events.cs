@@ -50,7 +50,8 @@ namespace BedrockServer2000
 
 			if (Program.BackupFileListRequest)
 			{
-				if (e.Data.Contains(Path.DirectorySeparatorChar)
+				if ((e.Data.Contains(Path.DirectorySeparatorChar)
+				|| e.Data.Contains(Path.AltDirectorySeparatorChar))
 				&& e.Data.Contains(".ldb")
 				&& e.Data.Contains(":")
 				&& e.Data.Contains(", "))
@@ -72,13 +73,13 @@ namespace BedrockServer2000
 
 			if (e.Data.Contains("[INFO] Player connected: "))
 			{
-				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] Player connected: ") + 25).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
 				string playerXuid = e.Data.Split(" ", StringSplitOptions.RemoveEmptyEntries)[^1];
 				OnPlayerJoin(new Player(playerName, playerXuid));
 			}
 			else if (e.Data.Contains("[INFO] Player disconnected: "))
 			{
-				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] PLayer disconnected: ") + 28).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+				string playerName = e.Data.Remove(0, e.Data.IndexOf("[INFO] Player disconnected: ") + 28).Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
 				string playerXuid = e.Data.Split(" ", StringSplitOptions.RemoveEmptyEntries)[^1];
 				OnPlayerLeave(new Player(playerName, playerXuid));
 			}
