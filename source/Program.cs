@@ -4,6 +4,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BedrockServer2000
 {
@@ -27,7 +28,7 @@ namespace BedrockServer2000
 			{ "worldPath", ""},
 			{ "backupPath", ""},
 			{ "backupLimit", 32},
-			{ "banList", new string[0]}
+			{ "banList", new List<string>()}
 		};
 		// this public dictionary contains the configs for the server (modifiable)
 		public static Dictionary<object, object> ServerConfigs { get; set; } = DefaultServerConfigs;
@@ -167,10 +168,24 @@ namespace BedrockServer2000
 				File.WriteAllText($"{AppName}.banlist", "");
 				Console.WriteLine($"{Timing.LogDateTime()} Empty ban list file generated.");
 			}
-			ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist");
+			ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist").ToList();
 			Console.WriteLine($"{Timing.LogDateTime()} Ban list loaded.");
 
 			Command.ProcessCommand("configs");
+		}
+		
+		public static void ReloadBanList()
+        	{
+			if (!File.Exists($"{AppName}.banlist"))
+			{
+				Console.WriteLine($"{Timing.LogDateTime()} Ban list file not found. Can't re-load");
+			}
+            		else
+           		{
+				ServerConfigs["banList"] = File.ReadAllLines($"{AppName}.banlist").ToList();
+				Console.WriteLine($"{Timing.LogDateTime()} Ban list re-loaded.");
+				Command.ShowConfigs("banlist");
+			}
 		}
 
 		private static void InitializeComponents()
