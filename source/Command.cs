@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
 
 namespace BedrockServer2000
 {
@@ -80,6 +81,7 @@ namespace BedrockServer2000
 			}
 			else if (formattedCommand == "configs") ShowConfigs("");
 			else if (formattedCommand == "reload") Program.ReloadConfigs();
+			else if (formattedCommand == "reloadbanlist") Program.ReloadBanList();
 			else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length > 1)
 			{
 				if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "commands") ShowHelp(formattedCommand.Remove(0, 9));
@@ -94,6 +96,50 @@ namespace BedrockServer2000
 					{
 						Console.WriteLine("Server is not currently running.");
 					}
+				}
+				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "ban")
+				{
+					string pl = command.Trim().Remove(0, 4);
+					foreach (string playerData in (List<string>)Program.ServerConfigs["banList"])
+					{
+						if (playerData.Split(" : ")[0] == pl)
+						{
+							Console.WriteLine("Player " + pl + " is already in the banlist.");
+							return;
+						}
+					}
+					if (Program.ServerRunning)
+					{
+						foreach (Player player in Program.Players)
+						{
+							if (player.Name == pl)
+							{
+								string Data = player.Name + " : " + player.Xuid;
+								((List<string>)Program.ServerConfigs["banList"]).Add(Data);
+								File.AppendAllText($"{Program.AppName}.banlist", Data + Environment.NewLine);
+								Console.WriteLine("Player " + pl + " added to banlist.");
+								Program.serverInput.WriteLine($"kick {pl} Banned player");
+								return;
+							}
+						}
+						Console.WriteLine("Player " + pl + " is not currently online.");
+					}
+					else Console.WriteLine("Cannot ban player while server is offline.");
+				}
+				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0] == "unban")
+				{
+					string pl = command.Trim().Remove(0, 6);
+					foreach (string playerData in (List<string>)Program.ServerConfigs["banList"])
+					{
+						if (playerData.Split(" : ")[0] == pl)
+						{
+							((List<string>)Program.ServerConfigs["banList"]).Remove(playerData);
+							File.WriteAllLines($"{Program.AppName}.banlist", (List<string>)Program.ServerConfigs["banList"]);
+							Console.WriteLine("Player " + pl + " has been removed from banlist");
+							return;
+						}
+					}
+					Console.WriteLine("Player " + pl + " was not found in banlist");					
 				}
 				else if (formattedCommand.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length == 2)
 				{
@@ -152,8 +198,11 @@ namespace BedrockServer2000
 - stop : stop the server
 - backup : backup the world file (available even when the server is not running)
 - load : load a saved backup
+- ban [player_Name] : ban the player from the server
+- unban [player_Name] : unban the player from the server
 - ^configs : show server wrapper configs
 - reload : reload the configs from the configuration file
+- reloadbanlist : reload the banned players list from the banlist file
 - ^set [config_key] [config_value] : change server wrapper configs
 - clear : clear the console
 - exit : stop the server wrapper* Commands with ^ before their names can be used with 'commands [comand]' to show more information.
@@ -279,13 +328,13 @@ Examples:
 				Console.WriteLine($"worldPath = {(string)Program.ServerConfigs["worldPath"]}");
 				Console.WriteLine($"backupPath = {(string)Program.ServerConfigs["backupPath"]}");
 				Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
-				if (((string[])Program.ServerConfigs["banList"]).Length >= 1)
+				if (((List<string>)Program.ServerConfigs["banList"]).Count >= 1)
 				{
 					Console.Write("Banned players: {");
-					for (int i = 0; i < ((string[])Program.ServerConfigs["banList"]).Length; i += 1)
+					for (int i = 0; i < ((List<string>)Program.ServerConfigs["banList"]).Count; i += 1)
 					{
-						Console.Write(((string[])Program.ServerConfigs["banList"])[i]);
-						if (i != ((string[])Program.ServerConfigs["banList"]).Length - 1) Console.Write(", ");
+						Console.Write(((List<string>)Program.ServerConfigs["banList"])[i]);
+						if (i != ((List<string>)Program.ServerConfigs["banList"]).Count - 1) Console.Write(", ");
 					}
 					Console.WriteLine("}");
 
@@ -306,13 +355,13 @@ Examples:
 			else if (key == "backuplimit") Console.WriteLine($"backupLimit = {(int)Program.ServerConfigs["backupLimit"]}");
 			else if (key == "banlist")
 			{
-				if (((string[])Program.ServerConfigs["banList"]).Length >= 1)
+				if (((List<string>)Program.ServerConfigs["banList"]).Count >= 1)
 				{
 					Console.Write("Banned players: {");
-					for (int i = 0; i < ((string[])Program.ServerConfigs["banList"]).Length; i += 1)
+					for (int i = 0; i < ((List<string>)Program.ServerConfigs["banList"]).Count; i += 1)
 					{
-						Console.Write(((string[])Program.ServerConfigs["banList"])[i]);
-						if (i != ((string[])Program.ServerConfigs["banList"]).Length - 1) Console.Write(", ");
+						Console.Write(((List<string>)Program.ServerConfigs["banList"])[i]);
+						if (i != ((List<string>)Program.ServerConfigs["banList"]).Count - 1) Console.Write(", ");
 					}
 					Console.WriteLine("}");
 
