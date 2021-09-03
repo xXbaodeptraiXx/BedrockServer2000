@@ -313,7 +313,7 @@ Examples:
 			Program.exitTImeoutTImer.Change(30000, 30000);
 		}
 
-		private static void ShowConfigs(string key)
+		public static void ShowConfigs(string key)
 		{
 			if (key == "")
 			{
