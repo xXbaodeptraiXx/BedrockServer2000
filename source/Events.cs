@@ -153,8 +153,9 @@ namespace BedrockServer2000
 			{
 				Program.Players.Add(player);
 			}
-			foreach (string playerName in (List<string>)Program.ServerConfigs["banList"])
+			foreach (string playerData in (List<string>)Program.ServerConfigs["banList"])
 			{
+				string playerName = playerData.Split(" : ")[0];
 				if (playerName == player.Name)
 				{
 					Console.WriteLine($"{Timing.LogDateTime()} Player name \"{playerName}\" found in ban list.");
