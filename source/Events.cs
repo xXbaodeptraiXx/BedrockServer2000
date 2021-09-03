@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace BedrockServer2000
@@ -119,9 +120,9 @@ namespace BedrockServer2000
 			if (Program.BackupRunning || !Program.ServerRunning) return;
 			foreach (Player player in Program.Players)
 			{
-				for (int i = 0; i < ((string[])Program.ServerConfigs["banList"]).Length; i += 1)
+				for (int i = 0; i < ((List<string>)Program.ServerConfigs["banList"]).Count; i += 1)
 				{
-					if (player.Name == ((string[])Program.ServerConfigs["banList"])[i])
+					if (player.Name == ((List<string>)Program.ServerConfigs["banList"])[i])
 					{
 						Console.WriteLine($"{Timing.LogDateTime()} Player name \"{player.Name}\" found in ban list.");
 						Program.serverInput.WriteLine($"kick {player.Name}");
@@ -152,7 +153,7 @@ namespace BedrockServer2000
 			{
 				Program.Players.Add(player);
 			}
-			foreach (string playerName in (string[])Program.ServerConfigs["banList"])
+			foreach (string playerName in (List<string>)Program.ServerConfigs["banList"])
 			{
 				if (playerName == player.Name)
 				{
