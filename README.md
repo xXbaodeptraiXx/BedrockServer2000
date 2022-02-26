@@ -1,5 +1,7 @@
 # BedrockServer2000
 
+## Sorry, this project is discontinued because I have to focus on school, there's little to no chance that it will be continue maintained (it's full of bugs too so don't use it in your main server, also the online backups feature has a bug where in-game items randomly disappear so don't use it)
+
 A cross-platform command line Minecraft Bedrock server wrapper (supports Windows 10+ x64 and Linux x64)
 
 _Some small parts of the code are based on my other repository (<https://github.com/BaoUida2000/minecraft-bedrock-server-manager>) which was forked from Benjerman's Minecraft Server Manager (<https://github.com/Benjerman/Minecraft-Server-Manager>)._
